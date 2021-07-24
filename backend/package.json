@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "name": "pt-server",
+  "version": "1.0.0",
+  "description": "pt backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest --passWithNoTests",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.948.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^2.0.1",
+    "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^7.30.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12"
+  }
+}

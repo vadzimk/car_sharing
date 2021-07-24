@@ -1,0 +1,48 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master # TODO change to master
+  pull_request:
+    branches: [ master ]  # TODO change to master
+    types: [ opened, synchronize ] #    will run on pull request
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2  # (checks out project source code from git)
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.15.x'
+      - name: install root packages
+        run: npm install
+      - name: install backend packages
+        run: cd backend && npm install
+      - name: install client packages
+        run: cd ptclient && npm install
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm run start
+          wait-on: http://localhost:3001
+      - name: deploy
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}  # runs only on push to master or pull_request merge with master, skips when message contains #skip
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_AUTH_TOKEN}}
+          heroku_app_name: "pt-a"
+          heroku_email: "vadzimkk@gmail.com"
+#          healthcheck: "https://pt-a.herokuapp.com/api/health"
+#          checkstring: "ok"
+#          rollbackonhealthcheckfailed: true
+
+

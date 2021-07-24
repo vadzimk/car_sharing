@@ -1,0 +1,27 @@
+{
+  "name": "pt",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "14.15.x"
+  },
+  "scripts": {
+    "test": "cd backend && npm run test && cd ../ptclient && npm run test -- --watchAll=false",
+    "test:e2e": "cypress run",
+    "start": "cd backend && npm run start",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd ptclient && npm run start\"",
+    "lint": "cd backend && npm run lint && cd ../ptclient && npm run lint",
+    "build": "cd ptclient && npm run build",
+    "postinstall": "npm install --prefix backend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "cypress": "^7.7.0"
+  }
+}
