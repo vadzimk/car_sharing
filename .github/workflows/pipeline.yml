@@ -18,8 +18,8 @@ jobs:
           node-version: '14.15.x'
       - name: install root packages
         run: npm install
-      - name: install backend packages
-        run: cd backend && npm install
+      - name: install server packages
+        run: cd server && npm install
       - name: install client packages
         run: cd client && npm install
       - name: lint

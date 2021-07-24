@@ -3,11 +3,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "pt backend",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --passWithNoTests",
-    "start": "cross-env NODE_ENV=production node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint ."
   },
   "keywords": [],

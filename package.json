@@ -6,13 +6,13 @@
     "node": "14.15.x"
   },
   "scripts": {
-    "test": "cd ./backend && npm run test && cd ../client && npm run test -- --watchAll=false",
+    "test": "cd ./server && npm run test && cd ../client && npm run test -- --watchAll=false",
     "test:e2e": "cypress run",
-    "start": "cd ./backend && npm run start",
-    "dev": "concurrently \"cd ./backend && npm run dev\" \"cd ./client && npm run start\"",
-    "lint": "cd ./backend && npm run lint && cd ../client && npm run lint",
+    "start": "cd ./server && npm run start",
+    "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run start\"",
+    "lint": "cd ./server && npm run lint && cd ../client && npm run lint",
     "build": "cd ./client && npm run build",
-    "postinstall": "cd ./backend && npm install && cd ../client && npm install"
+    "postinstall": "cd ./server && npm install && cd ../client && npm install"
   },
   "keywords": [],
   "author": "",
