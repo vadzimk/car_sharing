@@ -11,9 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2  # (checks out project source code from git)
       - name: deploy
-      if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}  # runs only on push to master or pull_request merge with master, skips when message contains #skip
-      uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_AUTH_TOKEN}}
-        heroku_app_name: "p2p-car-sharing"
-        heroku_email: "vadzimkk@gmail.com"
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}  # runs only on push to master or pull_request merge with master, skips when message contains #skip
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_AUTH_TOKEN}}
+          heroku_app_name: "p2p-car-sharing"
+          heroku_email: "vadzimkk@gmail.com"
