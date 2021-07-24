@@ -6,12 +6,12 @@
     "node": "14.15.x"
   },
   "scripts": {
-    "test": "cd backend && npm run test && cd ../client && npm run test -- --watchAll=false",
+    "test": "cd ./backend && npm run test && cd ../client && npm run test -- --watchAll=false",
     "test:e2e": "cypress run",
-    "start": "cd backend && npm run start",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd client && npm run start\"",
-    "lint": "cd backend && npm run lint && cd ../client && npm run lint",
-    "build": "cd client && npm run build",
+    "start": "cd ./backend && npm run start",
+    "dev": "concurrently \"cd ./backend && npm run dev\" \"cd ./client && npm run start\"",
+    "lint": "cd ./backend && npm run lint && cd ../client && npm run lint",
+    "build": "cd ./client && npm run build",
     "postinstall": "npm install --prefix ./backend/node_modules && npm install --prefix ./client/node_modules",
     "heroku-postbuild": "cd ./backend && npm install && cd ../client && npm install"
   },
