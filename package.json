@@ -1,5 +1,5 @@
 {
-  "name": "pt",
+  "name": "p2p-car-sharing",
   "version": "1.0.0",
   "description": "",
   "engines": {
@@ -11,8 +11,8 @@
     "start": "cd ./backend && npm run start",
     "dev": "concurrently \"cd ./backend && npm run dev\" \"cd ./client && npm run start\"",
     "lint": "cd ./backend && npm run lint && cd ../client && npm run lint",
-    "build": "cd ./client && npm install && npm run build",
-    "postinstall": "npm install --prefix ./backend/node_modules"
+    "build": "cd ./client && npm run build",
+    "postinstall": "cd ./backend && npm install && cd ../client && npm install"
   },
   "keywords": [],
   "author": "",
