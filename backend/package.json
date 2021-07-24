@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "pt-server",
+  "name": "server",
   "version": "1.0.0",
   "description": "pt backend",
   "main": "server.js",
