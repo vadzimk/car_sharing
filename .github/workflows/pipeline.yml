@@ -16,12 +16,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.15.x'
-      - name: install root packages
+      - name: install root dependencies  # uses postinstall
         run: npm install
-      - name: install server packages
-        run: cd server && npm install
-      - name: install client packages
-        run: cd client && npm install
       - name: lint
         run: npm run lint
       - name: build

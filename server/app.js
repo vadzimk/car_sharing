@@ -2,29 +2,27 @@ import express from 'express';
 import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import cors from 'cors';
 import testRouter from './routes/testroute.js';
-// import {createProxyMiddleware} from 'http-proxy-middleware';
+import userRouter from './routes/userRouter.js';
+import middleware from './middleware.js';
 
 const app = express();
 
-// app.use('/api', createProxyMiddleware(
-//   {
-//     target: 'http://127.0.0.1:3001',
-//     changeOrigin: true,
-//   })
-// );
 
 app.use(cors());
 app.use(express.json());
-
+app.use(middleware.getTokenFromRequest);
+app.use(middleware.requestLogger);
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 
 app.use('/api', testRouter);
+app.use('/api/user', userRouter);
 
 // checks in ci pipeline if the app is running after deployment
 app.get('/api/health', (req, res) => {
