@@ -1,20 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import dateService from './services/date.js';
 
-function App() {
+import {BrowserRouter as Router} from 'react-router-dom';
+import {Container} from '@material-ui/core';
+import MenuAppBar from './MenuAppBar.js';
+
+const App = () => {
   const [date, setDate] = useState('');
-  useEffect(async() => {
+  useEffect(async () => {
     const date = await dateService();
     setDate(date);
-  },[]);
+  }, []);
 
 
   console.log('date', date);
   return (
-    <div>
-      {date}
-    </div>
+    <Router>
+      <Container>
+        <MenuAppBar/>
+      </Container>
+    </Router>
   );
-}
+};
 
 export default App;

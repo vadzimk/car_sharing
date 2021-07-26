@@ -1,53 +1,53 @@
-import pg from 'pg';
-
-const {Pool} = pg;
-import config from '../config.js';
-
-const options = config.db;
-
-const pool = new Pool(options);
-
-pool
-  .connect()
-  .then(() => console.log('connected to db'))
-  .catch((err) => console.error('connection error', err.stack));
-
-const db = {
-  async query(text, params) { /* params is array of arguments*/
-    const start = Date.now();
-    const res = pool.query(text, params);
-    const duration = Date.now() - start;
-    console.log('executed query', {text, duration, rows: res.rowCount});
-    return res;
-  },
-
-  async getClient() {
-    const client = await pool.connect();
-    const query = client.query;
-    const release = client.release;
-    // set a timeout of 5 seconds, after which we will log this client's last query
-    const timeout = setTimeout(() => {
-      console.error('A client has been checked out for more than 5 seconds!');
-      console.error(`The last executed query on this client was: ${client.lastQuery}`);
-    }, 5000);
-    // monkey patch the query method to keep track of the last query executed
-    client.query = (...args) => {
-      client.lastQuery = args;
-      return query.apply(client, args);
-    };
-    client.release = () => {
-      // clear our timeout
-      clearTimeout(timeout);
-      // set the methods back to their old un-monkey-patched version
-      client.query = query;
-      client.release = release;
-      return release.apply(client);
-    };
-    return client;
-  }
-};
-
-export default db;
-
-// TODO refactor the project structure
-// https://node-postgres.com/guides/project-structure
+// import pg from 'pg';
+//
+// const {Pool} = pg;
+// import config from '../config.js';
+//
+// const options = config.db;
+//
+// const pool = new Pool(options);
+//
+// pool
+//   .connect()
+//   .then(() => console.log('connected to db'))
+//   .catch((err) => console.error('connection error', err.stack));
+//
+// const db = {
+//   async query(text, params) { /* params is array of arguments*/
+//     const start = Date.now();
+//     const res = pool.query(text, params);
+//     const duration = Date.now() - start;
+//     console.log('executed query', {text, duration, rows: res.rowCount});
+//     return res;
+//   },
+//
+//   async getClient() {
+//     const client = await pool.connect();
+//     const query = client.query;
+//     const release = client.release;
+//     // set a timeout of 5 seconds, after which we will log this client's last query
+//     const timeout = setTimeout(() => {
+//       console.error('A client has been checked out for more than 5 seconds!');
+//       console.error(`The last executed query on this client was: ${client.lastQuery}`);
+//     }, 5000);
+//     // monkey patch the query method to keep track of the last query executed
+//     client.query = (...args) => {
+//       client.lastQuery = args;
+//       return query.apply(client, args);
+//     };
+//     client.release = () => {
+//       // clear our timeout
+//       clearTimeout(timeout);
+//       // set the methods back to their old un-monkey-patched version
+//       client.query = query;
+//       client.release = release;
+//       return release.apply(client);
+//     };
+//     return client;
+//   }
+// };
+//
+// export default db;
+//
+// //  refactor the project structure
+// // https://node-postgres.com/guides/project-structure
