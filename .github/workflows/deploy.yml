@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master # TODO change to master
+  pull_request:
+    branches: [ master ]  # TODO change to master
+    types: [ opened, synchronize ] #    will run on pull request
 
 jobs:
   deploy_to_heroku:

@@ -18,11 +18,9 @@ userRouter.post('/',
     const passwordhash = await bcrypt.hash(body.password, 10);
 
     try {
-      const client = await db.getClient();
       const text = 'insert into appuser (first_name, last_name, dl_number, dl_date, countryid, phone, email, passwordhash, ishost) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
       const values = [body.first_name, body.last_name, body.dl_number, body.dl_date, body.countryid, body.phone, body.email, passwordhash, body.ishost];
-      await client.query(text, values);
-      client.release();
+      await db.none(text, values);
       res.status(200).end();
     } catch (e) {
       res.status(400).json({error: e.message});
