@@ -3,9 +3,9 @@ import dateService from './services/date.js';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Container, ThemeProvider} from '@material-ui/core';
-import SignUp from './components/SignUp';
 import Header from './components/ui/Header.js';
 import theme from './Theme.js';
+import routes from './routes.js';
 
 const App = () => {
   const [date, setDate] = useState('');
@@ -21,11 +21,12 @@ const App = () => {
         <Container>
           <Header/>
           <Switch>
-            <Route exact path="/home" component={()=><div>Home</div>}/>
-            <Route exact path="/signup" component={SignUp}/>
-            <Route exact path="/listings" component={()=><div>Listings</div>}/>
-            <Route exact path="/reservations" component={()=><div>Reservations</div>}/>
-          
+            {
+              routes.map((item) => (
+                <Route exact path={item.path} component={item.component}
+                       key={item.label}/>
+              ))
+            }
           </Switch>
         </Container>
       </Router>

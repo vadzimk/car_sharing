@@ -7,18 +7,39 @@ import {
   Tab,
   IconButton,
   Button,
+  useTheme,
+  useMediaQuery,
+  SwipeableDrawer,
+  List,
+  ListItem,
+  ListItemText
 } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+
 import {makeStyles} from '@material-ui/styles';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
+import routes from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
   toolbarMargin: {
     ...theme.mixins.toolbar,
     marginBottom: '1em',
+    [theme.breakpoints.down('md')]:{
+      marginBottom: 0
+    },
+    [theme.breakpoints.down('xs')]:{
+      marginBottom: '-0.25em'
+    }
   },
   logo: {
     height: '5em',
+    [theme.breakpoints.down('md')]:{
+      height: '4em'
+    },
+    [theme.breakpoints.down('xs')]:{
+      height: '3.5em'
+    }
   },
   logoContainer: {
     padding: '0',
@@ -37,23 +58,82 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   iconButton: {
     marginLeft: '25px',
   },
+  drawerIconContainer: {
+    marginLeft: 'auto',
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
+  },
+  drawer:{
+  backgroundColor: theme.palette.primary.main
+  }
   
 }));
 
 export default function Header () {
+  // eslint-disable-next-line no-undef
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
+  
   const classes = useStyles();
   
-  const [value, setValue] = useState('/home');
+  const [location, setLocation] = useState('/');
   
   const {pathname} = useLocation();
   
   useEffect(() => {
-    setValue(pathname);
+    const newLocation = '/'.concat(pathname.split('/')[1]);
+    setLocation(newLocation);
   }, [pathname]);
   
+  const [openDrawer, setOpenDrawer] = useState(false);
+  
   const handleChange = (e, newValue) => {
-    setValue(newValue);
+    setLocation(newValue);
   };
+  const menu = (
+    <>
+      <Tabs value={location} onChange={handleChange}
+            className={classes.tabContainer}>
+        {
+          routes.map((item)=>(
+            <Tab label={item.label} component={Link} to={item.path} value={item.path}
+                 className={classes.tab} key={item.label}/>
+          ))
+        }
+      </Tabs>
+      <IconButton className={classes.iconButton}>
+        <ExitToAppOutlinedIcon/>
+      </IconButton>
+    </>
+  );
+  
+  const drawer = (
+    <>
+      <SwipeableDrawer disableBackdropTransition={!iOS} disableDiscovery={iOS}
+                       open={openDrawer} onClose={() => setOpenDrawer(false)} onOpen={() => setOpenDrawer(true)}
+                       classes={{paper: classes.drawer}}
+      >
+        <List disablePadding>
+        {
+          routes.map((item)=>(
+          <ListItem component={Link} to={item.path} divider button onClick={() => setOpenDrawer(false)} key={item.label}>
+            <ListItemText disableTypography>
+              {item.label}
+            </ListItemText>
+          </ListItem>
+          ))
+        }
+        </List>
+      </SwipeableDrawer>
+      <IconButton onClick={() => setOpenDrawer(!openDrawer)} disableRipple className={classes.drawerIconContainer}>
+        <MenuIcon/>
+      </IconButton>
+    </>
+  );
+  
   
   return (
     <>
@@ -62,18 +142,9 @@ export default function Header () {
           <Button component={Link} to="/home" className={classes.logoContainer} disableRipple>
             <img src={logo} alt="company logo" className={classes.logo}/>
           </Button>
-          <Tabs value={value} onChange={handleChange}
-            className={classes.tabContainer}>
-            <Tab label="Home" component={Link} to="/home" value="/home"
-              className={classes.tab}/>
-            <Tab label="Listings" component={Link} to="/listings"
-              value="/listings" className={classes.tab}/>
-            <Tab label="Reservations" component={Link} to="/reservations"
-              value="/reservations" className={classes.tab}/>
-          </Tabs>
-          <IconButton className={classes.iconButton}>
-            <ExitToAppOutlinedIcon/>
-          </IconButton>
+          {
+            matches ? drawer : menu
+          }
         </Toolbar>
       </AppBar>
       <div className={classes.toolbarMargin}/>
