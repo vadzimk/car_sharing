@@ -13,8 +13,14 @@ import {
   List,
   ListItem,
   ListItemText,
+  Divider
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+
+import {
+  Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon
+} from '@material-ui/icons';
 
 import {makeStyles} from '@material-ui/styles';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -66,6 +72,14 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   },
   drawer: {
     backgroundColor: theme.palette.primary.main,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-start',
   },
   drawerItem: {
     opacity: '0.7',
@@ -130,6 +144,10 @@ export default function Header () {
                        classes={{paper: classes.drawer}}
                        anchor="right"
       >
+        <div className={classes.drawerHeader} onClick={() => setOpenDrawer(false)}>
+            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </div>
+        <Divider />
         <List disablePadding>
           {
             routes.map((item) => (

@@ -6,6 +6,7 @@ import {Container, ThemeProvider} from '@material-ui/core';
 import Header from './components/ui/Header.js';
 import theme from './Theme.js';
 import routes from './routes.js';
+import Footer from './components/ui/Footer.js';
 
 const App = () => {
   const [date, setDate] = useState('');
@@ -29,6 +30,7 @@ const App = () => {
             }
           </Switch>
         </Container>
+        <Footer/>
       </Router>
     </ThemeProvider>
   );
