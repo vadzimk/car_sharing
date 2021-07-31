@@ -13,19 +13,19 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider
+  Divider,
 } from '@material-ui/core';
 
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons';
 
 import {makeStyles} from '@material-ui/styles';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
-import routes from '../../routes.js';
+import routes, {byLable} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
   toolbarMargin: {
@@ -86,13 +86,14 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   },
   drawerItemSelected: {
     opacity: 1,
+    // textDecoration: 'underline',
+    // textDecorationColor: theme.palette.secondary.main
   },
   drawerItemTextSelected: {
-    paddingBottom: '2px',
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.secondary.main,
+    borderBottomWidth: '2px',
   },
-
   
 }));
 
@@ -101,7 +102,7 @@ export default function Header () {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('md'));
+  const matches = useMediaQuery(theme.breakpoints.down('xs'));
   
   const classes = useStyles();
   
@@ -111,19 +112,22 @@ export default function Header () {
   const newLocation = '/'.concat(pathname.split('/')[1]);
   useEffect(() => {
     setLocation(newLocation);
-  }, [pathname]);
+  }, [newLocation]);
   
   const [openDrawer, setOpenDrawer] = useState(false);
   
   const handleChange = (e, newValue) => {
     setLocation(newValue);
   };
+  
+  const routesForHeader = routes.filter(
+    byLable(['Home', 'Listings', 'Reservations']));
   const menu = (
     <>
       <Tabs value={location} onChange={handleChange}
             className={classes.tabContainer}>
         {
-          routes.map((item) => (
+          routesForHeader.map((item) => (
             <Tab label={item.label} component={Link} to={item.path}
                  value={item.path}
                  className={classes.tab} key={item.label}/>
@@ -144,13 +148,14 @@ export default function Header () {
                        classes={{paper: classes.drawer}}
                        anchor="right"
       >
-        <div className={classes.drawerHeader} onClick={() => setOpenDrawer(false)}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        <div className={classes.drawerHeader}
+             onClick={() => setOpenDrawer(false)}>
+          {theme.direction === 'rtl' ? <ChevronLeftIcon/>:<ChevronRightIcon/>}
         </div>
-        <Divider />
+        <Divider/>
         <List disablePadding>
           {
-            routes.map((item) => (
+            routesForHeader.map((item) => (
               <ListItem component={Link} to={item.path} divider button
                         onClick={() => setOpenDrawer(false)}
                         key={item.label}
@@ -158,10 +163,11 @@ export default function Header () {
                         className={location === item.path ?
                           classes.drawerItemSelected:
                           classes.drawerItem}
+              
               >
                 <ListItemText disableTypography
-                              className={location === item.path &&
-                              classes.drawerItemTextSelected}>
+                              classes={location === item.path ?
+                                {root: classes.drawerItemTextSelected}:null}>
                   {item.label}
                 </ListItemText>
               </ListItem>
@@ -178,7 +184,7 @@ export default function Header () {
   
   return (
     <>
-      <AppBar position="absolute" >
+      <AppBar position="absolute">
         <Toolbar>
           <Button component={Link} to="/home" className={classes.logoContainer}
                   disableRipple>
