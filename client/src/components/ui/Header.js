@@ -102,7 +102,7 @@ export default function Header () {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  const matches = useMediaQuery(theme.breakpoints.down('xs'));
   
   const classes = useStyles();
   
@@ -121,7 +121,9 @@ export default function Header () {
   };
   
   const routesForHeader = routes.filter(
-    byLable(['Home', 'Listings', 'Reservations']));
+    byLable(['Home', 'Listings', 'Reservations']),
+  );
+  
   const menu = (
     <>
       <Tabs value={location} onChange={handleChange}

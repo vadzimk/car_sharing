@@ -3,7 +3,7 @@ import SignUp from './components/SignUp';
 
 const dummy = (content) => {
   return function NotImplemented () {
-    return <div>{content}</div>;
+    return <div style={{height: '550px'}}>{content}</div>;
   };
 };
 /**
