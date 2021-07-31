@@ -102,7 +102,7 @@ export default function Header () {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('xs'));
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
   
   const classes = useStyles();
   
@@ -186,7 +186,7 @@ export default function Header () {
     <>
       <AppBar position="absolute">
         <Toolbar>
-          <Button component={Link} to="/home" className={classes.logoContainer}
+          <Button component={Link} to="/" className={classes.logoContainer}
                   disableRipple>
             <img src={logo} alt="company logo" className={classes.logo}/>
           </Button>
