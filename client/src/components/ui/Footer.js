@@ -1,6 +1,7 @@
 import React from 'react';
-import {makeStyles, Grid} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import {GridContainer, GridItem} from './GridRenamed.js';
 import routes, {byLable} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({
@@ -29,8 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const GridContainer = (props) => <Grid container {...props}/>;
-const GridItem = (props) => <Grid item {...props}/>;
+
 
 const Footer = () => {
   const classes = useStyles();
