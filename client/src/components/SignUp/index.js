@@ -41,6 +41,7 @@ const SignUp = () => {
       'passwordConfirm': '',
       'ishost': '',
     };
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
     
     const validationSchema = yup.object().shape({
       first_name: yup.string().required('required'),
@@ -48,10 +49,12 @@ const SignUp = () => {
       dl_number: yup.string().required('required'),
       dl_date: yup.string().required('required'),
       countryid: yup.string().required('required'),
-      phone: yup.string().required('required'),
-      email: yup.string().required('required'),
-      password: yup.string().required('required'),
-      passwordConfirm: yup.string().required('required'),
+      phone: yup.string().matches(phoneRegExp).required('required'),
+      email: yup.string().email().required('required'),
+      password: yup.string().min(5).required('required'),
+      passwordConfirm: yup.string().
+        required('required').
+        oneOf([yup.ref('password')], 'passwords do not match'),
     });
     
     const onSubmit = () => {
