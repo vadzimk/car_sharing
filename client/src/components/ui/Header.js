@@ -126,7 +126,7 @@ export default function Header () {
   
   const menu = (
     <>
-      <Tabs value={location} onChange={handleChange}
+      <Tabs value={routesForHeader.map(r=>r.path).includes(location) ? location : false} onChange={handleChange}
             className={classes.tabContainer}>
         {
           routesForHeader.map((item) => (
