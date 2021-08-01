@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
       marginBottom: 0,
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: '-0.25em',
+      marginBottom: '-0.05em',
     },
   },
   logo: {
