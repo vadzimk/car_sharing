@@ -1,10 +1,10 @@
 import React from 'react';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Button, makeStyles, TextField, Typography} from '@material-ui/core';
+import {Button, makeStyles, TextField} from '@material-ui/core';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
-import AntSwitch from '../ui/AntSwitch.js';
 import {Form} from 'formik';
+import SwitchLabeled from '../ui/SwitchLabeled.js';
 
 const useStyles = makeStyles((theme) => ({
   switch: {
@@ -17,8 +17,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignupFields = (props) => {
-  console.dir('errors', props.errors);
   const classes = useStyles();
+  console.log('props', props);
+  console.log('errors', props.errors);
+  console.log('values', props.values);
   
   return (
     <Form onSubmit={props.handleSubmit}>
@@ -36,6 +38,7 @@ const SignupFields = (props) => {
             size="small"
             required
             autoFocus
+            value={props.values.first_name}
             error={Boolean(props.errors.first_name)}
             helperText={props.errors.first_name}
             onChange={props.handleChange}
@@ -48,7 +51,8 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.last_name}
+            value={props.values.last_name}
+            error={Boolean(props.errors.last_name)}
             helperText={props.errors.last_name}
             onChange={props.handleChange}
           />
@@ -60,7 +64,8 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.dl_number}
+            value={props.values.dl_number}
+            error={Boolean(props.errors.dl_number)}
             helperText={props.errors.dl_number}
             onChange={props.handleChange}
           />
@@ -70,20 +75,35 @@ const SignupFields = (props) => {
             label="Date of issue"
             name="dl_date"
             disableFuture
+            autoOk
+            variant="inline"
             required
             fullWidth
             size="small"
-            value={null}
+            value={props.values.dl_date}
             placeholder="dd/MM/yyyy"
             openTo="year"
             format="dd/MM/yyyy"
-            error={props.errors.first_name}
-            helperText={props.errors.first_name}
-            onChange={props.handleChange}
+            error={Boolean(props.errors.dl_date)}
+            helperText={props.errors.dl_date}
+            onChange={val => {
+              console.log('___', val);
+              props.setFieldValue('dl_date', val);
+            }}
+            onError={(err, val)=>{
+              console.log('err', err);
+              console.log('val', val);
+            }}
           />
         </GridItem>
         <GridItem>
-          <AutocompleteAsync label="Country"/> {/*TODO country chooser*/}
+          <AutocompleteAsync label="Country"
+                             name="country"
+                             value={props.values.country}
+                             error={Boolean(props.errors.country)}
+                             helperText={props.errors.country}
+                             setFieldValue={props.setFieldValue}
+          />
         </GridItem>
         <GridItem>
           <TextField
@@ -92,7 +112,8 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.phone}
+            value={props.values.phone}
+            error={Boolean(props.errors.phone)}
             helperText={props.errors.phone}
             onChange={props.handleChange}
           />
@@ -104,7 +125,8 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.email}
+            value={props.values.email}
+            error={Boolean(props.errors.email)}
             helperText={props.errors.email}
             onChange={props.handleChange}
           />
@@ -116,7 +138,8 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.password}
+            value={props.values.password}
+            error={Boolean(props.errors.password)}
             helperText={props.errors.password}
             onChange={props.handleChange}
           />
@@ -128,24 +151,20 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            error={props.errors.passwordConfirm}
+            value={props.values.passwordConfirm}
+            error={Boolean(props.errors.passwordConfirm)}
             helperText={props.errors.passwordConfirm}
             onChange={props.handleChange}
           />
         </GridItem>
         <GridItem
-          className={classes.switch}> {/* TODO change to regular switch - not painting well*/}
-          <Typography component="div">
-            <GridContainer component="label" alignItems="center" spacing={1}
-                           className={classes.switchLabel}>
-              <GridItem>As Guest</GridItem>
-              <GridItem>
-                <AntSwitch defaultChecked={false} onChange={props.handleChange}
-                           name="ishost"/>
-              </GridItem>
-              <GridItem>As Host</GridItem>
-            </GridContainer>
-          </Typography>
+          className={classes.switch}>
+          <SwitchLabeled
+            labelLeft="As Guest"
+            labelRight="As Host"
+            handleChange={props.handleChange}
+            value={props.values.ishost}
+          />
         </GridItem>
         <GridItem container justifyContent="flex-end">
           <Button

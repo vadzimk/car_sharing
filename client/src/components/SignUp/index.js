@@ -34,22 +34,23 @@ const SignUp = () => {
       'last_name': '',
       'dl_number': '',
       'dl_date': '',
-      'countryid': '',
+      'country': null,
       'phone': '',
       'email': '',
       'password': '',
       'passwordConfirm': '',
       'ishost': '',
     };
+    // https://www.sitepoint.com/community/t/phone-number-regular-expression-validation/2204
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
     
     const validationSchema = yup.object().shape({
       first_name: yup.string().required('required'),
       last_name: yup.string().required('required'),
       dl_number: yup.string().required('required'),
-      dl_date: yup.string().required('required'),
-      countryid: yup.string().required('required'),
-      phone: yup.string().matches(phoneRegExp).required('required'),
+      dl_date: yup.date().max(new Date(), 'invalid date').required('required').nullable(),
+      country: yup.object({name: yup.string().required('required')}).nullable(),
+      phone: yup.string().matches(phoneRegExp, 'invalid phone number').required('required'),
       email: yup.string().email().required('required'),
       password: yup.string().min(5).required('required'),
       passwordConfirm: yup.string().
@@ -58,7 +59,7 @@ const SignUp = () => {
     });
     
     const onSubmit = () => {
-    
+    // TODO handle submit to server
     };
     
     return (
