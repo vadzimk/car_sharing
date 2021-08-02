@@ -4,7 +4,14 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 
-const AutocompleteAsync = ({label, value, name, error, helperText, setFieldValue}) => {
+const AutocompleteAsync = ({
+  label,
+  value,
+  name,
+  error,
+  helperText,
+  setFieldValue,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
@@ -36,7 +43,6 @@ const AutocompleteAsync = ({label, value, name, error, helperText, setFieldValue
     }
   }, [open]);
   
-  
   return (
     <Autocomplete
       open={open}
@@ -46,13 +52,16 @@ const AutocompleteAsync = ({label, value, name, error, helperText, setFieldValue
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.name.toString().toLowerCase() === value.name?.toLowerCase()}
+      getOptionSelected={(option, value) => option.name.toString().
+        toLowerCase() === value.name?.toLowerCase()}
       getOptionLabel={(option) => option.name || ''}
       options={options}
       loading={loading}
       value={value}
       name={name}
-      onChange={(e, value) => setFieldValue('country', value)}
+      onChange={(e, value) =>
+        setFieldValue('country', value)
+      }
       renderInput={(params) => (
         <TextField
           {...params}

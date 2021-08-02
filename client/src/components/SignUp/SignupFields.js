@@ -1,7 +1,6 @@
 import React from 'react';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {Button, makeStyles, TextField} from '@material-ui/core';
-import {KeyboardDatePicker} from '@material-ui/pickers';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import SwitchLabeled from '../ui/SwitchLabeled.js';
@@ -18,9 +17,11 @@ const useStyles = makeStyles((theme) => ({
 
 const SignupFields = (props) => {
   const classes = useStyles();
-  console.log('props', props);
-  console.log('errors', props.errors);
-  console.log('values', props.values);
+  // TODO remove logs
+  // console.log('props', props);
+  // console.log('errors', props.errors);
+  // console.log('values', props.values);
+  // console.log('date in state', props.values.dl_date);
   
   return (
     <Form onSubmit={props.handleSubmit}>
@@ -37,7 +38,6 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
-            autoFocus
             value={props.values.first_name}
             error={Boolean(props.errors.first_name)}
             helperText={props.errors.first_name}
@@ -71,28 +71,21 @@ const SignupFields = (props) => {
           />
         </GridItem>
         <GridItem>
-          <KeyboardDatePicker
+          <TextField
             label="Date of issue"
             name="dl_date"
-            disableFuture
-            autoOk
-            variant="inline"
+            variant="standard"
+            type='date'
             required
             fullWidth
             size="small"
-            value={props.values.dl_date}
-            placeholder="dd/MM/yyyy"
-            openTo="year"
-            format="dd/MM/yyyy"
+            placeholder="mm/dd/yyyy"
+            InputLabelProps={{ shrink: true }}
+            value={props.values.dl_date || ''}
             error={Boolean(props.errors.dl_date)}
             helperText={props.errors.dl_date}
-            onChange={val => {
-              console.log('___', val);
-              props.setFieldValue('dl_date', val);
-            }}
-            onError={(err, val)=>{
-              console.log('err', err);
-              console.log('val', val);
+            onChange={event => {
+              props.setFieldValue('dl_date', event.target.value  || '');
             }}
           />
         </GridItem>

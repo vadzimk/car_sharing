@@ -31,12 +31,10 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   toolbarMargin: {
     ...theme.mixins.toolbar,
     marginBottom: '1em',
-    [theme.breakpoints.down('md')]: {
-      marginBottom: 0,
+    [theme.breakpoints.up('lg')]: {
+      marginBottom: '2em',
     },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: '-0.05em',
-    },
+
   },
   logo: {
     height: '5em',
