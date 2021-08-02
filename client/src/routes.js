@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/',
     label: 'Home',
-    component: dummy('Home, not implemented'),
+    component: SignUp,
   },
   {
     path: '/signup',
