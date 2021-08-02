@@ -48,9 +48,13 @@ const SignUp = () => {
       first_name: yup.string().required('required'),
       last_name: yup.string().required('required'),
       dl_number: yup.string().required('required'),
-      dl_date: yup.date().max(new Date(), 'invalid date').required('required').nullable(),
-      country: yup.object({name: yup.string().required('required')}).nullable(),
-      phone: yup.string().matches(phoneRegExp, 'invalid phone number').required('required'),
+      dl_date: yup.date().max(new Date(), 'date must be in the past').
+        required('required'),
+      country: yup.mixed().test('country', 'country is required',
+        async (value, testContext) => (value !== null && typeof value.name ===
+          'string')),
+      phone: yup.string().matches(phoneRegExp, 'invalid phone number').
+        required('required'),
       email: yup.string().email().required('required'),
       password: yup.string().min(5).required('required'),
       passwordConfirm: yup.string().
@@ -59,7 +63,7 @@ const SignUp = () => {
     });
     
     const onSubmit = () => {
-    // TODO handle submit to server
+      // TODO handle submit to server
     };
     
     return (

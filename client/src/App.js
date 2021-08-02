@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import dateService from './services/date.js';
+import React from 'react';
+// import dateService from './services/date.js';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Container, ThemeProvider} from '@material-ui/core';
@@ -11,13 +11,15 @@ import routes from './routes.js';
 import Footer from './components/ui/Footer.js';
 
 const App = () => {
-  const [date, setDate] = useState('');
-  useEffect(async () => {
-    const date = await dateService();
-    setDate(date);
-  }, []);
   
-  console.log('date', date);
+  // TODO remove date service
+  // const [date, setDate] = useState('');
+  // useEffect(async () => {
+  //   const date = await dateService();
+  //   setDate(date);
+  // }, []);
+  // console.log('date', date);
+  
   return (
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
