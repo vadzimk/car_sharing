@@ -3,12 +3,12 @@ import React from 'react';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Container, ThemeProvider} from '@material-ui/core';
-import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import Header from './components/ui/Header.js';
 import theme from './Theme.js';
 import routes from './routes.js';
 import Footer from './components/ui/Footer.js';
+import Notification from './components/ui/Notification.js';
+import {StateProvider, reducer, useStateValue} from './state';
 
 const App = () => {
   
@@ -20,25 +20,29 @@ const App = () => {
   // }, []);
   // console.log('date', date);
   
+  const [state,] = useStateValue();
+  
   return (
-    <ThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Router>
-        <Container>
-          <Header/>
-          <Switch>
-            {
-              routes.map((item) => (
-                <Route exact path={item.path} component={item.component}
-                       key={item.label}/>
-              ))
-            }
-          </Switch>
-        </Container>
-        <Footer/>
-      </Router>
-      </MuiPickersUtilsProvider>
-    </ThemeProvider>
+    <StateProvider reducer={reducer}>
+      <ThemeProvider theme={theme}>
+        <Notification/>
+        <Router>
+          <Container>
+            <Header/>
+            <Notification message={state.notification.message} severity={state.notification.severity}/>
+            <Switch>
+              {
+                routes.map((item) => (
+                  <Route exact path={item.path} component={item.component}
+                         key={item.label}/>
+                ))
+              }
+            </Switch>
+          </Container>
+          <Footer/>
+        </Router>
+      </ThemeProvider>
+    </StateProvider>
   );
 };
 

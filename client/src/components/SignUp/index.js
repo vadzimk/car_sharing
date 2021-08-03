@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, {useState} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Formik} from 'formik';
 import {
@@ -10,7 +10,8 @@ import {
 import * as yup from 'yup';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import SignupFields from './SignupFields.js';
-import userService from '../../services/user.js';
+import userService from '../../services/userSevice.js';
+import {useStateValue, actions} from '../../state';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -63,17 +64,21 @@ const SignUp = () => {
     });
     
     const history = useHistory();
+    const [, dispatch] = useStateValue();
+    
     const onSubmit = async (values, {resetForm}) => {
-      // TODO handle submit to server
       const newUser = {
         ...values,
         countryid: values.country.id,
       };
       delete newUser.country;
       const success = await userService.signUp(newUser);
-      if(success){
-      history.push('/');
+      if (success) {
+        history.push('/');
         resetForm(initialValues);
+        dispatch(actions.setNotification('You\'ve signed up', 'success'));
+      } else {
+        dispatch(actions.setNotification('Error occurred', 'error'));
       }
       
     };
