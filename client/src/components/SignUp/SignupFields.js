@@ -155,7 +155,8 @@ const SignupFields = (props) => {
           <SwitchLabeled
             labelLeft="As Guest"
             labelRight="As Host"
-            handleChange={props.handleChange}
+            name='ishost'
+            setFieldValue={props.setFieldValue}
             value={props.values.ishost}
           />
         </GridItem>
