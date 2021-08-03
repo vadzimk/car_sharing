@@ -5,9 +5,10 @@ import app from '../app.js';
 let token;
 const api = supertest(app);
 beforeAll(async () => {
-  const text = 'delete from appuser';
+  const text = 'delete from appuser where email=$1';
+  const values = ['walton03u_d512g@tahyu.com'];
   try{
-    await db.none(text);
+    await db.none(text, values);
   } catch (e){
     console.log(e);
   }

@@ -21,7 +21,7 @@ app.use(middleware.requestLogger);
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 
-app.use('/api', testRouter);
+app.use('/api/test', testRouter);
 app.use('/api/user', userRouter);
 
 // checks in ci pipeline if the app is running after deployment

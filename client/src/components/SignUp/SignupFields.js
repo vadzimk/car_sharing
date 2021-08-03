@@ -165,7 +165,7 @@ const SignupFields = (props) => {
             type="submit"
             color="secondary"
             variant="contained"
-            disabled={!props.dirty || !props.isValid}
+            // disabled={!props.dirty || !props.isValid}
           >
             Sign up
           </Button>

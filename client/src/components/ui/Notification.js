@@ -1,49 +1,44 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
+import React, {useEffect} from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default function PositionedSnackbar() {
-  const [state, setState] = React.useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
+// severity: error, warning, info, success
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+const Notification=({message, handleClose, severity})=> {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  console.log('notification', message);
   
-  const { vertical, horizontal, open } = state;
+  useEffect(()=>{
+    console.log('notification useEffect', message);
+    if(message){
+      setOpen(true);
+    }
+  },[message]);
   
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
-  };
-  
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
-  
-  const buttons = (
-    <React.Fragment>
-      <Button onClick={handleClick({ vertical: 'top', horizontal: 'center' })}>Top-Center</Button>
-      <Button onClick={handleClick({ vertical: 'top', horizontal: 'right' })}>Top-Right</Button>
-      <Button onClick={handleClick({ vertical: 'bottom', horizontal: 'right' })}>
-        Bottom-Right
-      </Button>
-      <Button onClick={handleClick({ vertical: 'bottom', horizontal: 'center' })}>
-        Bottom-Center
-      </Button>
-      <Button onClick={handleClick({ vertical: 'bottom', horizontal: 'left' })}>Bottom-Left</Button>
-      <Button onClick={handleClick({ vertical: 'top', horizontal: 'left' })}>Top-Left</Button>
-    </React.Fragment>
-  );
-  
+ 
   return (
-    <div>
-      {buttons}
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        message="I love snacks"
-        key={vertical + horizontal}
-      />
+    <div className={classes.root}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={()=>{handleClose(); setOpen(false);}} severity={severity}>
+          {message}
+        </Alert>
+      </Snackbar>
     </div>
   );
-}
+};
+
+export default Notification;
