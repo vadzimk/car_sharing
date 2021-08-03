@@ -20,7 +20,7 @@ describe('user ', () => {
     cy.get('[name=last_name]').type('last_test');
     cy.get('[name=dl_number]').type('dln_test');
     cy.get('[name=dl_date]').type('2000-12-30');
-    cy.get('[name=country]').click().findByText('Aruba').click();
+    cy.get('[name=country]').click().then(()=>cy.findByText('Aruba').click());
     cy.get('[name=phone]').type('12345678');
     cy.get('[name=email]').type('test@test.t');
     cy.get('[name=password]').type('00000');
