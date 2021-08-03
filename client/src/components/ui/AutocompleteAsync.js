@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from 'axios';
+import userService from '../../services/user.js';
 
 const AutocompleteAsync = ({
   label,
@@ -16,21 +16,18 @@ const AutocompleteAsync = ({
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   
-  React.useEffect(() => {
+  React.useEffect(async () => {
     let active = true;
     
     if (!loading) {
       return undefined;
     }
     
-    (async () => {
-      const response = await axios.get('/api/user/countries');
-      const countries = await response.data;
-      
-      if (active) {
-        setOptions(countries);
-      }
-    })();
+    const countries = await userService.getAllCountries();
+    
+    if (active) {
+      setOptions(countries);
+    }
     
     return () => {
       active = false;
@@ -60,7 +57,7 @@ const AutocompleteAsync = ({
       value={value}
       name={name}
       onChange={(e, value) =>
-        setFieldValue('country', value)
+        setFieldValue(name, value)
       }
       renderInput={(params) => (
         <TextField

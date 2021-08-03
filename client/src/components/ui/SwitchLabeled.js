@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SwitchLableled = ({labelLeft, labelRight, handleChange, value}) => {
+const SwitchLableled = ({labelLeft, labelRight, name, setFieldValue, value}) => {
   const classes = useStyles();
   
   return (
@@ -23,9 +23,11 @@ const SwitchLableled = ({labelLeft, labelRight, handleChange, value}) => {
         <GridItem>{labelLeft}</GridItem>
         <GridItem>
           <SwitchSecondary defaultChecked={false}
-                           name="ishost"
-                           onChange={handleChange}
+                           name={name}
                            value={value}
+                           onChange={(e) =>
+                             setFieldValue(name, e.target.checked)
+                           }
           />
         </GridItem>
         <GridItem>{labelRight}</GridItem>

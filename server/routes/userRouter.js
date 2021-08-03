@@ -5,7 +5,7 @@ import db from '../db/index.js';
 
 const userRouter = express.Router();
 
-userRouter.post('/',
+userRouter.post('/signup',
   async (req, res, next) => {
     const body = req.body;
     

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {Formik} from 'formik';
 import {
   makeStyles,
@@ -9,6 +10,7 @@ import {
 import * as yup from 'yup';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import SignupFields from './SignupFields.js';
+import userService from '../../services/user.js';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -27,8 +29,6 @@ const SignUp = () => {
     // const theme = useTheme();
     // const matches = useMediaQuery(theme.breakpoints.down('xs'));
     
-    const [countries, setCountries] = useState([]);
-    
     const initialValues = {
       'first_name': '',
       'last_name': '',
@@ -39,7 +39,7 @@ const SignUp = () => {
       'email': '',
       'password': '',
       'passwordConfirm': '',
-      'ishost': '',
+      'ishost': false,
     };
     // https://www.sitepoint.com/community/t/phone-number-regular-expression-validation/2204
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -62,8 +62,20 @@ const SignUp = () => {
         oneOf([yup.ref('password')], 'passwords do not match'),
     });
     
-    const onSubmit = () => {
+    const history = useHistory();
+    const onSubmit = async (values, {resetForm}) => {
       // TODO handle submit to server
+      const newUser = {
+        ...values,
+        countryid: values.country.id,
+      };
+      delete newUser.country;
+      const success = await userService.signUp(newUser);
+      if(success){
+      history.push('/');
+        resetForm(initialValues);
+      }
+      
     };
     
     return (
