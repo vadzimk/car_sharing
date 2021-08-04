@@ -14,13 +14,16 @@ testRouter.get('/date', async (req, res) => {
   
 });
 
-testRouter.delete('/reset-table/:tableName', async (req, res, next) => {
-  const tableName = req.params.tableName;
-  const key = req.body.key;
-  const value = req.body.value;
+testRouter.delete('/email', async (req, res, next) => {
+  const email = req.body.email;
+ 
   try {
-    const text = 'delete from $1 where $2=$3';
-    const values = [tableName, key, value];
+
+    const text = 'delete from "appuser" where email=$1';
+    const values = [email];
+  
+    console.log('testrouter delete', email);
+    
     await db.none(text, values);
     res.status(204).end();
   } catch (e) {
