@@ -1,15 +1,14 @@
 const requestLogger = (req, res, next) => {
-
+  
   if (process.env.NODE_ENV !== 'test9') {
-    console.log('Method', req.method);
-    console.log('Path', req.path);
+    // console.log('Method', req.method);
+    // console.log('Path', req.path);
     console.log('Body', req.body);
     console.log('--------');
   }
-
+  
   next();
 };
-
 
 // express error handler
 // execution order of middleware is the same as the order that they are loaded into express with app.use func
@@ -24,7 +23,7 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({error: 'missing or invalid token'});
   }
-
+  
   next(error);  // in all other situations passes the error to default express error handler
 };
 

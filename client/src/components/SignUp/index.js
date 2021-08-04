@@ -76,6 +76,7 @@ const SignUp = () => {
       if (success) {
         history.push('/');
         resetForm(initialValues);
+        // TODO check parameters to dispatch
         dispatch(actions.setNotification('You\'ve signed up', 'success'));
       } else {
         dispatch(actions.setNotification('Error occurred', 'error'));

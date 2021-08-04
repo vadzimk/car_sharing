@@ -1,11 +1,12 @@
 import express from 'express';
+import morgan from 'morgan';
 import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import cors from 'cors';
-import testRouter from './routes/testroute.js';
+import testRouter from './routes/testRouter.js';
 import userRouter from './routes/userRouter.js';
 import middleware from './middleware.js';
 
@@ -14,6 +15,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan(':method :url status::status'));
 app.use(middleware.getTokenFromRequest);
 app.use(middleware.requestLogger);
 

@@ -15,7 +15,6 @@ userRouter.post('/signup',
         json({error: 'password must be at least 3 characters long'});
     }
     
-    console.log('dl_number', body.dl_number);
     const passwordhash = await bcrypt.hash(body.password, 10);
     
     try {
@@ -43,9 +42,8 @@ userRouter.get('/countries', async (req, res, next) => {
   
   try {
     const text = 'select * from country';
-    const firstTen = await db.many(text);
-    console.dir('firstTen', firstTen);
-    res.status(200).json(firstTen);
+    const countries = await db.many(text);
+    res.status(200).json(countries);
   } catch (e) {
     res.status(400).json({error: e.message});
     return next(e);
