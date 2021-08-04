@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
+import {useStateValue} from '../../state';
 
 // severity: error, warning, info, success
-function Alert(props) {
+function Alert (props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
@@ -17,24 +18,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Notification=({message, handleClose, severity})=> {
+const Notification = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  console.log('notification', message);
+  const [{notification}] = useStateValue();
+  console.log('notification', notification.message);
   
-  useEffect(()=>{
-    console.log('notification useEffect', message);
-    if(message){
+  useEffect(() => {
+    console.log('notification useEffect', notification.message);
+    if (notification.message) {
       setOpen(true);
     }
-  },[message]);
+  }, [notification]);
   
- 
+  const onCloseAlert = () => {
+    if (typeof notification.handleClose === 'function') {
+      notification.handleClose();
+    }
+    setOpen(false);
+  };
+  
   return (
     <div className={classes.root}>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={()=>{handleClose(); setOpen(false);}} severity={severity}>
-          {message}
+      <Snackbar open={open}
+                autoHideDuration={typeof notification.handleClose ===
+                'function' ? null:6000} onClose={() => setOpen(false)}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+        <Alert onClose={onCloseAlert} severity={notification.severity}>
+          {notification.message}
         </Alert>
       </Snackbar>
     </div>

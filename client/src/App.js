@@ -11,21 +11,13 @@ import Notification from './components/ui/Notification.js';
 import {StateProvider, reducer, useStateValue} from './state';
 
 const App = () => {
-  
-  // TODO remove date service
-  // const [date, setDate] = useState('');
-  // useEffect(async () => {
-  //   const date = await dateService();
-  //   setDate(date);
-  // }, []);
-  // console.log('date', date);
+ 
   
   const [state,] = useStateValue();
   
   return (
     <StateProvider reducer={reducer}>
       <ThemeProvider theme={theme}>
-        <Notification/>
         <Router>
           <Container>
             <Header/>
