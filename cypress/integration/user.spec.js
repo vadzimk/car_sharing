@@ -33,7 +33,7 @@ describe('user', () => {
       });
     });
     // check notification on success
-    // cy.contains('You\'ve signed up');
+    cy.contains('You\'ve signed up');
     
   });
 });

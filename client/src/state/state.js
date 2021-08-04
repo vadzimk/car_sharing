@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useReducer} from 'react';
 
 const initialState = {
-  notification: {message: '', severity: 'info'},
+  notification: {message: '', severity: 'info', handleClose: null},
   
 };
 
