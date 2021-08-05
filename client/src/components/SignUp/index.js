@@ -18,11 +18,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: '3em',
     width: '20em',
   },
-  label: {
-    marginLeft: 0,
-    marginRight: '1em',
-  },
-  
 }));
 
 const SignUp = () => {
@@ -74,10 +69,9 @@ const SignUp = () => {
       delete newUser.country;
       const success = await userService.signUp(newUser);
       if (success) {
-        history.push('/');
         resetForm(initialValues);
-        // TODO check parameters to dispatch
         dispatch(actions.setNotification('You\'ve signed up', 'success'));
+        history.push('/login');
       } else {
         dispatch(actions.setNotification('Error occurred', 'error'));
       }

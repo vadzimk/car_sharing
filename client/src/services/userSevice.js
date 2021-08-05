@@ -23,5 +23,10 @@ const signUp = async (newUser) => {
   }
 };
 
-const userService = {getAllCountries, signUp};
+const login = async ()=>{
+  // TODO not implemented
+  return true;
+};
+
+const userService = {getAllCountries, signUp, login};
 export default userService;

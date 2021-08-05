@@ -1,5 +1,6 @@
 import React from 'react';
 import SignUp from './components/SignUp';
+import Login from  './components/Login';
 
 const dummy = (content) => {
   return function NotImplemented () {
@@ -23,6 +24,11 @@ const routes = [
     path: '/signup',
     label: 'Sign up',
     component: SignUp,
+  },
+  {
+    path: '/login',
+    label: 'Login',
+    component: Login,
   },
   {
     path: '/listings',
