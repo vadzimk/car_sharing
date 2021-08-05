@@ -6,7 +6,8 @@ const initOptions = {
   promiseLib: promise // overriding the default (ES6 Promise);
 };
 
-const pgp = pgPromise(initOptions);
+export const pgp = pgPromise(initOptions);
+
 
 const db = pgp(config.db); // database instance
 
