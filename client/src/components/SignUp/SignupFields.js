@@ -17,11 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 const SignupFields = (props) => {
   const classes = useStyles();
-  // TODO remove logs
-  // console.log('props', props);
-  // console.log('errors', props.errors);
-  // console.log('values', props.values);
-  // console.log('date in state', props.values.dl_date);
   
   return (
     <Form onSubmit={props.handleSubmit}>

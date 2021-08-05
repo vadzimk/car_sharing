@@ -7,7 +7,6 @@ testRouter.get('/date', async (req, res) => {
   try {
     const result = await db.one('SELECT NOW()');
     res.send(`current time ${result.now}`);
-    // res.send('hello from current time');
   } catch (err) {
     console.log(err.stack);
   }
@@ -21,8 +20,6 @@ testRouter.delete('/email', async (req, res, next) => {
 
     const text = 'delete from "appuser" where email=$1';
     const values = [email];
-  
-    console.log('testrouter delete', email);
     
     await db.none(text, values);
     res.status(204).end();

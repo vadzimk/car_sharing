@@ -22,7 +22,6 @@ const Notification = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [{notification}] = useStateValue();
-  console.log('notification', notification.message);
   
   useEffect(() => {
     console.log('notification useEffect', notification.message);
