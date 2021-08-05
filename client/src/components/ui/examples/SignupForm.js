@@ -1,3 +1,4 @@
+/* eslint-disable */
 // this is an example
 
 import React from 'react';

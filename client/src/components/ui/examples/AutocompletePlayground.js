@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable */
 
 // this is an example
 import React from 'react';

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable  */
 
 // this is an example
 import React from 'react';
