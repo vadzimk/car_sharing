@@ -34,6 +34,7 @@ describe('new user', () => {
       set('Authorization', `Bearer ${token}`).
       send(newUser).
       expect(200);
+    expect(response.body).not.toHaveProperty('error');
     
     // user in db
     const userFromDb = await db.one(
@@ -65,7 +66,6 @@ describe('new user', () => {
       send(newUser).
       expect(400);
     expect(response.body).toHaveProperty('error');
-    console.log('response in jest from invalid', response.body);
     
     // user in db
     const userFromDb = await db.one(
