@@ -85,14 +85,20 @@ userRouter.post('/login', async (req, res, next) => {
     const user = await db.one(text, values);
     const correct = await bcrypt.compare(validLogin.password,
       user.passwordhash);
+    
     if (!correct) {
-      res.status(401)  // unauthorized - invalid password
-        .json({error: 'invalid email or password'});
+      return res.status(401)  // unauthorized - invalid password
+        .json({error: 'invalid email or password'}).end();
     }
     
     // generate token for authorized user
-    const userForToken = {id: user.id, email: user.email, ishost: user.ishost, first_name: user.first_name };
-    const token = jwt.sign(userForToken, process.env.SECRET_KEY);
+    const userForToken = {
+      id: user.id,
+      email: user.email,
+      ishost: user.ishost,
+      first_name: user.first_name,
+    };
+    const token = jwt.sign(userForToken, process.env.JWT_KEY);
     res.status(200).send({
       token,
       first_name: user.first_name,

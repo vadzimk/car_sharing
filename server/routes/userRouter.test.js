@@ -20,24 +20,29 @@ const existingTestUser = {
   'email': 'walton03u_d512g@tahyu.com',
   'password': 'secret',
 };
+
 const createUser = async (newUser) => {
   return await api.post('/api/user/signup').
     set('Authorization', `Bearer ${token}`).
     send(newUser);
 };
 
+// cleanup function
 const deleteTestUser = async (user) => {
   const text = 'delete from appuser where email=$1';
   const values = [user.email];
   try {
     await db.none(text, values);
   } catch (e) {
-    console.log(e);
+    console.log('deleteTestUser error:', e);
   }
 };
+beforeAll(async ()=>{
+  await deleteTestUser(newTestUser);
+});
 
 describe('new user', () => {
-  beforeEach(async () => {
+  afterEach(async () => {
     await deleteTestUser(newTestUser);
   });
   
@@ -51,6 +56,7 @@ describe('new user', () => {
     const userFromDb = await db.one(
       'select * from appuser where email=$1 and dl_number=$2 and countryid=$3',
       [newTestUser.email, newTestUser.dl_number, newTestUser.countryid]);
+    
     expect(userFromDb).toMatchObject({
       'email': newTestUser.email,
       'dl_number': newTestUser.dl_number,
@@ -86,11 +92,25 @@ describe('new user', () => {
   
 });
 
-// describe('existing user', () => {
-//   test('login with valid credentials', async () => {
-//
-//   });
-// });
+describe('existing user', () => {
+  beforeAll(async()=>{
+    await createUser(newTestUser);
+  });
+  
+  test('can login with valid credentials', async () => {
+    const response = await api.post('/api/user/login')
+      .send(existingTestUser);
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('token');
+  });
+  
+  test('can not login with invalid credentials', async()=>{
+    const response = await api.post('/api/user/login')
+      .send({...existingTestUser, password: '123'});
+    expect(response.status).toBe(401);
+    expect(response.body).not.toHaveProperty('token');
+  });
+});
 
 afterAll(() => {
   db.$pool.end();
