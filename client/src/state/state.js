@@ -7,7 +7,8 @@ const initialState = {
 
 export const StateContext = createContext([
   initialState,
-  () => initialState,
+  // eslint-disable-next-line no-unused-vars
+  (action) => initialState,
 ]);
 
 export const StateProvider = ({
