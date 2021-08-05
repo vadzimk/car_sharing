@@ -1,3 +1,6 @@
+/**
+ * not using pg but using pg-promise
+ * */
 // import pg from 'pg';
 //
 // const {Pool} = pg;

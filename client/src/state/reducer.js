@@ -15,7 +15,6 @@ export const reducer = (state, action) => {
 };
 
 const setNotification = (message, severity) => {
-  console.log('setNotification message:', message);
   return {
     type: 'SET_NOTIFICATION',
     payload: {message, severity},
