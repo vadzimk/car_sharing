@@ -1,7 +1,7 @@
 import db from '../db/index.js';
 import supertest from 'supertest';
 import app from '../app.js';
-import {pgp} from '../db/index.js';
+import {pgp} from '../db';
 
 let token;
 const api = supertest(app);
@@ -37,7 +37,8 @@ const deleteTestUser = async (user) => {
     console.log('deleteTestUser error:', e);
   }
 };
-beforeAll(async ()=>{
+
+beforeAll(async () => {
   await deleteTestUser(newTestUser);
 });
 
@@ -49,13 +50,19 @@ describe('new user', () => {
   test('can be created when valid', async () => {
     
     const response = await createUser(newTestUser);
+    console.log('can be created when valid ERROR:', response.body.error);
     expect(response.status).toBe(200);
     expect(response.body).not.toHaveProperty('error');
     
     // user in db
-    const userFromDb = await db.one(
-      'select * from appuser where email=$1 and dl_number=$2 and countryid=$3',
-      [newTestUser.email, newTestUser.dl_number, newTestUser.countryid]);
+    let userFromDb;
+    try {
+      userFromDb = await db.one(
+        'select * from appuser where email=$1 and dl_number=$2 and countryid=$3',
+        [newTestUser.email, newTestUser.dl_number, newTestUser.countryid]);
+    } catch (e) {
+      console.log('can be created when valid ERROR from db:', e);
+    }
     
     expect(userFromDb).toMatchObject({
       'email': newTestUser.email,
@@ -93,25 +100,23 @@ describe('new user', () => {
 });
 
 describe('existing user', () => {
-  beforeAll(async()=>{
+  beforeAll(async () => {
     await createUser(newTestUser);
   });
   
   test('can login with valid credentials', async () => {
-    const response = await api.post('/api/user/login')
-      .send(existingTestUser);
+    const response = await api.post('/api/user/login').send(existingTestUser);
+    console.log('can login with valid credentials ERROR:', response.body.error);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('token');
   });
   
-  test('can not login with invalid credentials', async()=>{
-    const response = await api.post('/api/user/login')
-      .send({...existingTestUser, password: '123'});
+  test('can not login with invalid credentials', async () => {
+    const response = await api.post('/api/user/login').
+      send({...existingTestUser, password: '123'});
     expect(response.status).toBe(401);
     expect(response.body).not.toHaveProperty('token');
   });
 });
 
-afterAll(() => {
-  db.$pool.end();
-});
+afterAll(db.$pool.end);

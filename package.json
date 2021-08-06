@@ -19,7 +19,9 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^6.2.0",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "pg": "^8.7.1",
+    "pg-promise": "^10.11.0"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.0",
