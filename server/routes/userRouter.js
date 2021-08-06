@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import * as yup from 'yup';
 import jwt from 'jsonwebtoken';
 import db from '../db/index.js';
-import {pgp} from '../db';
+import {pgp} from '../db/index.js';
 
 const userRouter = express.Router();
 
