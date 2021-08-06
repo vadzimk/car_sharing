@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import * as yup from 'yup';
 import jwt from 'jsonwebtoken';
 import db from '../db/index.js';
-import {pgp} from '../db/index.js';
+import {pgp} from '../db';
 
 const userRouter = express.Router();
 
@@ -87,8 +87,10 @@ userRouter.post('/login', async (req, res, next) => {
       user.passwordhash);
     
     if (!correct) {
-      return res.status(401)  // unauthorized - invalid password
-        .json({error: 'invalid email or password'}).end();
+      res.status(401)  // unauthorized - invalid password
+        .json({error: 'invalid email or password'});
+      next();
+      return;
     }
     
     // generate token for authorized user
