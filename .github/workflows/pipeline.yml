@@ -25,10 +25,12 @@ jobs:
       - name: test
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
+          JWT_KEY: ${{secrets.JWT_KEY}}
         run: npm run test
       - name: e2e tests
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
+          JWT_KEY: ${{secrets.JWT_KEY}}
         uses: cypress-io/github-action@v2
         with:
           command: npm run test:e2e
