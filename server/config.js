@@ -19,18 +19,9 @@ const config = {
 
 
 
-// if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-//   config.db.user = process.env.DEV_DB_USER;
-//   config.db.host = process.env.DEV_DB_HOST;
-//   config.db.database = process.env.DEV_DB_DB;
-//   config.db.password = process.env.DEV_DB_PASSWORD;
-//   config.db.port = process.env.DEV_DB_PORT;
-// } else {
-//   config.db.connectionString = process.env.DATABASE_URL;
-//   config.db.ssl =  {
-//     rejectUnauthorized: false
-//   };
-// }
+if ((process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && ! process.env.GITHUB_ACTIONS) {
+  delete config.db.ssl;
+}
 
 
 export default config;
