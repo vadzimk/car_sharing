@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import userService from '../../services/userSevice.js';
+import {actions, useStateValue} from '../../state';
 
 const AutocompleteAsync = ({
   label,
@@ -15,7 +16,7 @@ const AutocompleteAsync = ({
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
-  
+  const [, dispatch] = useStateValue();
   React.useEffect(async () => {
     let active = true;
     
@@ -23,8 +24,10 @@ const AutocompleteAsync = ({
       return undefined;
     }
     
-    const countries = await userService.getAllCountries();
-    
+    const {data: countries, success} = await userService.getAllCountries();
+    if(!success){
+      dispatch(actions.setNotification('Service unavailable', 'error'));
+    }
     if (active) {
       setOptions(countries);
     }

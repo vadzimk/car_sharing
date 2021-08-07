@@ -8,12 +8,15 @@ import theme from './Theme.js';
 import routes from './routes.js';
 import Footer from './components/ui/Footer.js';
 import Notification from './components/ui/Notification.js';
-import {StateProvider, reducer, useStateValue} from './state';
+import {
+  StateProvider,
+  reducer,
+  // useStateValue
+} from './state';
 
 const App = () => {
- 
   
-  const [state,] = useStateValue();
+  // const [state,] = useStateValue();
   
   return (
     <StateProvider reducer={reducer}>
@@ -21,7 +24,7 @@ const App = () => {
         <Router>
           <Container>
             <Header/>
-            <Notification message={state.notification.message} severity={state.notification.severity}/>
+            <Notification/>
             <Switch>
               {
                 routes.map((item) => (

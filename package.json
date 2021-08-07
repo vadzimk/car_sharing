@@ -12,7 +12,9 @@
     "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run start\"",
     "lint": "cd ./server && npm run lint && cd ../client && npm run lint",
     "build": "cd ./client && npm run build",
-    "postinstall": "cd ./server && npm install && cd ../client && npm install"
+    "postinstall": "cd ./server && npm install && cd ../client && npm install",
+    "prepare": "husky install",
+    "e2e": "cypress open"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.0",
-    "cypress": "^7.7.0"
+    "cypress": "^7.7.0",
+    "husky": "^7.0.0"
   }
 }

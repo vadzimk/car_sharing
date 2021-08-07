@@ -67,13 +67,13 @@ const SignUp = () => {
         countryid: values.country.id,
       };
       delete newUser.country;
-      const success = await userService.signUp(newUser);
+      const {success, error} = await userService.signUp(newUser);
       if (success) {
         resetForm(initialValues);
         dispatch(actions.setNotification('You\'ve signed up', 'success'));
         history.push('/login');
       } else {
-        dispatch(actions.setNotification('Error occurred', 'error'));
+        dispatch(actions.setNotification(`Error: ${error}`, 'error'));
       }
       
     };

@@ -14,8 +14,8 @@ describe('user', () => {
     }));
   });
   
-  it('signup successfully', function() {
-    cy.visit('/');
+  it('can signup successfully', ()=> {
+    cy.visit('/signup');
     cy.get('[name=first_name]').type('first_test');
     cy.get('[name=last_name]').type('last_test');
     cy.get('[name=dl_number]').type('dln_test');
@@ -27,7 +27,7 @@ describe('user', () => {
     cy.get('[name=passwordConfirm]').type('00000');
     cy.get('[type=submit]').click();
     
-    cy.intercept('POST', '/', (req) => {
+    cy.intercept('POST', '/signup', (req) => {
       req.on('response', (res) => {
         expect(res.statusCode).to.be.eq(200);
       });
@@ -36,5 +36,21 @@ describe('user', () => {
     cy.contains('You\'ve signed up');
     
   });
+  
+  it('can login successfully', ()=>{
+    cy.visit('/login');
+    cy.get('[name=email]').type('test@test.t');
+    cy.get('[name=password]').type('00000');
+    cy.get('[type=submit]').click();
+  
+    cy.intercept('POST', '/login', (req) => {
+      req.on('response', (res) => {
+        expect(res.statusCode).to.be.eq(200);
+        expect(res.body).to.have.ownProperty('token')
+      });
+    });
+    // check notification on success
+    cy.contains('You are logged in');
+  })
 });
   
