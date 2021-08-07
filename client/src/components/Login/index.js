@@ -5,6 +5,9 @@ import {Formik} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {makeStyles, Typography} from '@material-ui/core';
 import LoginFields from './LoginFields.js';
+import userService from '../../services/userSevice.js';
+import {actions, useStateValue} from '../../state';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -27,9 +30,19 @@ const Login = () => {
     password: yup.string().required('required'),
   });
   
-  const onSubmit = async (values) => {
-    const success = await userService.login(values);
-    // TODO redirect to booking selection
+  const history = useHistory();
+  const [, dispatch] = useStateValue();
+  
+  const onSubmit = async (values, {resetForm}) => {
+    const {success, error, data} = await userService.login(values);
+    if (success) {
+      resetForm(initialValues);
+      dispatch(actions.setUser(data));
+      dispatch(actions.setNotification('You are logged in', 'success'));
+      history.push('/home');
+    } else {
+      dispatch(actions.setNotification(`Error: ${error}`, 'error'));
+    }
   };
   
   return (
