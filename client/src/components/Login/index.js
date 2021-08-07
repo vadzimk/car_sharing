@@ -39,7 +39,7 @@ const Login = () => {
       resetForm(initialValues);
       dispatch(actions.setUser(data));
       dispatch(actions.setNotification('You are logged in', 'success'));
-      history.push('/home');
+      history.push('/');
     } else {
       dispatch(actions.setNotification(`Error: ${error}`, 'error'));
     }
