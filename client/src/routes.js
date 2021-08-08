@@ -33,12 +33,14 @@ const routes = [
   {
     path: '/listings',
     label: 'Listings',
-    component: dummy('Listings, not implemented')
+    component: dummy('Listings, not implemented (ishost)'),
+    access: 'ishost'
   },
   {
     path: '/reservations',
     label: 'Reservations',
-    component: dummy('Reservations, not implemented')
+    component: dummy('Reservations, not implemented (ishost)'),
+    access: 'ishost'
   },
   {
     path: '/about',

@@ -11,6 +11,7 @@ import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import SignupFields from './SignupFields.js';
 import {useDispatch} from 'react-redux';
 import {signUpUser} from '../../reducers/userReducer.js';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -58,14 +59,15 @@ const SignUp = () => {
     });
     
     const dispatch = useDispatch();
-    
+    const history = useHistory();
     const onSubmit = async (values) => {
       const newUser = {
         ...values,
         countryid: values.country.id,
       };
       delete newUser.country;
-      dispatch(signUpUser(newUser));
+      dispatch( signUpUser(newUser, ()=>history.push('/login')));
+
     };
     
     return (

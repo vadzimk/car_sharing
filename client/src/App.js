@@ -1,5 +1,4 @@
-import React from 'react';
-// import dateService from './services/date.js';
+import React, {useEffect} from 'react';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Container, ThemeProvider} from '@material-ui/core';
@@ -8,10 +7,16 @@ import theme from './Theme.js';
 import routes from './routes.js';
 import Footer from './components/ui/Footer.js';
 import Notification from './components/ui/Notification.js';
+import {useDispatch} from 'react-redux';
+import {getUserFromStorage} from './reducers/userReducer.js';
 
 const App = () => {
   
+  const dispatch = useDispatch();
   
+  useEffect(()=>{
+    dispatch(getUserFromStorage());
+  });
   
   return (
       <ThemeProvider theme={theme}>
