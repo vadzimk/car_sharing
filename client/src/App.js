@@ -8,18 +8,12 @@ import theme from './Theme.js';
 import routes from './routes.js';
 import Footer from './components/ui/Footer.js';
 import Notification from './components/ui/Notification.js';
-import {
-  StateProvider,
-  reducer,
-  // useStateValue
-} from './state';
 
 const App = () => {
   
-  // const [state,] = useStateValue();
+  
   
   return (
-    <StateProvider reducer={reducer}>
       <ThemeProvider theme={theme}>
         <Router>
           <Container>
@@ -37,7 +31,6 @@ const App = () => {
           <Footer/>
         </Router>
       </ThemeProvider>
-    </StateProvider>
   );
 };
 

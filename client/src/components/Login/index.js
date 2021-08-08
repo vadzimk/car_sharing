@@ -5,9 +5,8 @@ import {Formik} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {makeStyles, Typography} from '@material-ui/core';
 import LoginFields from './LoginFields.js';
-import userService from '../../services/userSevice.js';
-import {actions, useStateValue} from '../../state';
-import {useHistory} from 'react-router-dom';
+import {loginUser} from '../../reducers/userReducer.js';
+import {useDispatch} from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -30,19 +29,10 @@ const Login = () => {
     password: yup.string().required('required'),
   });
   
-  const history = useHistory();
-  const [, dispatch] = useStateValue();
+  const dispatch = useDispatch();
   
-  const onSubmit = async (values, {resetForm}) => {
-    const {success, error, data} = await userService.login(values);
-    if (success) {
-      resetForm(initialValues);
-      dispatch(actions.setUser(data));
-      dispatch(actions.setNotification('You are logged in', 'success'));
-      history.push('/');
-    } else {
-      dispatch(actions.setNotification(`Error: ${error}`, 'error'));
-    }
+  const onSubmit = (values) => {
+    dispatch(loginUser(values));
   };
   
   return (
