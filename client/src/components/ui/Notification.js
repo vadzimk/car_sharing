@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {makeStyles} from '@material-ui/core/styles';
-import {useStateValue} from '../../state';
+import {useSelector} from 'react-redux';
 
 // severity: error, warning, info, success
 function Alert (props) {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const Notification = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [{notification}] = useStateValue();
+  const notification = useSelector(state => state.notification);
   
   useEffect(() => {
     console.log('notification useEffect', notification.message);

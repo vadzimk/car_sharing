@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 import {Formik} from 'formik';
 import {
   makeStyles,
@@ -10,8 +9,8 @@ import {
 import * as yup from 'yup';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import SignupFields from './SignupFields.js';
-import userService from '../../services/userSevice.js';
-import {useStateValue, actions} from '../../state';
+import {useDispatch} from 'react-redux';
+import {signUpUser} from '../../reducers/userReducer.js';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -47,7 +46,7 @@ const SignUp = () => {
       dl_date: yup.date().max(new Date(), 'date must be in the past').
         required('required'),
       country: yup.mixed().test('country', 'country is required',
-        async (value, testContext) => (value !== null && typeof value.name ===
+        async (value) => (value !== null && typeof value.name ===
           'string')),
       phone: yup.string().matches(phoneRegExp, 'invalid phone number').
         required('required'),
@@ -58,24 +57,15 @@ const SignUp = () => {
         oneOf([yup.ref('password')], 'passwords do not match'),
     });
     
-    const history = useHistory();
-    const [, dispatch] = useStateValue();
+    const dispatch = useDispatch();
     
-    const onSubmit = async (values, {resetForm}) => {
+    const onSubmit = async (values) => {
       const newUser = {
         ...values,
         countryid: values.country.id,
       };
       delete newUser.country;
-      const {success, error} = await userService.signUp(newUser);
-      if (success) {
-        resetForm(initialValues);
-        dispatch(actions.setNotification('You\'ve signed up', 'success'));
-        history.push('/login');
-      } else {
-        dispatch(actions.setNotification(`Error: ${error}`, 'error'));
-      }
-      
+      dispatch(signUpUser(newUser));
     };
     
     return (
@@ -93,7 +83,6 @@ const SignUp = () => {
                 onSubmit={onSubmit}
                 component={SignupFields}
               />
-            
             </GridItem>
           </GridContainer>
         </GridItem>

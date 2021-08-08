@@ -2,8 +2,8 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import userService from '../../services/userSevice.js';
-import {actions, useStateValue} from '../../state';
+import {getAllCountries} from '../../reducers/countriesReducer.js';
+import {useDispatch, useSelector} from 'react-redux';
 
 const AutocompleteAsync = ({
   label,
@@ -15,19 +15,20 @@ const AutocompleteAsync = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
+  
   const loading = open && options.length === 0;
-  const [, dispatch] = useStateValue();
-  React.useEffect(async () => {
+  const dispatch = useDispatch();
+  const countries = useSelector(state=>state.countries);
+  
+  React.useEffect( () => {
     let active = true;
     
     if (!loading) {
       return undefined;
     }
+    dispatch(getAllCountries());
     
-    const {data: countries, success} = await userService.getAllCountries();
-    if(!success){
-      dispatch(actions.setNotification('Service unavailable', 'error'));
-    }
+ 
     if (active) {
       setOptions(countries);
     }
@@ -35,7 +36,7 @@ const AutocompleteAsync = ({
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading, countries]);
   
   React.useEffect(() => {
     if (!open) {

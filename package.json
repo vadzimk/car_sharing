@@ -14,7 +14,8 @@
     "build": "cd ./client && npm run build",
     "postinstall": "cd ./server && npm install && cd ../client && npm install",
     "prepare": "husky install",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "test:silent": "cd ./server && npm run test -- --silent && cd ../client && npm run test -- --watchAll=false --silent"
   },
   "keywords": [],
   "author": "",
