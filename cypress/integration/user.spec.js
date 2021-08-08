@@ -37,6 +37,13 @@ describe('user', () => {
     
   });
   
+  it('redirects to /login after successful signup',()=>{
+    cy.location().should(loc=>{
+      expect(loc.pathname).to.eq('/login');
+    });
+    cy.contains('Login');
+  })
+  
   it('can login successfully', ()=>{
     cy.visit('/login');
     cy.get('[name=email]').type('test@test.t');

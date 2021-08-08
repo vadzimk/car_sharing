@@ -7,6 +7,7 @@ import {makeStyles, Typography} from '@material-ui/core';
 import LoginFields from './LoginFields.js';
 import {loginUser} from '../../reducers/userReducer.js';
 import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   column: {
@@ -30,9 +31,9 @@ const Login = () => {
   });
   
   const dispatch = useDispatch();
-  
+  const history = useHistory();
   const onSubmit = (values) => {
-    dispatch(loginUser(values));
+    dispatch(loginUser(values, ()=>history.push('/')));
   };
   
   return (
