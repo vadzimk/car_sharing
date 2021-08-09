@@ -3,7 +3,7 @@ import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {Button, makeStyles, TextField} from '@material-ui/core';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
-import SwitchLabeled from '../ui/SwitchLabeled.js';
+import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
 
 const useStyles = makeStyles((theme) => ({
   switch: {
@@ -90,7 +90,7 @@ const SignupFields = (props) => {
                              value={props.values.country}
                              error={Boolean(props.errors.country)}
                              helperText={props.errors.country}
-                             setFieldValue={props.setFieldValue}
+                             onChange={value=>props.setFieldValue('country', value)}
           />
         </GridItem>
         <GridItem>
@@ -126,6 +126,7 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
+            type="password"
             value={props.values.password}
             error={Boolean(props.errors.password)}
             helperText={props.errors.password}
@@ -139,6 +140,7 @@ const SignupFields = (props) => {
             fullWidth
             size="small"
             required
+            type="password"
             value={props.values.passwordConfirm}
             error={Boolean(props.errors.passwordConfirm)}
             helperText={props.errors.passwordConfirm}
@@ -147,12 +149,12 @@ const SignupFields = (props) => {
         </GridItem>
         <GridItem
           className={classes.switch}>
-          <SwitchLabeled
+          <SwitchLabeledSym
             labelLeft="As Guest"
             labelRight="As Host"
             name='ishost'
-            setFieldValue={props.setFieldValue}
             value={props.values.ishost}
+            onChange={value=>props.setFieldValue('ishost', value)}
           />
         </GridItem>
         <GridItem container justifyContent="flex-end">

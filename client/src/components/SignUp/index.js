@@ -1,28 +1,13 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import {Formik} from 'formik';
-import {
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-
 import * as yup from 'yup';
-import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import SignupFields from './SignupFields.js';
 import {useDispatch} from 'react-redux';
 import {signUpUser} from '../../reducers/userReducer.js';
 import {useHistory} from 'react-router-dom';
-
-const useStyles = makeStyles((theme) => ({
-  column: {
-    ...theme.custom.mainColumn,
-  },
-}));
+import FormContainer from '../ui/FormContainer.js';
 
 const SignUp = () => {
-    const classes = useStyles();
-    // const theme = useTheme();
-    // const matches = useMediaQuery(theme.breakpoints.down('xs'));
     
     const initialValues = {
       'first_name': '',
@@ -70,25 +55,14 @@ const SignUp = () => {
     };
     
     return (
-      <GridContainer direction="row" justifyContent="center">
-        <GridItem className={classes.column}> {/*single column*/}
-          <GridContainer direction="column" justifyContent="flex-start"
-                         spacing={1}>
-            <GridItem>
-              <Typography variant="h5">Sign up</Typography>
-            </GridItem>
-            <GridItem>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-                component={SignupFields}
-              />
-            </GridItem>
-          </GridContainer>
-        </GridItem>
-      </GridContainer>
-    
+      <FormContainer title="Sign up">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          component={SignupFields}
+        />
+      </FormContainer>
     );
   }
 ;

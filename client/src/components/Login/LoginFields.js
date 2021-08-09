@@ -33,6 +33,7 @@ const LoginFields = (props) => {
             fullWidth
             size="small"
             required
+            type="password"
             value={props.values.password}
             error={Boolean(props.errors.password)}
             helperText={props.errors.password}
