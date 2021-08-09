@@ -1,10 +1,11 @@
 import React from 'react';
 import SignUp from './components/SignUp';
 import Login from  './components/Login';
+import EditListing from './components/EditListing';
 
 const dummy = (content) => {
   return function NotImplemented () {
-    return <div style={{height: '550px'}}>{content}</div>;
+    return <div>{content}</div>;
   };
 };
 /**
@@ -91,6 +92,16 @@ const routes = [
     path: '/faq',
     label: 'FAQ',
     component: dummy('FAQ, not implemented')
+  },
+  {
+    path: '/edit-listing',
+    label: 'Edit listing',
+    component: EditListing
+  },
+  {
+    path: null,
+    label: '404',
+    component: dummy(<>404<br/>Not found</>)
   },
 
 ];

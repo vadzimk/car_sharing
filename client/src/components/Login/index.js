@@ -9,11 +9,9 @@ import {loginUser} from '../../reducers/userReducer.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   column: {
-    marginBottom: '3em',
-    width: '20em',
-    height: '35em',
+    ...theme.custom.mainColumn,
   },
 }));
 
@@ -33,7 +31,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values) => {
-    dispatch(loginUser(values, ()=>history.push('/')));
+    dispatch(loginUser(values, () => history.push('/')));
   };
   
   return (

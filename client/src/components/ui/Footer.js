@@ -8,8 +8,8 @@ const useStyles = makeStyles(theme => ({
   footer: {
     backgroundColor: theme.palette.primary.main,
     width: '100%',
-    margin: 0,
     height: 'auto',
+    flexShrink: 0,
   },
   mainContainer: {
     padding: '0.7em',
