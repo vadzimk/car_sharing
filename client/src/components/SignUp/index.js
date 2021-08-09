@@ -13,10 +13,9 @@ import {useDispatch} from 'react-redux';
 import {signUpUser} from '../../reducers/userReducer.js';
 import {useHistory} from 'react-router-dom';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   column: {
-    marginBottom: '3em',
-    width: '20em',
+    ...theme.custom.mainColumn,
   },
 }));
 
@@ -66,8 +65,8 @@ const SignUp = () => {
         countryid: values.country.id,
       };
       delete newUser.country;
-      dispatch( signUpUser(newUser, ()=>history.push('/login')));
-
+      dispatch(signUpUser(newUser, () => history.push('/login')));
+      
     };
     
     return (

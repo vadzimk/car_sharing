@@ -24,6 +24,13 @@ const theme = createTheme({
       fontSize: '1.1rem',
     },
   },
+  custom: {
+    mainColumn: {
+      marginBottom: '3em',
+      width: '20em',
+      minHeight: '35em',
+    },
+  },
 });
 
 export default theme;
