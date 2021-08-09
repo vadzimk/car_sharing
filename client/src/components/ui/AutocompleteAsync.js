@@ -11,7 +11,7 @@ const AutocompleteAsync = ({
   name,
   error,
   helperText,
-  setFieldValue,
+  onChange,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
@@ -61,7 +61,7 @@ const AutocompleteAsync = ({
       value={value}
       name={name}
       onChange={(e, value) =>
-        setFieldValue(name, value)
+        onChange(value)
       }
       renderInput={(params) => (
         <TextField

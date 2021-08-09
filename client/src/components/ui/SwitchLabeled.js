@@ -1,7 +1,26 @@
 import {GridContainer, GridItem} from './GridRenamed.js';
-import SwitchSecondary from './SwitchSecondary.js';
-import {makeStyles, Typography} from '@material-ui/core';
+import {
+  FormControlLabel,
+  makeStyles,
+  Switch,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 import React from 'react';
+
+export const SwitchSecondary = withStyles(theme => ({
+  switchBase: {
+    color: theme.palette.primary.main,
+    '&$checked + $track': {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
+  checked: {},
+  track: {},
+  thumb: {
+    color: theme.palette.primary.main,
+  },
+}))(Switch);
 
 const useStyles = makeStyles((theme) => ({
   switch: {
@@ -11,9 +30,18 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '0.5em',
     color: theme.palette.grey['800'],
   },
+  label:{
+    color: theme.palette.grey['800'],
+  }
 }));
 
-const SwitchLableled = ({labelLeft, labelRight, name, setFieldValue, value}) => {
+export const SwitchLabeledSym = ({
+  labelLeft,
+  labelRight,
+  name,
+  onChange,
+  value,
+}) => {
   const classes = useStyles();
   
   return (
@@ -26,7 +54,7 @@ const SwitchLableled = ({labelLeft, labelRight, name, setFieldValue, value}) => 
                            name={name}
                            value={value}
                            onChange={(e) =>
-                             setFieldValue(name, e.target.checked)
+                             onChange(e.target.checked)
                            }
           />
         </GridItem>
@@ -36,4 +64,20 @@ const SwitchLableled = ({labelLeft, labelRight, name, setFieldValue, value}) => 
   );
 };
 
-export default SwitchLableled;
+export const SwitchLabeled = (props) => {
+  const classes = useStyles();
+  
+  return (
+    <FormControlLabel
+      classes={{label: classes.label}}
+      control={
+        <SwitchSecondary
+          checked={props.checked}
+          onChange={(e) =>
+            props.onChange(e.target.checked)}
+        />
+      }
+      label={props.label}
+    />
+  );
+};
