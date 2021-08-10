@@ -2,11 +2,12 @@ import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {
-  Button,
+  Button, FormControl, FormHelperText,
   TextField,
 } from '@material-ui/core';
 import SelectField from '../ui/SelectField.js';
 import {SwitchLabeled} from '../ui/SwitchLabeled.js';
+import Previews from '../Dropzone';
 
 const EditListingFields = (props) => {
   
@@ -181,20 +182,19 @@ const EditListingFields = (props) => {
         </GridItem>
         
         {/*TODO add image upload*/}
+        <FormControl>
+          <Previews
+            name="previews"
+            handleError={props.handleError}
+          />
+          <FormHelperText>{props.errors.previews}</FormHelperText>
+        </FormControl>
         
         <GridItem container direction="row"
                   justifyContent="space-between"
                   alignItems="flex-end"
         >
-          <Button
-            type="submit"
-            color="secondary"
-            variant="contained"
-            size="small"
-            disabled={!props.dirty || !props.isValid}
-          >
-            Upload Image
-          </Button>
+          
           <Button
             type="submit"
             color="secondary"
