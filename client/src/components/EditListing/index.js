@@ -8,6 +8,8 @@ import EditListingFields from './EditListingFields.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {setNotification} from '../../reducers/notificationReducer.js';
+import {GridContainer, GridItem} from '../ui/GridRenamed.js';
+import {Typography} from '@material-ui/core';
 
 const EditListing = () => {
   
@@ -38,8 +40,10 @@ const EditListing = () => {
     
   };
   
-  return (
-    <FormContainer>
+  return (<>
+            <Typography variant="h5">Listing</Typography>
+    <GridContainer direction="row" justifyContent="center">
+      
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -51,7 +55,9 @@ const EditListing = () => {
           />
         }
       />
-    </FormContainer>
+      
+    </GridContainer>
+  </>
   );
 };
 

@@ -2,24 +2,25 @@ import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {
-  Button, FormControl, FormHelperText,
+  Button,
   TextField,
 } from '@material-ui/core';
 import SelectField from '../ui/SelectField.js';
 import {SwitchLabeled} from '../ui/SwitchLabeled.js';
-import Previews from '../Dropzone';
+import Dropzone from '../Dropzone';
 
 const EditListingFields = (props) => {
   
   return (
     <Form onSubmit={props.handleSubmit}>
       <GridContainer
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        spacing={1}
+        spacing={3}
       >
-        <GridItem>
+        <GridItem
+          style={{maxWidth: '40em'}}
+          xs={12}
+          sm={6}
+        >
           <TextField
             name="plate"
             label="Plate#"
@@ -31,8 +32,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.plate}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="make"
             label="Make"
@@ -44,8 +43,6 @@ const EditListingFields = (props) => {
             helperText={props.errors['make']}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="model"
             label="Model"
@@ -57,8 +54,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.model}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="year"
             label="Year"
@@ -77,8 +72,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.year}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem container direction="column" alignItems="stretch">
           <SelectField
             name="transmission"
             label="Transmission"
@@ -90,8 +83,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.transmission}
             onChange={(value) => props.setFieldValue('transmission', value)}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="seat_number"
             label="Seat#"
@@ -110,8 +101,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.seat_number}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="large_bags_number"
             label="Large Bags#"
@@ -130,8 +119,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.large_bags_number}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem container direction="column" alignItems="stretch">
           <SelectField
             name="category"
             label="Category"
@@ -150,8 +137,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.category}
             onChange={(value) => props.setFieldValue('category', value)}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="miles_per_rental"
             label="Miles/rental (unlimited : empty)"
@@ -169,8 +154,6 @@ const EditListingFields = (props) => {
             helperText={props.errors.miles_per_rental}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <SwitchLabeled
             name="active"
             label="Active"
@@ -179,42 +162,54 @@ const EditListingFields = (props) => {
               props.setFieldValue('active',
                 value)}
           />
-        </GridItem>
         
-        {/*TODO add image upload*/}
-        <FormControl>
-          <Previews
+        </GridItem>
+        <GridItem
+          style={{maxWidth: '50em'}}
+          xs={12}
+          sm={6}
+        >
+          <Dropzone
             name="previews"
             handleError={props.handleError}
           />
-          <FormHelperText>{props.errors.previews}</FormHelperText>
-        </FormControl>
-        
-        <GridItem container direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-end"
-        >
           
-          <Button
-            type="submit"
-            color="secondary"
-            variant="contained"
-            size="small"
-            disabled={!props.dirty || !props.isValid}
+          <GridItem
           >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            color="secondary"
-            variant="contained"
-            size="small"
-            disabled={!props.dirty || !props.isValid}
-          >
-            Submit
-          </Button>
+            <GridContainer
+              direction="row"
+              justifyContent="flex-end"
+              spacing={3}
+              style={{marginTop: '1em', marginBottom: '1em'}}
+            >
+            
+            <GridItem>
+              <Button
+                type="submit"
+                color="secondary"
+                variant="contained"
+                size="small"
+                disabled={!props.dirty || !props.isValid}
+              >
+                Cancel
+              </Button>
+            </GridItem>
+            <GridItem>
+              
+              <Button
+                type="submit"
+                color="secondary"
+                variant="contained"
+                size="small"
+                disabled={!props.dirty || !props.isValid}
+              >
+                Submit
+              </Button>
+            </GridItem>
+            </GridContainer>
+          </GridItem>
+        
         </GridItem>
-      
       </GridContainer>
     </Form>
   );

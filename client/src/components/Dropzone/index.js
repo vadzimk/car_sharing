@@ -4,6 +4,7 @@ import React, {useEffect, useState, useMemo} from 'react';
 import {useDropzone} from 'react-dropzone';
 import ClearIcon from '@material-ui/icons/Clear';
 import {makeStyles} from '@material-ui/styles';
+import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 
 const useStyles = makeStyles((theme) => ({
   baseStyle: {
@@ -12,14 +13,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
-    borderWidth: 2,
-    borderRadius: 2,
+    borderWidth: 3,
+    borderRadius: 3,
     borderColor: '#eeeeee',
     borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
+    backgroundColor: theme.palette.primary.main,
+    color: '#009688',
     outline: 'none',
     transition: 'border .24s ease-in-out',
+    width: '100%',
   },
   
   activeStyle: {
@@ -47,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   
   thumb: {
     display: 'inline-flex',
-    // display: 'inline-block',
     borderRadius: 2,
     border: '1px solid #eaeaea',
     marginBottom: '0.5em',
@@ -60,10 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   
   thumbInner: {
-    // display: 'flex',
-    // position: 'relative',
     overflow: 'hidden',
-    // display: 'inline-block',
     marginTop: 'auto',
     marginBottom: 'auto',
   },
@@ -85,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Previews ({handleError, ...props}) {
+function Dropzone ({handleError, ...props}) {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   
@@ -134,7 +132,7 @@ function Previews ({handleError, ...props}) {
   };
   
   const thumbs = files.map(file => (
-    <div className={classes.thumb} key={file.name}>
+    <GridItem className={classes.thumb} key={file.name}>
       <div className={classes.thumbInner}>
         <img
           src={file.preview}
@@ -147,7 +145,7 @@ function Previews ({handleError, ...props}) {
         classes={{root:classes.close}}
         size="small"
       />
-    </div>
+    </GridItem>
   ));
   
   useEffect(() => () => {
@@ -156,16 +154,16 @@ function Previews ({handleError, ...props}) {
   }, [files]);
   
   return (
-    <section>
-      <div {...getRootProps({className: dropzoneClassName})}>
+    <GridContainer style={{flexGrow:1}} >
+      <GridItem {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-      <aside className={classes.thumbsContainer}>
+      </GridItem>
+      <GridItem container direction="row" justifyContent="flex-start" className={classes.thumbsContainer}>
         {thumbs}
-      </aside>
-    </section>
+      </GridItem>
+    </GridContainer>
   );
 }
 
-export default Previews;
+export default Dropzone;
