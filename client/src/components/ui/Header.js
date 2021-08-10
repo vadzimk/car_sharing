@@ -94,7 +94,11 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.secondary.main,
     borderBottomWidth: '2px',
+    fontFamily: theme.custom.tab.fontFamily
   },
+  drawerItemText: {
+    fontFamily: theme.custom.tab.fontFamily
+  }
   
 }));
 
@@ -169,8 +173,9 @@ export default function Header () {
               
               >
                 <ListItemText disableTypography
-                              classes={location === item.path ?
-                                {root: classes.drawerItemTextSelected}:null}>
+                              classes={
+                                {root: location === item.path ? classes.drawerItemTextSelected : classes.drawerItemText}
+                              }>
                   {item.label}
                 </ListItemText>
               </ListItem>

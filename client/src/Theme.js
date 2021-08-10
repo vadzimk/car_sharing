@@ -1,6 +1,6 @@
 import {createTheme} from '@material-ui/core';
 
-// const defaultTheme = createTheme();
+const defaultTheme = createTheme();
 const myBlue = '#0b72b9';
 const myOrange = '#ffba60';
 
@@ -31,8 +31,31 @@ const theme = createTheme({
     hint: 'rgba(0, 0, 0, 0.38)'
     },
   typography: {
-    fontFamily: '"Comfortaa", "Roboto"',
-
+    fontFamily: 'Roboto',
+    h1: {
+     ...defaultTheme.typography.h1,
+      fontFamily: 'Comfortaa',
+    },
+    h2: {
+      ...defaultTheme.typography.h2,
+      fontFamily: 'Comfortaa',
+    },
+    h3: {
+      ...defaultTheme.typography.h3,
+      fontFamily: 'Comfortaa',
+    },
+    h4: {
+      ...defaultTheme.typography.h4,
+      fontFamily: 'Comfortaa',
+    },
+    h5: {
+      ...defaultTheme.typography.h5,
+      fontFamily: 'Comfortaa',
+    },
+    h6: {
+      ...defaultTheme.typography.h6,
+      fontFamily: 'Comfortaa',
+    },
   },
   custom: {
     mainColumn: {
