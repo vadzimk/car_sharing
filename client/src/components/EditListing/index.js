@@ -7,6 +7,7 @@ import {Formik} from 'formik';
 import EditListingFields from './EditListingFields.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {setNotification} from '../../reducers/notificationReducer.js';
 
 const EditListing = () => {
   
@@ -21,6 +22,7 @@ const EditListing = () => {
     category: '',
     miles_per_rental: '', // TODO add constraint in db
     active: '',
+    previews: null, // for showing helperText only
   };
   
   // TODO validation
@@ -32,8 +34,8 @@ const EditListing = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values) => {
-  //TODO submit
-  
+    //TODO submit
+    
   };
   
   return (
@@ -42,7 +44,12 @@ const EditListing = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        component={EditListingFields}
+        render={(formikProps) =>
+          <EditListingFields
+            {...formikProps}
+            handleError={(e)=>dispatch(setNotification(e, 'error', ()=>{}))}
+          />
+        }
       />
     </FormContainer>
   );
