@@ -64,6 +64,9 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   },
   iconButton: {
     marginLeft: '25px',
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
   },
   drawerIconContainer: {
     marginLeft: 'auto',
@@ -137,11 +140,17 @@ export default function Header () {
           routesForHeader.map((item) => (
             <Tab label={item.label} component={Link} to={item.path}
                  value={item.path}
-                 className={classes.tab} key={item.label}/>
+                 className={classes.tab} key={item.label}
+                 disableRipple
+            />
           ))
         }
       </Tabs>
-      <IconButton className={classes.iconButton}>
+      <IconButton
+        className={classes.iconButton}
+        disableRipple
+        disableFocusRipple
+      >
         <ExitToAppOutlinedIcon/>
       </IconButton>
     </>
@@ -170,6 +179,7 @@ export default function Header () {
                         className={location === item.path ?
                           classes.drawerItemSelected:
                           classes.drawerItem}
+                        disableRipple
               
               >
                 <ListItemText disableTypography
