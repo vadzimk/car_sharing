@@ -1,5 +1,6 @@
 import {GridContainer, GridItem} from './GridRenamed.js';
 import {
+  FormControl,
   FormControlLabel,
   makeStyles,
   Switch,
@@ -30,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '0.5em',
     color: theme.palette.grey['800'],
   },
-  label:{
+  label: {
     color: theme.palette.grey['800'],
-  }
+  },
 }));
 
 export const SwitchLabeledSym = ({
@@ -68,16 +69,21 @@ export const SwitchLabeled = (props) => {
   const classes = useStyles();
   
   return (
-    <FormControlLabel
-      classes={{label: classes.label}}
-      control={
-        <SwitchSecondary
-          checked={props.checked}
-          onChange={(e) =>
-            props.onChange(e.target.checked)}
-        />
-      }
-      label={props.label}
-    />
+    <FormControl
+    style={{width: '100%', marginTop: '16px'}}
+    >
+      <FormControlLabel
+        labelPlacement="end"
+        classes={{label: classes.label}}
+        control={
+          <SwitchSecondary
+            checked={props.checked}
+            onChange={(e) =>
+              props.onChange(e.target.checked)}
+          />
+        }
+        label={props.label}
+      />
+    </FormControl>
   );
 };

@@ -28,6 +28,9 @@ import logo from '../../assets/logo.png';
 import routes, {byLable} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
+  toolbar:{
+    backgroundColor:theme.palette.primary.light,
+  },
   toolbarMargin: {
     ...theme.mixins.toolbar,
     marginBottom: '1em',
@@ -55,7 +58,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     marginLeft: 'auto',
   },
   tab: {
-    ...theme.typography.tab,
+    ...theme.custom.tab,
     minWidth: '10px',
     marginLeft: '25px',
   },
@@ -69,7 +72,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     },
   },
   drawer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
   },
   drawerHeader: {
     display: 'flex',
@@ -185,7 +188,7 @@ export default function Header () {
   return (
     <>
       <AppBar position="absolute">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Button component={Link} to="/" className={classes.logoContainer}
                   disableRipple>
             <img src={logo} alt="company logo" className={classes.logo}/>
