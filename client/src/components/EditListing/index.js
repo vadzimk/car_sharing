@@ -41,23 +41,24 @@ const EditListing = () => {
   };
   
   return (<>
-            <Typography variant="h5">Listing</Typography>
-    <GridContainer direction="row" justifyContent="center">
+      <Typography variant="h5">Listing</Typography>
+      <GridContainer direction="row" justifyContent="center">
+        
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          render={(formikProps) =>
+            <EditListingFields
+              {...formikProps}
+              handleError={(e) => dispatch(setNotification(e, 'error', () => {
+              }))}
+            />
+          }
+        />
       
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        render={(formikProps) =>
-          <EditListingFields
-            {...formikProps}
-            handleError={(e)=>dispatch(setNotification(e, 'error', ()=>{}))}
-          />
-        }
-      />
-      
-    </GridContainer>
-  </>
+      </GridContainer>
+    </>
   );
 };
 
