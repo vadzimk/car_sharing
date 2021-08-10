@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#eeeeee',
     borderStyle: 'dashed',
     backgroundColor: theme.palette.primary.main,
-    color: '#009688',
+    color: theme.text.primary,
     outline: 'none',
     transition: 'border .24s ease-in-out',
     width: '100%',
@@ -157,7 +157,7 @@ function Dropzone ({handleError, ...props}) {
     <GridContainer style={{flexGrow:1}} >
       <GridItem {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag'n drop some files here, or click to select files</p>
       </GridItem>
       <GridItem container direction="row" justifyContent="flex-start" className={classes.thumbsContainer}>
         {thumbs}
