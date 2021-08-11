@@ -2,6 +2,8 @@ import React from 'react';
 import SignUp from './components/SignUp';
 import Login from  './components/Login';
 import EditListing from './components/EditListing';
+import Sandbox from './components/ui/Sandbox.js';
+import NotFound from './components/ui/NotFound.js';
 
 const dummy = (content) => {
   return function NotImplemented () {
@@ -81,7 +83,7 @@ const routes = [
   {
     path: '/list-your-car',
     label: 'List your car',
-    component: dummy('List your car, not implemented')
+    component: Sandbox,
   },
   {
     path: '/insurance',
@@ -101,7 +103,7 @@ const routes = [
   {
     path: null,
     label: '404',
-    component: dummy(<>404<br/>Not found</>)
+    component: NotFound
   },
 
 ];

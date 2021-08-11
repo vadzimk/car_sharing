@@ -4,6 +4,8 @@ const defaultTheme = createTheme();
 const myBlue = '#0b72b9';
 const myOrange = '#ffba60';
 
+// https://material.io/resources/color/#!/?view.left=1&view.right=1&primary.color=B0BEC5&secondary.color=00ACC1
+
 const theme = createTheme({
   palette: {
     common: {
@@ -11,17 +13,48 @@ const theme = createTheme({
       orange: myOrange,
     },
     primary: {
-      main: defaultTheme.palette.grey['300'],
+      light: '#e2f1f8',
+      main: '#b0bec5',
+      dark: '#808e95',
+      contrastText: '#000000'
     },
     secondary: {
-      main: '#3a919a',
+      light: '#5ddef4',
+      main: '#00acc1',
+      dark: '#007c91',
+      contrastText: '#000000'
     },
   },
+  text:{
+    primary: 'rgba(0, 0, 0, 0.85)',
+    disabled: 'rgba(0, 0, 0, 0.60)',
+    hint: 'rgba(0, 0, 0, 0.38)'
+    },
   typography: {
-    tab: {
-      fontFamily: 'Raleway',
-      textTransform: 'none',
-      fontSize: '1.1rem',
+    fontFamily: 'Roboto',
+    h1: {
+     ...defaultTheme.typography.h1,
+      fontFamily: 'Comfortaa',
+    },
+    h2: {
+      ...defaultTheme.typography.h2,
+      fontFamily: 'Comfortaa',
+    },
+    h3: {
+      ...defaultTheme.typography.h3,
+      fontFamily: 'Comfortaa',
+    },
+    h4: {
+      ...defaultTheme.typography.h4,
+      fontFamily: 'Comfortaa',
+    },
+    h5: {
+      ...defaultTheme.typography.h5,
+      fontFamily: 'Comfortaa',
+    },
+    h6: {
+      ...defaultTheme.typography.h6,
+      fontFamily: 'Comfortaa',
     },
   },
   custom: {
@@ -29,6 +62,11 @@ const theme = createTheme({
       marginBottom: '3em',
       width: '20em',
       minHeight: '35em',
+    },
+    tab: {
+      fontFamily: 'Comfortaa',
+      textTransform: 'none',
+      fontSize: '1.1rem',
     },
   },
 });

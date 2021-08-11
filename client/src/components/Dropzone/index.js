@@ -1,39 +1,39 @@
-/*eslint-disable*/
-
 import React, {useEffect, useState, useMemo} from 'react';
 import {useDropzone} from 'react-dropzone';
 import ClearIcon from '@material-ui/icons/Clear';
 import {makeStyles} from '@material-ui/styles';
+import {GridItem} from '../ui/GridRenamed.js';
 
 const useStyles = makeStyles((theme) => ({
   baseStyle: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
-    borderWidth: 2,
-    borderRadius: 2,
+    borderWidth: 3,
+    borderRadius: 3,
     borderColor: '#eeeeee',
     borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.text.primary,
     outline: 'none',
     transition: 'border .24s ease-in-out',
-  },
   
+  },
   activeStyle: {
     borderColor: '#2196f3',
   },
-  
   acceptStyle: {
     borderColor: '#00e676',
   },
-  
   rejectStyle: {
     borderColor: '#ff1744',
   },
-  
+  dropzoneContainer:{
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '30em'
+  },
   thumbsContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -44,35 +44,26 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  
   thumb: {
-    display: 'inline-flex',
-    // display: 'inline-block',
+    display: 'flex',
     borderRadius: 2,
     border: '1px solid #eaeaea',
     marginBottom: '0.5em',
     marginRight: '0.5em',
     width: `${(theme.custom.mainColumn.width.replace('em', '') -1) / 3 }em`,
-    height: 100,
+    height: 'auto',
     padding: 4,
     boxSizing: 'border-box',
     position: 'relative'
   },
-  
   thumbInner: {
-    // display: 'flex',
-    // position: 'relative',
-    overflow: 'hidden',
-    // display: 'inline-block',
     marginTop: 'auto',
     marginBottom: 'auto',
   },
-  
   img: {
     width: '100%',
     height: 'auto',
   },
-  
   close: {
     position: 'absolute',
     top: '-0.1em',
@@ -85,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Previews ({handleError, ...props}) {
+function Dropzone ({handleError}) {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   
@@ -134,7 +125,7 @@ function Previews ({handleError, ...props}) {
   };
   
   const thumbs = files.map(file => (
-    <div className={classes.thumb} key={file.name}>
+    <GridItem className={classes.thumb} key={file.name}>
       <div className={classes.thumbInner}>
         <img
           src={file.preview}
@@ -147,7 +138,7 @@ function Previews ({handleError, ...props}) {
         classes={{root:classes.close}}
         size="small"
       />
-    </div>
+    </GridItem>
   ));
   
   useEffect(() => () => {
@@ -156,16 +147,16 @@ function Previews ({handleError, ...props}) {
   }, [files]);
   
   return (
-    <section>
+    <div className={classes.dropzoneContainer} >
       <div {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag&#39n drop some files here, or click to select files</p>
       </div>
-      <aside className={classes.thumbsContainer}>
+      <div className={classes.thumbsContainer}>
         {thumbs}
-      </aside>
-    </section>
+      </div>
+    </div>
   );
 }
 
-export default Previews;
+export default Dropzone;

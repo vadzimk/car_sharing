@@ -15,11 +15,11 @@ const useStyles = makeStyles(theme => ({
     padding: '0.7em',
   },
   link: {
-    fontFamily: 'Arial',
-    fontSize: '0.75rem',
+    fontFamily: theme.typography.fontFamily,
+    fontSize: '0.8rem',
     fontWeight: 'bold',
     textDecoration: 'none',
-    color: 'black',
+    color: theme.text.primary,
   },
   girdColumn: {
     flexGrow: 1,

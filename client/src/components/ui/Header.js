@@ -28,6 +28,9 @@ import logo from '../../assets/logo.png';
 import routes, {byLable} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
+  toolbar:{
+    backgroundColor:theme.palette.primary.light,
+  },
   toolbarMargin: {
     ...theme.mixins.toolbar,
     marginBottom: '1em',
@@ -55,12 +58,15 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     marginLeft: 'auto',
   },
   tab: {
-    ...theme.typography.tab,
+    ...theme.custom.tab,
     minWidth: '10px',
     marginLeft: '25px',
   },
   iconButton: {
     marginLeft: '25px',
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
   },
   drawerIconContainer: {
     marginLeft: 'auto',
@@ -69,7 +75,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     },
   },
   drawer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
   },
   drawerHeader: {
     display: 'flex',
@@ -91,7 +97,11 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.secondary.main,
     borderBottomWidth: '2px',
+    fontFamily: theme.custom.tab.fontFamily
   },
+  drawerItemText: {
+    fontFamily: theme.custom.tab.fontFamily
+  }
   
 }));
 
@@ -130,11 +140,17 @@ export default function Header () {
           routesForHeader.map((item) => (
             <Tab label={item.label} component={Link} to={item.path}
                  value={item.path}
-                 className={classes.tab} key={item.label}/>
+                 className={classes.tab} key={item.label}
+                 disableRipple
+            />
           ))
         }
       </Tabs>
-      <IconButton className={classes.iconButton}>
+      <IconButton
+        className={classes.iconButton}
+        disableRipple
+        disableFocusRipple
+      >
         <ExitToAppOutlinedIcon/>
       </IconButton>
     </>
@@ -163,11 +179,13 @@ export default function Header () {
                         className={location === item.path ?
                           classes.drawerItemSelected:
                           classes.drawerItem}
+                        disableRipple
               
               >
                 <ListItemText disableTypography
-                              classes={location === item.path ?
-                                {root: classes.drawerItemTextSelected}:null}>
+                              classes={
+                                {root: location === item.path ? classes.drawerItemTextSelected : classes.drawerItemText}
+                              }>
                   {item.label}
                 </ListItemText>
               </ListItem>
@@ -185,7 +203,7 @@ export default function Header () {
   return (
     <>
       <AppBar position="absolute">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Button component={Link} to="/" className={classes.logoContainer}
                   disableRipple>
             <img src={logo} alt="company logo" className={classes.logo}/>
