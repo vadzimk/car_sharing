@@ -1,32 +1,31 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Button, makeStyles, TextField} from '@material-ui/core';
+import {Button, makeStyles, TextField, Typography} from '@material-ui/core';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
 
-const useStyles = makeStyles((theme) => ({
-  switch: {
-    height: '46px',
-  },
-  switchLabel: {
-    marginTop: '0.5em',
-    color: theme.palette.grey['800'],
-  },
-}));
-
 const SignupFields = (props) => {
-  const classes = useStyles();
   
   return (
     <Form onSubmit={props.handleSubmit}>
       <GridContainer
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        spacing={1}
+        spacing={3}
       >
-        <GridItem>
+        <GridItem
+          xs={12}
+        >
+          <Typography variant="h5">
+            {props.title}
+          </Typography>
+        </GridItem>
+        <GridItem
+          style={{maxWidth: '30em'}}
+          xs={12}
+          sm={6}
+        >
           <TextField
             name="first_name"
             label="First Name"
@@ -38,8 +37,6 @@ const SignupFields = (props) => {
             helperText={props.errors.first_name}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             label="Last Name"
             name="last_name"
@@ -51,8 +48,48 @@ const SignupFields = (props) => {
             helperText={props.errors.last_name}
             onChange={props.handleChange}
           />
+          
+          <TextField
+            label="Email"
+            name="email"
+            fullWidth
+            size="small"
+            required
+            value={props.values.email}
+            error={Boolean(props.errors.email)}
+            helperText={props.errors.email}
+            onChange={props.handleChange}
+          />
+          <TextField
+            label="Password"
+            name="password"
+            fullWidth
+            size="small"
+            required
+            type="password"
+            value={props.values.password}
+            error={Boolean(props.errors.password)}
+            helperText={props.errors.password}
+            onChange={props.handleChange}
+          />
+          <TextField
+            label="Confirm password"
+            name="passwordConfirm"
+            fullWidth
+            size="small"
+            required
+            type="password"
+            value={props.values.passwordConfirm}
+            error={Boolean(props.errors.passwordConfirm)}
+            helperText={props.errors.passwordConfirm}
+            onChange={props.handleChange}
+          />
         </GridItem>
-        <GridItem>
+        <GridItem
+          style={{maxWidth: '30em'}}
+          xs={12}
+          sm={6}
+        >
           <TextField
             label="Drivers license"
             name="dl_number"
@@ -64,8 +101,6 @@ const SignupFields = (props) => {
             helperText={props.errors.dl_number}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             label="Date of issue"
             name="dl_date"
@@ -83,8 +118,6 @@ const SignupFields = (props) => {
               props.setFieldValue('dl_date', event.target.value  || '');
             }}
           />
-        </GridItem>
-        <GridItem>
           <AutocompleteAsync label="Country"
                              name="country"
                              value={props.values.country}
@@ -92,8 +125,6 @@ const SignupFields = (props) => {
                              helperText={props.errors.country}
                              onChange={value=>props.setFieldValue('country', value)}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             label="Phone"
             name="phone"
@@ -105,50 +136,6 @@ const SignupFields = (props) => {
             helperText={props.errors.phone}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
-          <TextField
-            label="Email"
-            name="email"
-            fullWidth
-            size="small"
-            required
-            value={props.values.email}
-            error={Boolean(props.errors.email)}
-            helperText={props.errors.email}
-            onChange={props.handleChange}
-          />
-        </GridItem>
-        <GridItem>
-          <TextField
-            label="Password"
-            name="password"
-            fullWidth
-            size="small"
-            required
-            type="password"
-            value={props.values.password}
-            error={Boolean(props.errors.password)}
-            helperText={props.errors.password}
-            onChange={props.handleChange}
-          />
-        </GridItem>
-        <GridItem>
-          <TextField
-            label="Confirm password"
-            name="passwordConfirm"
-            fullWidth
-            size="small"
-            required
-            type="password"
-            value={props.values.passwordConfirm}
-            error={Boolean(props.errors.passwordConfirm)}
-            helperText={props.errors.passwordConfirm}
-            onChange={props.handleChange}
-          />
-        </GridItem>
-        <GridItem
-          className={classes.switch}>
           <SwitchLabeledSym
             labelLeft="As Guest"
             labelRight="As Host"
@@ -156,16 +143,24 @@ const SignupFields = (props) => {
             value={props.values.ishost}
             onChange={value=>props.setFieldValue('ishost', value)}
           />
-        </GridItem>
-        <GridItem container justifyContent="flex-end">
+          <GridContainer
+            direction="row"
+            justifyContent="flex-end"
+            spacing={3}
+            style={{marginTop: '1em', marginBottom: '1em'}}
+          >
+            <GridItem>
           <Button
             type="submit"
             color="secondary"
             variant="contained"
             disabled={!props.dirty || !props.isValid}
+            style={{alignContent:'flex-end'}}
           >
             Sign up
           </Button>
+            </GridItem>
+          </GridContainer>
         </GridItem>
       </GridContainer>
     </Form>

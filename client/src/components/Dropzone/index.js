@@ -1,14 +1,11 @@
-/*eslint-disable*/
-
 import React, {useEffect, useState, useMemo} from 'react';
 import {useDropzone} from 'react-dropzone';
 import ClearIcon from '@material-ui/icons/Clear';
 import {makeStyles} from '@material-ui/styles';
-import {GridContainer, GridItem} from '../ui/GridRenamed.js';
+import {GridItem} from '../ui/GridRenamed.js';
 
 const useStyles = makeStyles((theme) => ({
   baseStyle: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -21,21 +18,22 @@ const useStyles = makeStyles((theme) => ({
     color: theme.text.primary,
     outline: 'none',
     transition: 'border .24s ease-in-out',
-    width: '100%',
-  },
   
+  },
   activeStyle: {
     borderColor: '#2196f3',
   },
-  
   acceptStyle: {
     borderColor: '#00e676',
   },
-  
   rejectStyle: {
     borderColor: '#ff1744',
   },
-  
+  dropzoneContainer:{
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '30em'
+  },
   thumbsContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -46,31 +44,26 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  
   thumb: {
-    display: 'inline-flex',
+    display: 'flex',
     borderRadius: 2,
     border: '1px solid #eaeaea',
     marginBottom: '0.5em',
     marginRight: '0.5em',
     width: `${(theme.custom.mainColumn.width.replace('em', '') -1) / 3 }em`,
-    height: 100,
+    height: 'auto',
     padding: 4,
     boxSizing: 'border-box',
     position: 'relative'
   },
-  
   thumbInner: {
-    overflow: 'hidden',
     marginTop: 'auto',
     marginBottom: 'auto',
   },
-  
   img: {
     width: '100%',
     height: 'auto',
   },
-  
   close: {
     position: 'absolute',
     top: '-0.1em',
@@ -83,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dropzone ({handleError, ...props}) {
+function Dropzone ({handleError}) {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   
@@ -154,15 +147,15 @@ function Dropzone ({handleError, ...props}) {
   }, [files]);
   
   return (
-    <GridContainer style={{flexGrow:1}} >
-      <GridItem {...getRootProps({className: dropzoneClassName})}>
+    <div className={classes.dropzoneContainer} >
+      <div {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
-        <p>Drag'n drop some files here, or click to select files</p>
-      </GridItem>
-      <GridItem container direction="row" justifyContent="flex-start" className={classes.thumbsContainer}>
+        <p>Drag&#39n drop some files here, or click to select files</p>
+      </div>
+      <div className={classes.thumbsContainer}>
         {thumbs}
-      </GridItem>
-    </GridContainer>
+      </div>
+    </div>
   );
 }
 

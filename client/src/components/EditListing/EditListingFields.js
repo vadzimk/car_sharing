@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {
   Button,
-  TextField,
+  TextField, Typography,
 } from '@material-ui/core';
 import SelectField from '../ui/SelectField.js';
 import {SwitchLabeled} from '../ui/SwitchLabeled.js';
@@ -15,9 +16,18 @@ const EditListingFields = (props) => {
     <Form onSubmit={props.handleSubmit}>
       <GridContainer
         spacing={3}
+        style={{marginBottom: '3em'}}
+        // justifyContent="space-between"
       >
         <GridItem
-          style={{maxWidth: '40em'}}
+          xs={12}
+        >
+          <Typography variant="h5">
+            {props.title}
+          </Typography>
+        </GridItem>
+        <GridItem
+          style={{maxWidth: '30em'}}
           xs={12}
           sm={6}
         >
@@ -165,7 +175,7 @@ const EditListingFields = (props) => {
         
         </GridItem>
         <GridItem
-          style={{maxWidth: '50em'}}
+          style={{maxWidth: '30em'}}
           xs={12}
           sm={6}
         >

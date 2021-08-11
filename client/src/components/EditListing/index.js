@@ -2,14 +2,12 @@
 
 import React from 'react';
 import * as yup from 'yup';
-import FormContainer from '../ui/FormContainer.js';
 import {Formik} from 'formik';
 import EditListingFields from './EditListingFields.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {setNotification} from '../../reducers/notificationReducer.js';
-import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Typography} from '@material-ui/core';
+import {GridContainer} from '../ui/GridRenamed.js';
 
 const EditListing = () => {
   
@@ -41,21 +39,23 @@ const EditListing = () => {
   };
   
   return (<>
-      <Typography variant="h5">Listing</Typography>
       <GridContainer direction="row" justifyContent="center">
+        
         
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
-          render={(formikProps) =>
+        >
+          {(formikProps) =>
             <EditListingFields
               {...formikProps}
+              title="Listing"
               handleError={(e) => dispatch(setNotification(e, 'error', () => {
               }))}
             />
           }
-        />
+        </Formik>
       
       </GridContainer>
     </>
