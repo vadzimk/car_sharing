@@ -39,9 +39,15 @@ const EditListing = () => {
   };
   
   return (<>
-      <GridContainer direction="row" justifyContent="center">
-        
-        
+      <GridContainer
+        direction="row"
+        justifyContent="center"
+        style={{
+          height:'100%',
+          marginTop: 'auto',
+          marginBottom: 'auto'
+        }}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -51,7 +57,8 @@ const EditListing = () => {
             <EditListingFields
               {...formikProps}
               title="Listing"
-              handleError={(e) => dispatch(setNotification(e, 'error', () => {
+              handleError={(e) =>
+                dispatch(setNotification(e, 'error', () => {
               }))}
             />
           }

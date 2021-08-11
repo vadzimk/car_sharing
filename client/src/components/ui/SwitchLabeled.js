@@ -70,7 +70,10 @@ export const SwitchLabeled = (props) => {
   
   return (
     <FormControl
-    style={{width: '100%', marginTop: '16px'}}
+    style={{width: '100%',
+      marginTop: '16px',
+      marginBottom: '16px'
+    }}
     >
       <FormControlLabel
         labelPlacement="end"

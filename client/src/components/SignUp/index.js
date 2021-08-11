@@ -55,8 +55,15 @@ const SignUp = () => {
     };
     
     return (
-      <>
-        <GridContainer direction="row" justifyContent="center">
+        <GridContainer
+          direction="row"
+          justifyContent="center"
+          style={{
+            height:'100%',
+            marginTop: 'auto',
+            marginBottom: 'auto'
+          }}
+        >
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -69,7 +76,6 @@ const SignUp = () => {
             }
           </Formik>
         </GridContainer>
-      </>
     );
   }
 ;
