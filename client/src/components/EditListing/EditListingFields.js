@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
@@ -22,15 +21,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '5px',
     paddingBottom: '5px',
   },
-
-  hiddenTitle:{
+  
+  hiddenTitle: {
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
     [theme.breakpoints.only('sm')]: {
       display: 'none',
     },
-  }
+  },
 }));
 
 const EditListingFields = (props) => {
@@ -39,22 +38,15 @@ const EditListingFields = (props) => {
   return (
     <Form onSubmit={props.handleSubmit}
           style={{
+            marginTop: 'auto',
+            marginBottom: 'auto',
             width: '100%',
-            
           }}
     >
       <GridContainer
         style={{marginBottom: '3em'}}
         justifyContent="space-around" // TODO ???
       >
-        {/*<GridItem*/}
-        {/*  xs={12}*/}
-        {/*  className={classes.title}*/}
-        {/*>*/}
-        {/*  <Typography variant="h5">*/}
-        {/*    {props.title}*/}
-        {/*  </Typography>*/}
-        {/*</GridItem>*/}
         <GridItem
           className={classes.item}
           xs={12}
