@@ -2,12 +2,12 @@
 
 import React from 'react';
 import * as yup from 'yup';
-import FormContainer from '../ui/FormContainer.js';
 import {Formik} from 'formik';
 import EditListingFields from './EditListingFields.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {setNotification} from '../../reducers/notificationReducer.js';
+import {GridContainer} from '../ui/GridRenamed.js';
 
 const EditListing = () => {
   
@@ -38,20 +38,34 @@ const EditListing = () => {
     
   };
   
-  return (
-    <FormContainer>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        render={(formikProps) =>
-          <EditListingFields
-            {...formikProps}
-            handleError={(e)=>dispatch(setNotification(e, 'error', ()=>{}))}
-          />
-        }
-      />
-    </FormContainer>
+  return (<>
+      <GridContainer
+        direction="row"
+        justifyContent="center"
+        style={{
+          height:'100%',
+          marginTop: 'auto',
+          marginBottom: 'auto'
+        }}
+      >
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          {(formikProps) =>
+            <EditListingFields
+              {...formikProps}
+              title="Listing"
+              handleError={(e) =>
+                dispatch(setNotification(e, 'error', () => {
+              }))}
+            />
+          }
+        </Formik>
+      
+      </GridContainer>
+    </>
   );
 };
 

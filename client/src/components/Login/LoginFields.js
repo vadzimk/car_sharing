@@ -1,18 +1,27 @@
 import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Button, TextField} from '@material-ui/core';
+import {Button, TextField, Typography} from '@material-ui/core';
 
 const LoginFields = (props) => {
   
   return (
-    <Form onSubmit={props.handleSubmit}>
-      <GridContainer
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        spacing={1}
+    <Form onSubmit={props.handleSubmit}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+    >
+      <GridContainer direction="column"
+                     spacing={3}
+                     style={{maxWidth: '20em'}}
       >
+        <GridItem>
+          <Typography variant="h5">
+            {props.title}
+          </Typography>
+        </GridItem>
         <GridItem>
           <TextField
             name="email"
@@ -25,8 +34,6 @@ const LoginFields = (props) => {
             helperText={props.errors.email}
             onChange={props.handleChange}
           />
-        </GridItem>
-        <GridItem>
           <TextField
             name="password"
             label="password"

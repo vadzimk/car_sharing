@@ -5,30 +5,27 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  // makeStyles,
+  makeStyles,
 } from '@material-ui/core';
 
-// const useStyles = makeStyles((theme) => ({
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120,
-//   },
-//   selectEmpty: {
-//     marginTop: theme.spacing(2),
-//   },
-// }));
+const useStyles = makeStyles(() => ({
+formControl:{
+  width:'100%'
+}
+}));
 
 const SelectField = (props) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   
   return (
     <FormControl
-      // className={classes.formControl}
+      className={classes.formControl}
       error={props.error}
       size={props.size}
     >
       <InputLabel required={props.required}>{props.label}</InputLabel>
       <Select
+        className={classes.select}
         value={props.value}
         onChange={event => props.onChange(event.target.value)}
       >
