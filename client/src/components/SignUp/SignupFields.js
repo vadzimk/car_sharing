@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React from 'react';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {Button, makeStyles, TextField, Typography} from '@material-ui/core';
@@ -7,16 +5,27 @@ import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
 
-const useStyles=makeStyles(()=>({
-  title:{
+const useStyles = makeStyles((theme) => ({
+  item: {
     marginLeft: '1em',
-    marginRight: '1em'
+    marginRight: '1em',
+    maxWidth: '25em',
   },
- item:{
-   marginLeft: '1em',
-   marginRight: '1em',
-   maxWidth: '20em'
- }
+  title: {
+    marginLeft: '1em',
+    marginRight: '1em',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+  },
+  
+  hiddenTitle: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+    [theme.breakpoints.only('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 const SignupFields = (props) => {
   const classes = useStyles();
@@ -24,30 +33,23 @@ const SignupFields = (props) => {
   return (
     <Form onSubmit={props.handleSubmit}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            marginTop: 'auto',
+            marginBottom: 'auto',
+            width: '100%',
           }}
     >
       <GridContainer
-        // spacing={1}
         style={{marginBottom: '3em'}}
-        justifyContent="space-between" // TODO ???
-
+        justifyContent="space-around" // TODO ???
       >
         <GridItem
+          className={classes.item}
           xs={12}
-          className={classes.title}
+          sm={6}
         >
           <Typography variant="h5">
             {props.title}
           </Typography>
-        </GridItem>
-        <GridItem
-          xs={12}
-          sm={6}
-          className={classes.item}
-        >
           <TextField
             name="first_name"
             label="First Name"
@@ -110,8 +112,13 @@ const SignupFields = (props) => {
           xs={12}
           sm={6}
           className={classes.item}
-
+        
         >
+          <Typography variant="h5"
+                      className={`${classes.title} ${classes.hiddenTitle}`}
+          >
+            &zwnj;
+          </Typography>
           <TextField
             label="Drivers license"
             name="dl_number"
@@ -127,17 +134,17 @@ const SignupFields = (props) => {
             label="Date of issue"
             name="dl_date"
             variant="standard"
-            type='date'
+            type="date"
             required
             fullWidth
             size="small"
             placeholder="mm/dd/yyyy"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{shrink: true}}
             value={props.values.dl_date || ''}
             error={Boolean(props.errors.dl_date)}
             helperText={props.errors.dl_date}
             onChange={event => {
-              props.setFieldValue('dl_date', event.target.value  || '');
+              props.setFieldValue('dl_date', event.target.value || '');
             }}
           />
           <AutocompleteAsync label="Country"
@@ -145,7 +152,8 @@ const SignupFields = (props) => {
                              value={props.values.country}
                              error={Boolean(props.errors.country)}
                              helperText={props.errors.country}
-                             onChange={value=>props.setFieldValue('country', value)}
+                             onChange={value => props.setFieldValue('country',
+                               value)}
           />
           <TextField
             label="Phone"
@@ -161,9 +169,9 @@ const SignupFields = (props) => {
           <SwitchLabeledSym
             labelLeft="As Guest"
             labelRight="As Host"
-            name='ishost'
+            name="ishost"
             value={props.values.ishost}
-            onChange={value=>props.setFieldValue('ishost', value)}
+            onChange={value => props.setFieldValue('ishost', value)}
           />
           <GridContainer
             direction="row"
@@ -172,15 +180,15 @@ const SignupFields = (props) => {
             style={{marginTop: '1em', marginBottom: '1em'}}
           >
             <GridItem>
-          <Button
-            type="submit"
-            color="secondary"
-            variant="contained"
-            disabled={!props.dirty || !props.isValid}
-            style={{alignContent:'flex-end'}}
-          >
-            Sign up
-          </Button>
+              <Button
+                type="submit"
+                color="secondary"
+                variant="contained"
+                disabled={!props.dirty || !props.isValid}
+                style={{alignContent: 'flex-end'}}
+              >
+                Sign up
+              </Button>
             </GridItem>
           </GridContainer>
         </GridItem>
