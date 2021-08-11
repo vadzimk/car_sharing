@@ -111,7 +111,7 @@ const EditListingFields = (props) => {
             label="Transmission"
             required
             size="small"
-            options={['Automatic', 'Manual']}
+            options={props.options.transmissionOptions}
             value={props.values.transmission}
             error={Boolean(props.errors.transmission)}
             helperText={props.errors.transmission}
@@ -158,14 +158,7 @@ const EditListingFields = (props) => {
             label="Category"
             size="small"
             required
-            options={[
-              'Small',
-              'Medium',
-              'Large',
-              'Estate',
-              'Premium',
-              'Minivan',
-              'SUV']}
+            options={props.options.categoryOptions}
             value={props.values.category}
             error={Boolean(props.errors.category)}
             helperText={props.errors.category}
@@ -173,7 +166,7 @@ const EditListingFields = (props) => {
           />
           <TextField
             name="miles_per_rental"
-            label="Miles/rental (unlimited : empty)"
+            label="Miles/rental (empty - unlimited)"
             fullWidth
             size="small"
             type="number"
@@ -203,8 +196,9 @@ const EditListingFields = (props) => {
           xs={12}
           sm={6}
         >
-          <Typography variant="h5"
-                      className={`${classes.title} ${classes.hiddenTitle}`}
+          <Typography
+            variant="h5"
+            className={`${classes.title} ${classes.hiddenTitle}`}
           >
             &zwnj;
           </Typography>
