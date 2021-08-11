@@ -86,10 +86,10 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     justifyContent: 'flex-start',
   },
   drawerItem: {
-    opacity: '0.7',
+    // opacity: '0.7',
   },
   drawerItemSelected: {
-    opacity: 1,
+    fontWeight: 'bold',
     // textDecoration: 'underline',
     // textDecorationColor: theme.palette.secondary.main
   },
