@@ -5,7 +5,7 @@ import LoginFields from './LoginFields.js';
 import {loginUser} from '../../reducers/userReducer.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import FormContainer from '../ui/FormContainer.js';
+import {GridContainer} from '../ui/GridRenamed.js';
 
 const Login = () => {
   
@@ -26,14 +26,26 @@ const Login = () => {
   };
   
   return (
-    <FormContainer title={'Login'}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-              component={LoginFields}
-            />
-    </FormContainer>
+    <GridContainer
+      direction="row"
+      justifyContent="center"
+      style={{
+        height:'100%',
+        marginTop: 'auto',
+        marginBottom: 'auto'
+      }}
+    
+    >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {(formikProps) =>
+          <LoginFields {...formikProps} title="Login"/>
+        }
+      </Formik>
+    </GridContainer>
   );
 };
 

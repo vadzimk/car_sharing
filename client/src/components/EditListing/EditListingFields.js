@@ -3,34 +3,66 @@ import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {
-  Button,
+  Button, makeStyles,
   TextField, Typography,
 } from '@material-ui/core';
 import SelectField from '../ui/SelectField.js';
 import {SwitchLabeled} from '../ui/SwitchLabeled.js';
 import Dropzone from '../Dropzone';
 
+const useStyles = makeStyles((theme) => ({
+  item: {
+    marginLeft: '1em',
+    marginRight: '1em',
+    maxWidth: '25em',
+  },
+  title: {
+    marginLeft: '1em',
+    marginRight: '1em',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+  },
+
+  hiddenTitle:{
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+    [theme.breakpoints.only('sm')]: {
+      display: 'none',
+    },
+  }
+}));
+
 const EditListingFields = (props) => {
+  const classes = useStyles();
   
   return (
-    <Form onSubmit={props.handleSubmit}>
+    <Form onSubmit={props.handleSubmit}
+          style={{
+            width: '100%',
+            
+          }}
+    >
       <GridContainer
-        spacing={3}
         style={{marginBottom: '3em'}}
-        // justifyContent="space-between"
+        justifyContent="space-around" // TODO ???
       >
+        {/*<GridItem*/}
+        {/*  xs={12}*/}
+        {/*  className={classes.title}*/}
+        {/*>*/}
+        {/*  <Typography variant="h5">*/}
+        {/*    {props.title}*/}
+        {/*  </Typography>*/}
+        {/*</GridItem>*/}
         <GridItem
+          className={classes.item}
           xs={12}
+          sm={6}
         >
           <Typography variant="h5">
             {props.title}
           </Typography>
-        </GridItem>
-        <GridItem
-          style={{maxWidth: '30em'}}
-          xs={12}
-          sm={6}
-        >
           <TextField
             name="plate"
             label="Plate#"
@@ -175,10 +207,15 @@ const EditListingFields = (props) => {
         
         </GridItem>
         <GridItem
-          style={{maxWidth: '30em'}}
+          className={classes.item}
           xs={12}
           sm={6}
         >
+          <Typography variant="h5"
+                      className={`${classes.title} ${classes.hiddenTitle}`}
+          >
+            &zwnj;
+          </Typography>
           <Dropzone
             name="previews"
             handleError={props.handleError}
@@ -192,30 +229,30 @@ const EditListingFields = (props) => {
               spacing={3}
               style={{marginTop: '1em', marginBottom: '1em'}}
             >
-            
-            <GridItem>
-              <Button
-                type="submit"
-                color="secondary"
-                variant="contained"
-                size="small"
-                disabled={!props.dirty || !props.isValid}
-              >
-                Cancel
-              </Button>
-            </GridItem>
-            <GridItem>
               
-              <Button
-                type="submit"
-                color="secondary"
-                variant="contained"
-                size="small"
-                disabled={!props.dirty || !props.isValid}
-              >
-                Submit
-              </Button>
-            </GridItem>
+              <GridItem>
+                <Button
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+                  size="small"
+                  disabled={!props.dirty || !props.isValid}
+                >
+                  Cancel
+                </Button>
+              </GridItem>
+              <GridItem>
+                
+                <Button
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+                  size="small"
+                  disabled={!props.dirty || !props.isValid}
+                >
+                  Submit
+                </Button>
+              </GridItem>
             </GridContainer>
           </GridItem>
         

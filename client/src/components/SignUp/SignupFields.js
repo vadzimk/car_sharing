@@ -7,24 +7,46 @@ import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
 
+const useStyles=makeStyles(()=>({
+  title:{
+    marginLeft: '1em',
+    marginRight: '1em'
+  },
+ item:{
+   marginLeft: '1em',
+   marginRight: '1em',
+   maxWidth: '20em'
+ }
+}));
 const SignupFields = (props) => {
+  const classes = useStyles();
   
   return (
-    <Form onSubmit={props.handleSubmit}>
+    <Form onSubmit={props.handleSubmit}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+    >
       <GridContainer
-        spacing={3}
+        // spacing={1}
+        style={{marginBottom: '3em'}}
+        justifyContent="space-between" // TODO ???
+
       >
         <GridItem
           xs={12}
+          className={classes.title}
         >
           <Typography variant="h5">
             {props.title}
           </Typography>
         </GridItem>
         <GridItem
-          style={{maxWidth: '30em'}}
           xs={12}
           sm={6}
+          className={classes.item}
         >
           <TextField
             name="first_name"
@@ -48,7 +70,6 @@ const SignupFields = (props) => {
             helperText={props.errors.last_name}
             onChange={props.handleChange}
           />
-          
           <TextField
             label="Email"
             name="email"
@@ -86,9 +107,10 @@ const SignupFields = (props) => {
           />
         </GridItem>
         <GridItem
-          style={{maxWidth: '30em'}}
           xs={12}
           sm={6}
+          className={classes.item}
+
         >
           <TextField
             label="Drivers license"
