@@ -2,7 +2,7 @@
 
 import express from 'express';
 import yup from 'yup';
-import db from '../db';
+import db from '../db/index.js';
 import jwt from 'jsonwebtoken';
 
 const listingRouter = express.Router();
