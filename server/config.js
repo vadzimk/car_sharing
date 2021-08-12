@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
+  node_env: process.env.NODE_ENV,
   PORT: process.env.PORT || 3001,
   db: {
     connectionString: process.env.DATABASE_URL,
