@@ -6,9 +6,10 @@ import {fileURLToPath} from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import cors from 'cors';
+import middleware from './middleware.js';
 import testRouter from './routes/testRouter.js';
 import userRouter from './routes/userRouter.js';
-import middleware from './middleware.js';
+import listingRouter from './routes/listingRouter.js';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.use('/api/test', testRouter);
 app.use('/api/user', userRouter);
+app.use('/api/listing', listingRouter);
 
 // checks in ci pipeline if the app is running after deployment
 app.get('/api/health', (req, res) => {
