@@ -1,17 +1,7 @@
 describe('user', () => {
   before(() => {
-    cy.request({
-        method: 'DELETE',
-        url: `${Cypress.config().baseUrl}/api/test/email`,
-        body: {
-          email: 'test@test.t',
-        },
-        failOnStatusCode: false,
-      },
-    ).then((res => {
-      // expect(res.status).to.be.oneOf([204, 404]);
-      expect(res.status).to.equal(204);
-    }));
+    cy.task('deleteAppuser', 'test@test.t').
+      then(result => expect(result).to.be.true);
   });
   
   it('can signup successfully', ()=> {

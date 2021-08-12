@@ -22,13 +22,27 @@ const EditListing = () => {
     category: '',
     miles_per_rental: '', // TODO add constraint in db
     active: '',
-    previews: null, // for showing helperText only
   };
+  const transmissionOptions = ['Automatic', 'Manual'];
+  const categoryOptions = [
+    'Small',
+    'Medium',
+    'Large',
+    'Estate',
+    'Premium',
+    'Minivan',
+    'SUV'];
   
-  // TODO validation
   const validationSchema = yup.object().shape({
-    email: yup.string().email().required('required'),
-    password: yup.string().required('required'),
+    plate: yup.string().required('required'),
+    make: yup.string().required('required'),
+    model: yup.string().required('required'),
+    year: yup.number().min(1900, 'too old').max(new Date().getFullYear(), 'cannot be greater than current year').required('required'),
+    transmission: yup.string().oneOf(transmissionOptions, 'not one of the options').required('required'),
+    seat_number: yup.number().min(1).max(100).required('required'),
+    large_bags_number: yup.number().min(0).max(100).required('required'),
+    category: yup.string().oneOf(categoryOptions, 'not one of the options').required('required'),
+    miles_per_rental: yup.number().min(1),
   });
   
   const dispatch = useDispatch();
@@ -57,6 +71,7 @@ const EditListing = () => {
             <EditListingFields
               {...formikProps}
               title="Listing"
+              options={{transmissionOptions, categoryOptions}}
               handleError={(e) =>
                 dispatch(setNotification(e, 'error', () => {
               }))}

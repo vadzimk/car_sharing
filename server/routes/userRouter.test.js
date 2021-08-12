@@ -2,41 +2,10 @@ import db from '../db/index.js';
 import supertest from 'supertest';
 import app from '../app.js';
 import {pgp} from '../db';
+import {newTestUser, deleteTestUser, createUser, existingTestUser} from './testHelpers.js';
 
 let token;
 const api = supertest(app);
-const newTestUser = {
-  'first_name': 'First',
-  'last_name': 'Last',
-  'dl_number': '9999',
-  'dl_date': '2000-12-31',
-  'countryid': 247,
-  'phone': '123456789',
-  'email': 'walton03u_d512g@tahyu.com',
-  'password': 'secret',
-  'ishost': 'false',
-};
-const existingTestUser = {
-  'email': 'walton03u_d512g@tahyu.com',
-  'password': 'secret',
-};
-
-const createUser = async (newUser) => {
-  return await api.post('/api/user/signup').
-    set('Authorization', `Bearer ${token}`).
-    send(newUser);
-};
-
-// cleanup function
-const deleteTestUser = async (user) => {
-  const text = 'delete from appuser where email=$1';
-  const values = [user.email];
-  try {
-    await db.none(text, values);
-  } catch (e) {
-    console.log('deleteTestUser error:', e);
-  }
-};
 
 beforeAll(async () => {
   await deleteTestUser(newTestUser);
@@ -106,7 +75,7 @@ describe('existing user', () => {
   
   test('can login with valid credentials', async () => {
     const response = await api.post('/api/user/login').send(existingTestUser);
-    console.log('can login with valid credentials ERROR:', response.body.error);
+    // console.log('can login with valid credentials TOKEN:', response.body.token);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('token');
   });
@@ -116,6 +85,10 @@ describe('existing user', () => {
       send({...existingTestUser, password: '123'});
     expect(response.status).toBe(401);
     expect(response.body).not.toHaveProperty('token');
+  });
+  
+  afterAll(async ()=>{
+    await deleteTestUser(existingTestUser);
   });
 });
 
