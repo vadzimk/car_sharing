@@ -13,20 +13,20 @@ testRouter.get('/date', async (req, res) => {
   
 });
 
-testRouter.delete('/email', async (req, res, next) => {
-  const email = req.body.email;
- 
-  try {
-
-    const text = 'delete from "appuser" where email=$1';
-    const values = [email];
-    
-    await db.none(text, values);
-    res.status(204).end();
-  } catch (e) {
-    res.status(400).json({error: e.message});
-    return next(e);
-  }
-});
+// testRouter.delete('/email', async (req, res, next) => {
+//   const email = req.body.email;
+//
+//   try {
+//
+//     const text = 'delete from "appuser" where email=$1';
+//     const values = [email];
+//
+//     await db.none(text, values);
+//     res.status(204).end();
+//   } catch (e) {
+//     res.status(400).json({error: e.message});
+//     return next(e);
+//   }
+// });
 
 export default testRouter;
