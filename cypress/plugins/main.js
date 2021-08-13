@@ -45,7 +45,7 @@ export default (on) => {
       'deleteAppuser': async (email) => {
         try {
 
-          const text = 'delete from "appuser" where email=$1 returning id';
+          const text = 'delete from "appuser" where email=$1';
           const values = [email];
 
           await db.none(text, values);

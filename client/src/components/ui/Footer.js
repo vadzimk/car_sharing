@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import {GridContainer, GridItem} from './GridRenamed.js';
-import routes, {byLable} from '../../routes.js';
+import routes, {byLabel} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({
   footer: {
@@ -51,11 +51,11 @@ const Footer = () => {
     </GridItem>
   );
   
-  const column1 = routes.filter(byLable(['Home', 'About', 'Team', 'Contact']));
+  const column1 = routes.filter(byLabel(['Home', 'About', 'Team', 'Contact']));
   const column2 = routes.filter(
-    byLable(['Renting', 'Policies', 'Terms', 'FAQ']));
+    byLabel(['Renting', 'Policies', 'Terms', 'FAQ']));
   const column3 = routes.filter(
-    byLable(['Hosting', 'List your car', 'Insurance', 'FAQ']));
+    byLabel(['Hosting', 'List your car', 'Insurance', 'FAQ']));
   
   return (
     <footer className={classes.footer}>

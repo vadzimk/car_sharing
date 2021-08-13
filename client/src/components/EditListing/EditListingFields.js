@@ -218,7 +218,7 @@ const EditListingFields = (props) => {
               
               <GridItem>
                 <Button
-                  type="submit"
+                  type="reset"
                   color="secondary"
                   variant="contained"
                   size="small"

@@ -34,8 +34,7 @@ describe('new listing', () => {
   
   });
   
-  test('can be created when valid', async () => {
-    delete newListing.miles_per_rental;
+  test('can be created when valid by authorized user', async () => {
     const response = await createListing(newListing);
     
     console.log('listing response',response.body);
@@ -43,7 +42,7 @@ describe('new listing', () => {
     expect(response.status).toBe(200);
     console.log('listing ERR:', response.body.error);
     
-    // TODO get id from response
+    // get listing.id from response
     expect(response.body).toHaveProperty('id');
     
     // listing from db
@@ -53,7 +52,7 @@ describe('new listing', () => {
     } catch (e) {
       console.log('can be created when valid ERROR from db:', e);
     }
-    expect(listingFromDb.plate).toEqual(newListing.plate);
+    expect(listingFromDb.plate).toEqual(newListing.plate.toUpperCase());
   });
   afterAll(async()=>{
     await deleteTestUser(existingTestUser);
