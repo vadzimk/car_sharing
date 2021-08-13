@@ -25,7 +25,7 @@ import {
 import {makeStyles} from '@material-ui/styles';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
-import routes, {byLable} from '../../routes.js';
+import routes, {byLabel} from '../../routes.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
   toolbar:{
@@ -129,7 +129,7 @@ export default function Header () {
   };
   
   const routesForHeader = routes.filter(
-    byLable(['Home', 'Listings', 'Reservations']),
+    byLabel(['Home', 'Listings', 'Reservations']),
   );
   
   const menu = (

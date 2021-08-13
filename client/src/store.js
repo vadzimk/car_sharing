@@ -4,11 +4,13 @@ import thunk from 'redux-thunk';
 import userReducer from './reducers/userReducer.js';
 import notificationReducer from './reducers/notificationReducer.js';
 import countriesReducer from './reducers/countriesReducer.js';
+import listingsReducer from './reducers/listingsReducer.js';
 
 const reducer = combineReducers({
+  countries: countriesReducer,
   user: userReducer,
   notification: notificationReducer,
-  countries: countriesReducer
+  listings: listingsReducer,
 });
 
 const store = createStore(
@@ -17,5 +19,6 @@ const store = createStore(
     applyMiddleware(thunk),
   ),
 );
+
 
 export default store;

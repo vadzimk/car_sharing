@@ -9,9 +9,9 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-formControl:{
-  width:'100%'
-}
+  formControl: {
+    width: '100%',
+  },
 }));
 
 const SelectField = (props) => {
@@ -22,8 +22,13 @@ const SelectField = (props) => {
       className={classes.formControl}
       error={props.error}
       size={props.size}
+      name={props.name}
     >
-      <InputLabel required={props.required}>{props.label}</InputLabel>
+      <InputLabel
+        required={props.required}
+      >
+        {props.label}
+      </InputLabel>
       <Select
         className={classes.select}
         value={props.value}

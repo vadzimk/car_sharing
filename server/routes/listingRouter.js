@@ -53,9 +53,28 @@ listingRouter.post('/create', async (req, res, next) => {
     miles_per_rental: yup.number().min(1, 'miles per rental cannot be <1'),
   });
   
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
+  }
+  
   try {
     console.log('body from listingRouter', req.body);
-    const validListing = await validationSchema.validate(req.body); // throws error if invalid
+    const listingForDb = {
+      ...req.body,
+      plate: req.body.plate.toUpperCase(),
+      make: toTitleCase(req.body.make),
+      model: toTitleCase(req.body.model.toUpperCase()),
+      transmission: req.body.transmission.substr(0, 1).toUpperCase(),
+    };
+    if(Object.prototype.hasOwnProperty.call(listingForDb, 'miles_per_rental') && !listingForDb.miles_per_rental){
+      delete listingForDb.miles_per_rental;
+    }
+    const validListing = await validationSchema.validate(listingForDb); // throws error if invalid
     
     const text_listing = 'insert into listing (plate, make, model, year, transmission, seat_number, large_bags_number, category, miles_per_rental, active) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id';
     const values_listing = [

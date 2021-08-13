@@ -1,10 +1,9 @@
-import axios from 'axios';
+import api from './api.js';
 
-const baseUrl = '/api/user';
 
 const getAllCountries = async () => {
   try {
-    const res = await axios.get(baseUrl + '/countries');
+    const res = await api.get('/user/countries');
     return {
       success: res.status === 200,
       error: res.data.error?.message,
@@ -19,7 +18,7 @@ const getAllCountries = async () => {
 
 const signUp = async (newUser) => {
   try {
-    const res = await axios.post(baseUrl + '/signup', newUser);
+    const res = await api.post( '/user/signup', newUser);
     return {
       success: res.status === 200,
       error: res.data.error?.message ===
@@ -36,7 +35,7 @@ const signUp = async (newUser) => {
 
 const login = async (credentials) => {
   try {
-    const res = await axios.post(baseUrl + '/login', credentials);
+    const res = await api.post('/user/login', credentials);
     return {
       success: res.status === 200,
       error: res.data.error?.message,
