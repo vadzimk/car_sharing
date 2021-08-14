@@ -69,8 +69,8 @@ const EditListing = () => {
         justifyContent="center"
         style={{
           height: '100%',
-          marginTop: 'auto',
-          marginBottom: 'auto',
+          margin: 'auto',
+          maxWidth: '60em'
         }}
       >
         <Formik

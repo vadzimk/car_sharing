@@ -212,14 +212,14 @@ const EditListingFields = (props) => {
             <GridContainer
               direction="row"
               justifyContent="flex-end"
-              spacing={3}
+              spacing={4}
               style={{marginTop: '1em', marginBottom: '1em'}}
             >
               
               <GridItem>
                 <Button
                   type="reset"
-                  color="secondary"
+                  color="primary.light"
                   variant="contained"
                   size="small"
                   disabled={!props.dirty || !props.isValid}
