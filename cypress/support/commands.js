@@ -25,3 +25,27 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import '@testing-library/cypress/add-commands';
+
+Cypress.Commands.add('typeLogin', (user) => {
+  cy.visit('/login');
+  for (let [key, value] of Object.entries(user)) {
+    cy.get(`[name=${key}]`).type(value);
+  }
+  cy.get('[type=submit]').click();
+});
+
+Cypress.Commands.add('login', (user) => {
+  cy.request({
+    method: 'POST',
+    url: '/api/user/login',
+    body: {
+      ...user,
+    },
+  }).then(res => {
+    cy.window().then(win => {
+      win.localStorage.setItem('user', JSON.stringify(res.body));
+    });
+    // alternatively
+    // cy.window().its('localStorage').invoke('setItem', 'user', JSON.stringify(res.body));
+  });
+});
