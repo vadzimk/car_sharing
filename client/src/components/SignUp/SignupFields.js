@@ -35,7 +35,7 @@ const SignupFields = (props) => {
           style={{
             marginTop: 'auto',
             marginBottom: 'auto',
-            width: '100%',
+            width: '100%'
           }}
     >
       <GridContainer
