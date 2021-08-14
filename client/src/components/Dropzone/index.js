@@ -150,7 +150,7 @@ function Dropzone ({handleError}) {
     <div className={classes.dropzoneContainer} >
       <div {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
-        <p>Drag&#39;n drop some files here, or click to select files</p>
+        <p>Drag&#39;n drop some image files here, or click to select</p>
       </div>
       <div className={classes.thumbsContainer}>
         {thumbs}
