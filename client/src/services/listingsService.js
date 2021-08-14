@@ -3,7 +3,7 @@ import api from './api.js';
 const create = async (newListing) => {
   try {
     
-    const res = await api.put(
+    const res = await api.post(
       '/listing/create', newListing,
     );
     

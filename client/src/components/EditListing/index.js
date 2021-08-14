@@ -22,7 +22,7 @@ const EditListing = () => {
     large_bags_number: '', // TODO add constraint in db
     category: '',
     miles_per_rental: '', // TODO add constraint in db
-    active: '',
+    active: false,
   };
   const transmissionOptions = ['Automatic', 'Manual'];
   const categoryOptions = [

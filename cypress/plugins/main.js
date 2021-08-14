@@ -12,13 +12,12 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-
 /**
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
 
-import promise from "bluebird";
+import promise from 'bluebird';
 import pgPromise from 'pg-promise';
 import dotenv from 'dotenv';
 
@@ -44,10 +43,10 @@ export default (on) => {
     {
       'deleteAppuser': async (email) => {
         try {
-
+          
           const text = 'delete from "appuser" where email=$1';
           const values = [email];
-
+          
           await db.none(text, values);
           return true;
         } catch (e) {
@@ -55,5 +54,7 @@ export default (on) => {
           return false;
         }
       },
+      
     });
+  
 };

@@ -76,7 +76,7 @@ listingRouter.post('/create', async (req, res, next) => {
     }
     const validListing = await validationSchema.validate(listingForDb); // throws error if invalid
     
-    const text_listing = 'insert into listing (plate, make, model, year, transmission, seat_number, large_bags_number, category, miles_per_rental, active) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id';
+    const text_listing = 'insert into listing (plate, make, model, year, transmission, seat_number, large_bags_number, category, miles_per_rental, active) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *';
     const values_listing = [
       validListing.plate,
       validListing.make,
@@ -96,13 +96,17 @@ listingRouter.post('/create', async (req, res, next) => {
     const result = await db.tx(async t => {
       
       const listing = await t.one(text_listing, values_listing);
+      console.log('inserted listing', listing);
+      
       values_appuser_listing[1] = listing.id;
-      await t.one(text_appuser_listing, values_appuser_listing);
-      return listing.id;
+      const appuser_listing = await t.one(text_appuser_listing, values_appuser_listing);
+      
+      console.log('inserted appuser_listing', appuser_listing);
+      return listing;
   
     });
     
-    res.status(200).json({id: result}).end();
+    res.status(200).json(result);
   } catch (e) {
     res.status(400).json({error: e.message});
     return next(e);
