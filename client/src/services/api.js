@@ -8,12 +8,20 @@ const api = axios.create({
   },
 });
 
+/**
+ * moved this to index.js
+ * uses token from redux state
+ * currently not used
+ * */
 // api.interceptors.request.use(req => {
 //   let token = store.getState().user.token;
 //   req.headers.authorization = `Bearer ${token}`;
 //   return req;
 // });
 
+/**
+ * uses token from local storage (could expire)
+ * */
 api.interceptors.request.use(req => {
   let token = JSON.parse(window.localStorage.getItem('user'))?.token;
   if(token)

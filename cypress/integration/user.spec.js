@@ -16,6 +16,8 @@ const existingUser = {
   password: newUser.password,
 };
 
+
+
 describe('user', () => {
   before(() => {
     cy.task('deleteAppuser', newUser.email).
@@ -39,17 +41,6 @@ describe('user', () => {
     
     cy.get('[type=submit]').click();
     
-    // cy.get('[name=first_name]').type('first_test');
-    // cy.get('[name=last_name]').type('last_test');
-    // cy.get('[name=dl_number]').type('dln_test');
-    // cy.get('[name=dl_date]').type('2000-12-30');
-    // cy.get('[name=country]').click().then(() => cy.findByText('Aruba').click());
-    // cy.get('[name=phone]').type('12345678');
-    // cy.get('[name=email]').type('test@test.t');
-    // cy.get('[name=password]').type('00000');
-    // cy.get('[name=passwordConfirm]').type('00000');
-    // cy.get('[type=submit]').click();
-    
     cy.intercept('POST', '/signup', (req) => {
       req.on('response', (res) => {
         expect(res.statusCode).to.be.eq(200);
@@ -68,13 +59,16 @@ describe('user', () => {
   });
   
   it('can login successfully', () => {
-    cy.visit('/login');
     
-    for (let [key, value] of Object.entries(existingUser)) {
-      cy.get(`[name=${key}]`).type(value);
-    }
+    // replaced
+    // cy.visit('/login');
+    // for (let [key, value] of Object.entries(existingUser)) {
+    //   cy.get(`[name=${key}]`).type(value);
+    // }
+    //
+    // cy.get('[type=submit]').click();
     
-    cy.get('[type=submit]').click();
+    cy.typeLogin(existingUser);
     
     cy.intercept('POST', '/login', (req) => {
       req.on('response', (res) => {
@@ -102,7 +96,9 @@ const newListing = {
 };
 
 describe('listing', () => {
-  it('can be created by authorized user', () => {
+  
+  it('can be created by an authorized user', () => {
+    cy.login(existingUser);
     cy.visit('/listings/create');
     for (let [key, value] of Object.entries(newListing)) {
       if (key === 'transmission' || key === 'category') {
@@ -124,6 +120,8 @@ describe('listing', () => {
         expect(res.statusCode).to.be.eq(200);
       });
     });
+    // check notification on success
+    cy.contains(`Created: ${newListing.plate.toUpperCase()}`);
     
   });
 });

@@ -23,6 +23,7 @@ export const createListing = (newListing, onSuccess) => {
         payload: data,
       });
       onSuccess();
+      console.dir('createListing data:',data);
       dispatch(setNotification(`Created: ${data.plate}`, 'success'));
     } else {
       dispatch(setNotification(error, 'error'));

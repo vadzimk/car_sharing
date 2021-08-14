@@ -53,6 +53,7 @@ export const signUpUser = (newUser, onSuccess) => {
 
 export const getUserFromStorage=()=>{
   const user = window.localStorage.getItem('user');
+  console.log('getUserFromStorage', user);
   
   return {
     type: 'GET_USER_FROM_STORAGE',
