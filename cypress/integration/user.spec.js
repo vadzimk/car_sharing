@@ -16,8 +16,6 @@ const existingUser = {
   password: newUser.password,
 };
 
-
-
 describe('user', () => {
   before(() => {
     cy.task('deleteAppuser', newUser.email).
@@ -93,6 +91,11 @@ const newListing = {
   category: 'Medium',
   miles_per_rental: '',
   active: true,
+  images: [
+    {path: './car.jpg'},
+    {path: './car.jpg'},
+    
+  ]
 };
 
 describe('listing', () => {
@@ -108,6 +111,11 @@ describe('listing', () => {
       } else if (key === 'active') {
         if (value)
           cy.get(`[name=${key}]`).click();
+      } else if (key === 'images') {
+      // https://testersdock.com/cypress-file-upload/
+     
+        cy.get('input[type="file"]').attachFile(newListing.images.map(i=>i.path));
+
       } else {
         if (value)
           cy.get(`[name=${key}]`).type(value);
