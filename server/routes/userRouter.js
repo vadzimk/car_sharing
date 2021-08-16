@@ -47,7 +47,7 @@ userRouter.post('/signup',
         passwordhash,
         validUser.ishost];
       await db.none(text, values);
-      res.status(200).end();
+      res.status(200).end(); // end only without data
     } catch (e) {
       res.status(400).json({error: e.message});
       return next(e);
@@ -101,7 +101,7 @@ userRouter.post('/login', async (req, res, next) => {
       first_name: user.first_name,
     };
     const token = jwt.sign(userForToken, process.env.JWT_KEY);
-    res.status(200).send({
+    res.status(200).json({
       token,
       first_name: user.first_name,
       email: user.username,

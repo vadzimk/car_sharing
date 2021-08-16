@@ -2,10 +2,28 @@
 
 import express from 'express';
 import yup from 'yup';
-import db from '../db/index.js';
+import db, {pgp} from '../db/index.js';
 import jwt from 'jsonwebtoken';
+import {getPutUrl} from '../aws/s3.js';
 
 const listingRouter = express.Router();
+
+/**
+ * @sets req.decodedToken
+ * */
+listingRouter.use((req, res, next) => {
+  try {
+    console.log('req.token', req.token);
+    const decodedToken = jwt.verify(req.token, process.env.JWT_KEY);
+    req.decodedToken = decodedToken;
+    
+    if (!decodedToken.ishost) throw new Error('Unauthorized token');
+    next();
+  } catch (e) {
+    res.status(401).json({error: e.message});
+    return next(e);
+  }
+});
 
 const transmissionOptions = ['A', 'M'];
 const categoryOptions = [
@@ -18,17 +36,15 @@ const categoryOptions = [
   'SUV'];
 
 listingRouter.post('/create', async (req, res, next) => {
-  let userId;
+  
+  const userId = req.decodedToken.id;
+  let appuser;
   try {
-    console.log('req.token', req.token);
-    const decodedToken = jwt.verify(req.token, process.env.JWT_KEY);
-    
-    userId = decodedToken.id;
-    console.log('userId', userId);
-    if (!decodedToken.ishost) throw new Error('Unauthorized token');
+    const text_appuser = 'select id from appuser where id=$1';
+    appuser = await db.one(text_appuser, [userId]);
   } catch (e) {
-    res.status(401).json({error: e.message});
-    return next(e);
+    res.status(401).json({error: 'user not found'});
+    return next();
   }
   
   const validationSchema = yup.object().shape({
@@ -53,11 +69,36 @@ listingRouter.post('/create', async (req, res, next) => {
     miles_per_rental: yup.number().min(1, 'miles per rental cannot be <1'),
   });
   
+  function toTitleCase (str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      },
+    );
+  }
+  
   try {
     console.log('body from listingRouter', req.body);
-    const validListing = await validationSchema.validate(req.body); // throws error if invalid
+    const listingForDb = {
+      ...req.body,
+      plate: req.body.plate.toUpperCase(),
+      make: toTitleCase(req.body.make),
+      model: toTitleCase(req.body.model.toUpperCase()),
+      transmission: req.body.transmission.substr(0, 1).toUpperCase(),
+    };
+    if (Object.prototype.hasOwnProperty.call(listingForDb,
+      'miles_per_rental') && !listingForDb.miles_per_rental) {
+      delete listingForDb.miles_per_rental;
+    }
+    const validListing = await validationSchema.validate(listingForDb); // throws error if invalid
     
-    const text_listing = 'insert into listing (plate, make, model, year, transmission, seat_number, large_bags_number, category, miles_per_rental, active) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id';
+    const keysToUrls = {};
+    req.body.images?.forEach((k) => {
+      keysToUrls[k] = getPutUrl(k);
+    });
+    console.log('keysToUrls', keysToUrls);
+    const text_listing = 'insert into listing (plate, make, model, year, transmission, seat_number, large_bags_number, category, miles_per_rental, active) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *';
     const values_listing = [
       validListing.plate,
       validListing.make,
@@ -72,22 +113,57 @@ listingRouter.post('/create', async (req, res, next) => {
     
     const text_appuser_listing = 'insert into appuser_listing (appuserid, listingid) values ($1, $2) returning id';
     
-    let values_appuser_listing = [userId];
-    
     const result = await db.tx(async t => {
       
       const listing = await t.one(text_listing, values_listing);
-      values_appuser_listing[1] = listing.id;
-      await t.one(text_appuser_listing, values_appuser_listing);
-      return listing.id;
-  
+      console.log('inserted listing', listing);
+      
+      const appuser_listing = await t.one(text_appuser_listing,
+        [appuser.id, listing.id]);
+      
+      console.log('inserted appuser_listing', appuser_listing);
+      return listing;
+      
     });
     
-    res.status(200).json({id: result}).end();
+    res.status(200).json({listing: result, keysToUrls});
   } catch (e) {
     res.status(400).json({error: e.message});
     return next(e);
   }
+});
+
+/** @req.body {listingId , filename[]}
+ * */
+listingRouter.post('/imagekeys', async (req, res, next) => {
+  // https://stackoverflow.com/questions/37300997/multi-row-insert-with-pg-promise
+  const userId = req.decodedToken.id;
+  
+  try {
+    // verify the listingid belongs to this appuserid
+    const text_appuser_listing = 'select listingid from appuser_listing where appuserid=$1 and listingid=$2';
+    const result_appuser_listing = await db.one(text_appuser_listing,
+      [userId, req.body.listingId]);
+    
+    console.log('result_appuser_listing', result_appuser_listing);
+    
+    const {listingid} = result_appuser_listing;
+    
+    // insert filenames in image table
+    const columnSet = new pgp.helpers.ColumnSet(['filename', 'listingid'],
+      {table: 'image'});
+    const values = req.body.keys.map(
+      k => ({filename: k, listingid: listingid}));
+    console.log('insert values', values);
+    
+    const query = pgp.helpers.insert(values, columnSet);
+    await db.none(query);
+    res.status(200);
+  } catch (e) {
+    res.status(400).json({error: e.message});
+    return next();
+  }
+  
 });
 
 export default listingRouter;

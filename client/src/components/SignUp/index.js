@@ -59,9 +59,9 @@ const SignUp = () => {
           direction="row"
           justifyContent="center"
           style={{
-            height:'100%',
-            marginTop: 'auto',
-            marginBottom: 'auto'
+            height: '100%',
+            margin: 'auto',
+            maxWidth: '60em'
           }}
         >
           <Formik

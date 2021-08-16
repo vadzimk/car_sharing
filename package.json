@@ -33,6 +33,7 @@
     "@testing-library/cypress": "^8.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "cypress": "^7.7.0",
+    "cypress-file-upload": "^5.0.8",
     "husky": "^7.0.0"
   }
 }
