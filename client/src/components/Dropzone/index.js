@@ -1,8 +1,11 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
 import ClearIcon from '@material-ui/icons/Clear';
 import {makeStyles} from '@material-ui/styles';
 import {GridItem} from '../ui/GridRenamed.js';
+import {customAlphabet, urlAlphabet} from 'nanoid';
+import {useDispatch} from 'react-redux';
+import {setNotification} from '../../reducers/notificationReducer.js';
 
 const useStyles = makeStyles((theme) => ({
   baseStyle: {
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.text.primary,
     outline: 'none',
     transition: 'border .24s ease-in-out',
-  
+    
   },
   activeStyle: {
     borderColor: '#2196f3',
@@ -29,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
   rejectStyle: {
     borderColor: '#ff1744',
   },
-  dropzoneContainer:{
+  dropzoneContainer: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '30em'
+    maxWidth: '30em',
   },
   thumbsContainer: {
     display: 'flex',
@@ -50,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #eaeaea',
     marginBottom: '0.5em',
     marginRight: '0.5em',
-    width: `${(theme.custom.mainColumn.width.replace('em', '') -1) / 3 }em`,
+    width: `${(theme.custom.mainColumn.width.replace('em', '') - 1) / 3}em`,
     height: 'auto',
     padding: 4,
     boxSizing: 'border-box',
-    position: 'relative'
+    position: 'relative',
   },
   thumbInner: {
     marginTop: 'auto',
@@ -71,41 +74,105 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     color: 'rgba(0, 0, 0, 0.54)',
     '&:hover': {
-      color: 'red'
-    }
+      color: 'red',
+    },
   },
 }));
 
-function Dropzone ({handleError}) {
+// eslint-disable-next-line no-unused-vars
+function Dropzone ({handleError, onChange}) {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    accept: 'image/*',
-    onDrop: acceptedFiles => {
-      console.dir('acceptedFiles', acceptedFiles);
-      setFiles(files.concat(acceptedFiles.map(file => ({
-          ...file,
-          preview: URL.createObjectURL(file),
-        }),
-      )));
+  const nanoid = customAlphabet(urlAlphabet, 10);
+  const createKey = (filename) => {
+    const dotIndex = filename.lastIndexOf('.');
+    return filename.slice(0, dotIndex) + '_' + nanoid() +
+      filename.slice(dotIndex);
+  };
+  
+  const areNotEqual = async (a, b) => {
+    const textA = await fetch(a).then(r => r.blob()).then(b => b.text());
+    const textB = await fetch(b).then(r => r.blob()).then(b => b.text());
+    console.log('textA', textA);
+    console.log('textB', textB);
+    const result = textA.valueOf() !== textB.valueOf();
+    console.log('Not identical', result);
+    return result;
+  };
+  
+  const dispatch = useDispatch();
+  /**
+   * onDrop without duplicates
+   * */
+  const onDrop = useCallback(async (acceptedFiles) => {
+    console.dir('acceptedFiles', acceptedFiles);
+    const newFiles = acceptedFiles.map(file => ({
+      ...file,
+      key: createKey(file.path),
+      preview: URL.createObjectURL(file),
+    }));
+    let filteredNewFiles = [];
+    let updatedFiles;
+    if (!files.length) {
+      filteredNewFiles.push(newFiles[0]);
+      newFiles.splice(0, 1);
+    }
+    for (let f of newFiles) {
+      for (let s of files) {
+        if (await areNotEqual(s.preview, f.preview)) {
+          filteredNewFiles.push(f);
+        } else{
+          dispatch(setNotification(`${f.path} was a duplicate `, 'info'));
+        }
+      }
       
-    },
-    onDropRejected: (fileRejections) => handleError(
-      fileRejections.map(fileRejection => {
-        const filename = fileRejection.file.name;
-        const errors = fileRejection.errors.map(error => error.message).
-          toString();
-        return `${filename} - ${errors}`;
-      }).toString(),
-    ),
-  });
+    }
+    updatedFiles = files.concat(filteredNewFiles);
+    
+    console.dir('updatedFiles', updatedFiles);
+    setFiles(updatedFiles);
+    onChange(updatedFiles);
+  }, [files, onChange]);
+  
+  
+  /**
+   * onDrop with duplicates
+   * */
+  // const onDrop = useCallback(acceptedFiles => {
+  //   console.dir('acceptedFiles', acceptedFiles);
+  //   const updatedFiles = files.concat(acceptedFiles.map(file => ({
+  //       ...file,
+  //       key: createKey(file.path),
+  //       preview: URL.createObjectURL(file),
+  //     }),
+  //   ));
+  //   console.dir('updatedFiles', updatedFiles);
+  //   setFiles(updatedFiles);
+  //   onChange(updatedFiles);
+  // }, [files, onChange]);
+  
+  
+  const {
+      getRootProps,
+      getInputProps,
+      isDragActive,
+      isDragAccept,
+      isDragReject,
+    } = useDropzone({
+      accept: 'image/*',
+      onDrop: onDrop,
+      onDropRejected:
+        (fileRejections) => handleError(
+          fileRejections.map(fileRejection => {
+            const filename = fileRejection.file.name;
+            const errors = fileRejection.errors.map(error => error.message).
+              toString();
+            return `${filename} - ${errors}`;
+          }).toString(),
+        ),
+    })
+  ;
   
   const dropzoneClassName = useMemo(() => {
     return [
@@ -125,17 +192,17 @@ function Dropzone ({handleError}) {
   };
   
   const thumbs = files.map(file => (
-    <GridItem className={classes.thumb} key={file.name}>
+    <GridItem className={classes.thumb} key={file.key}>
       <div className={classes.thumbInner}>
         <img
           src={file.preview}
-          alt={file.name}
+          alt={file.path}
           className={classes.img}
         />
       </div>
       <ClearIcon
         onClick={() => handleClear(file)}
-        classes={{root:classes.close}}
+        classes={{root: classes.close}}
         size="small"
       />
     </GridItem>
@@ -143,14 +210,16 @@ function Dropzone ({handleError}) {
   
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
+    setTimeout(() => {
+      files.forEach(file => URL.revokeObjectURL(file.preview));
+    }, 10000);
   }, [files]);
   
   return (
-    <div className={classes.dropzoneContainer} >
+    <div className={classes.dropzoneContainer}>
       <div {...getRootProps({className: dropzoneClassName})}>
         <input {...getInputProps()} />
-        <p>Drag&#39;n drop some files here, or click to select files</p>
+        <p>Drag&#39;n drop some image files here, or click to select</p>
       </div>
       <div className={classes.thumbsContainer}>
         {thumbs}

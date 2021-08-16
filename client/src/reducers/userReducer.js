@@ -22,7 +22,7 @@ const userReducer = (state={}, action) => {
   }
 };
 
-export const loginUser = (credentials, onSuccess) => {
+export const loginUser = (credentials, onSuccess=()=>{}) => {
   return async (dispatch) => {
     const {success, error, data} = await userService.login(credentials);
     window.localStorage.setItem('user', JSON.stringify(data));
@@ -39,7 +39,7 @@ export const loginUser = (credentials, onSuccess) => {
   };
 };
 
-export const signUpUser = (newUser, onSuccess) => {
+export const signUpUser = (newUser, onSuccess=()=>{}) => {
   return async (dispatch) => {
     const {success, error} = await userService.signUp(newUser);
     if (success) {
@@ -53,6 +53,7 @@ export const signUpUser = (newUser, onSuccess) => {
 
 export const getUserFromStorage=()=>{
   const user = window.localStorage.getItem('user');
+  console.log('getUserFromStorage', user);
   
   return {
     type: 'GET_USER_FROM_STORAGE',

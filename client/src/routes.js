@@ -11,11 +11,11 @@ const dummy = (content) => {
   };
 };
 /**
- * filters routes by lable
- * route.filter(byLable(arrayOfLables)
+ * filters routes by label
+ * route.filter(byLabel(arrayOfLables)
  * @return array of routes with matching lables
  * */
-export const byLable = (pages)=>({label})=>pages.includes(label);
+export const byLabel = (pages)=>({label})=>pages.includes(label);
 
 const routes = [
   {
@@ -96,7 +96,7 @@ const routes = [
     component: dummy('FAQ, not implemented')
   },
   {
-    path: '/edit-listing',
+    path: '/listings/create',
     label: 'Edit listing',
     component: EditListing
   },

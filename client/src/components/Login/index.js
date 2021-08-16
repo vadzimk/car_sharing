@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import {Formik} from 'formik';
 import LoginFields from './LoginFields.js';
 import {loginUser} from '../../reducers/userReducer.js';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useStore} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {GridContainer} from '../ui/GridRenamed.js';
 
@@ -18,11 +18,13 @@ const Login = () => {
     email: yup.string().email().required('required'),
     password: yup.string().required('required'),
   });
-  
+  const {user} = useStore();
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values) => {
-    dispatch(loginUser(values, () => history.push('/')));
+    dispatch(loginUser(values));
+    history.push(user?.ishost ? '/listings':'/');
+    
   };
   
   return (
@@ -30,9 +32,9 @@ const Login = () => {
       direction="row"
       justifyContent="center"
       style={{
-        height:'100%',
+        height: '100%',
         marginTop: 'auto',
-        marginBottom: 'auto'
+        marginBottom: 'auto',
       }}
     
     >
