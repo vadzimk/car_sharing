@@ -203,7 +203,8 @@ const EditListingFields = (props) => {
             &zwnj;
           </Typography>
           <Dropzone
-            name="previews"
+            name="images"
+            onChange={(values)=>props.setFieldValue('images',values)}
             handleError={props.handleError}
           />
           
@@ -219,7 +220,7 @@ const EditListingFields = (props) => {
               <GridItem>
                 <Button
                   type="reset"
-                  color="primary.light"
+                  color="primary"
                   variant="contained"
                   size="small"
                   disabled={!props.dirty || !props.isValid}

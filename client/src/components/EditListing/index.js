@@ -23,6 +23,7 @@ const EditListing = () => {
     category: '',
     miles_per_rental: '', // TODO add constraint in db
     active: false,
+    images: [], // {key, path, preview}
   };
   const transmissionOptions = ['Automatic', 'Manual'];
   const categoryOptions = [
@@ -56,6 +57,7 @@ const EditListing = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values) => {
+    console.dir('values', values);
 
     dispatch(createListing(values,
       () => history.push('/listings'),
