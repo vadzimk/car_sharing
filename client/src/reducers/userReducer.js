@@ -3,43 +3,42 @@
 import userService from '../services/userSevice.js';
 import {setNotification} from './notificationReducer.js';
 
-const userReducer = (state={}, action) => {
+const userReducer = (state = null, action) => {
   switch (action.type) {
   case 'LOGIN':
-    return {
-      ...action.payload,
-    };
+    return action.payload;
   case 'SIGNUP':
     return {
       ...state,
     };
   case 'GET_USER_FROM_STORAGE':
-    return {
-      ...action.payload
-    };
+    return action.payload;
   default:
     return state;
   }
 };
 
-export const loginUser = (credentials, onSuccess=()=>{}) => {
+export const loginUser = (credentials, onSuccess = () => {
+}) => {
   return async (dispatch) => {
+    // eslint-disable-next-line no-unused-vars
     const {success, error, data} = await userService.login(credentials);
-    window.localStorage.setItem('user', JSON.stringify(data));
     if (success) {
+      window.localStorage.setItem('user', JSON.stringify(data));
       dispatch({
         type: 'LOGIN',
         payload: data,
       });
-      onSuccess();
       dispatch(setNotification('You are logged in'), 'success');
+      onSuccess();
     } else {
       dispatch(setNotification(error, 'error'));
     }
   };
 };
 
-export const signUpUser = (newUser, onSuccess=()=>{}) => {
+export const signUpUser = (newUser, onSuccess = () => {
+}) => {
   return async (dispatch) => {
     const {success, error} = await userService.signUp(newUser);
     if (success) {
@@ -51,13 +50,13 @@ export const signUpUser = (newUser, onSuccess=()=>{}) => {
   };
 };
 
-export const getUserFromStorage=()=>{
+export const getUserFromStorage = () => {
   const user = window.localStorage.getItem('user');
   console.log('getUserFromStorage', user);
   
   return {
     type: 'GET_USER_FROM_STORAGE',
-    payload: JSON.parse(user)
+    payload: JSON.parse(user),
   };
 };
 

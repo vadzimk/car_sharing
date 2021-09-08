@@ -9,23 +9,23 @@ import Footer from './components/ui/Footer.js';
 import Notification from './components/ui/Notification.js';
 import {useDispatch} from 'react-redux';
 import {getUserFromStorage} from './reducers/userReducer.js';
-
+import HostRoute from './components/HostRoute.js';
 
 const App = () => {
-const style = {
-  mainContainer:{
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  mainContent:{
-    flex: '1 0 auto'
-  },
-  footer:{
-    flexShrink: 0,
-  },
-};
-
+  const style = {
+    mainContainer: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    mainContent: {
+      flex: '1 0 auto',
+    },
+    footer: {
+      flexShrink: 0,
+    },
+  };
+  
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -42,9 +42,11 @@ const style = {
           <Container style={style.mainContent}>
             <Switch>
               {
-                routes.map((item) => (
-                  <Route exact path={item.path} component={item.component}
-                         key={item.label}/>
+                routes.map((item) => (item.access === 'ishost' ?
+                    <HostRoute path={item.path} component={item.component}
+                               key={item.label}/> :
+                    <Route exact path={item.path} component={item.component}
+                           key={item.label}/>
                 ))
               }
             </Switch>

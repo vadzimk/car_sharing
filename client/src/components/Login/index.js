@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import LoginFields from './LoginFields.js';
 import {loginUser} from '../../reducers/userReducer.js';
-import {useDispatch, useStore} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {GridContainer} from '../ui/GridRenamed.js';
 
@@ -18,13 +18,20 @@ const Login = () => {
     email: yup.string().email().required('required'),
     password: yup.string().required('required'),
   });
-  const {user} = useStore();
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  
+  
+  useEffect(() => {
+      if (user) {
+        history.push(user?.ishost ? '/listings':'/');
+      }
+    },
+  );
+  
   const onSubmit = (values) => {
     dispatch(loginUser(values));
-    history.push(user?.ishost ? '/listings':'/');
-    
   };
   
   return (
