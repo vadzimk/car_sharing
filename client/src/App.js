@@ -43,7 +43,7 @@ const App = () => {
             <Switch>
               {
                 routes.map((item) => (item.access === 'ishost' ?
-                    <HostRoute path={item.path} component={item.component}
+                    <HostRoute exact path={item.path} component={item.component}
                                key={item.label}/> :
                     <Route exact path={item.path} component={item.component}
                            key={item.label}/>

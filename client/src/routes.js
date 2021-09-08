@@ -3,6 +3,7 @@ import SignUp from './components/SignUp';
 import Login from  './components/Login';
 import EditListing from './components/EditListing';
 import NotFound from './components/ui/NotFound.js';
+import Listings from './components/Listings';
 
 const dummy = (content) => {
   return function NotImplemented () {
@@ -40,7 +41,7 @@ const routes = [
   {
     path: '/listings',
     label: 'Listings',
-    component: dummy('Listings, not implemented (ishost)'),
+    component: Listings,
     access: 'ishost'
   },
   {
