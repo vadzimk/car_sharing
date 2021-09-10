@@ -10,12 +10,24 @@ const create = async (newListing) => {
     
     return {
       success: res.status === 200,
-      error: res.data.error?.message,
       data: res.data,
     };
   } catch (e) {
     console.log('caught error', e);
-    return {success: false, error: e.message};
+    return {success: false, error: e.response.data.error};
+  }
+};
+
+const getHostListings = async () => {
+  try {
+    const res = await api.get('/listing/get-host-listings');
+    return {
+      success: res.status === 200,
+      data: res.data,
+    };
+  } catch (e) {
+    console.log('caught error', e);
+    return {success: false, error: e.response.data.error};
   }
 };
 
@@ -27,8 +39,8 @@ const sendImage = async (url, blobUrl, filename) => {
   console.log('blobUrl', blobUrl);
   let file = await fetch(blobUrl).
     then(r => r.blob()).
-    then(blobFile => new File([blobFile], filename, { type: 'image/*' } ));
-    
+    then(blobFile => new File([blobFile], filename, {type: 'image/*'}));
+  
   console.log('file.type', file.type);
   // not using the api axios instance here bc it contains authorization header
   const res = await axios.put(url, file, {
@@ -43,9 +55,9 @@ const sendImage = async (url, blobUrl, filename) => {
 /**
  * @body key[]
  * */
-const confirmImagesSent = async(listingId, keys)=>{
+const confirmImagesSent = async (listingId, keys) => {
   await api.post('/listing/imagekeys', {listingId, keys});
 };
 
-const listingsService = {create, sendImage, confirmImagesSent};
+const listingsService = {create, sendImage, confirmImagesSent, getHostListings};
 export default listingsService;

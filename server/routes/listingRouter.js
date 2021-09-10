@@ -5,13 +5,14 @@ import yup from 'yup';
 import db, {pgp} from '../db/index.js';
 import jwt from 'jsonwebtoken';
 import {getPutUrl} from '../aws/s3.js';
+import queries from '../db/model.js';
 
 const listingRouter = express.Router();
 
 /**
  * @sets req.decodedToken
  * */
-listingRouter.use((req, res, next) => {
+listingRouter.use(async (req, res, next) => {
   try {
     console.log('req.token', req.token);
     const decodedToken = jwt.verify(req.token, process.env.JWT_KEY);
@@ -23,6 +24,16 @@ listingRouter.use((req, res, next) => {
     res.status(401).json({error: e.message});
     return next(e);
   }
+  const userId = req.decodedToken.id;
+  console.log('userId', userId);
+  try {
+    const text_appuser = 'select id from appuser where id=$1';
+    await db.one(text_appuser, [userId]);
+  } catch (e) {
+    res.status(401).json({error: 'user not found'});
+    return next();
+  }
+  
 });
 
 const transmissionOptions = ['A', 'M'];
@@ -38,14 +49,6 @@ const categoryOptions = [
 listingRouter.post('/create', async (req, res, next) => {
   
   const userId = req.decodedToken.id;
-  let appuser;
-  try {
-    const text_appuser = 'select id from appuser where id=$1';
-    appuser = await db.one(text_appuser, [userId]);
-  } catch (e) {
-    res.status(401).json({error: 'user not found'});
-    return next();
-  }
   
   const validationSchema = yup.object().shape({
     plate: yup.string().required('plate is required'),
@@ -79,7 +82,7 @@ listingRouter.post('/create', async (req, res, next) => {
   }
   
   try {
-    console.log('body from listingRouter', req.body);
+    console.log('body from listingRouter/create', req.body);
     const listingForDb = {
       ...req.body,
       plate: req.body.plate.toUpperCase(),
@@ -119,7 +122,7 @@ listingRouter.post('/create', async (req, res, next) => {
       console.log('inserted listing', listing);
       
       const appuser_listing = await t.one(text_appuser_listing,
-        [appuser.id, listing.id]);
+        [userId, listing.id]);
       
       console.log('inserted appuser_listing', appuser_listing);
       return listing;
@@ -164,6 +167,20 @@ listingRouter.post('/imagekeys', async (req, res, next) => {
     return next();
   }
   
+});
+
+listingRouter.get('/get-host-listings', async (req, res, next) => {
+  const userId = req.decodedToken.id;
+
+  const text = queries.listing_getall;
+  
+  try {
+    const listings = await db.many(text, [userId]);
+    res.status(200).json({listings});
+  } catch (e){
+    res.status(400).json({error: e.message});
+    return next(e);
+  }
 });
 
 export default listingRouter;

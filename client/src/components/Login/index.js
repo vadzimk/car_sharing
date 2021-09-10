@@ -27,7 +27,7 @@ const Login = () => {
       if (user) {
         history.push(user?.ishost ? '/listings':'/');
       }
-    },
+    },[user]
   );
   
   const onSubmit = (values) => {
