@@ -165,7 +165,7 @@ const ListingTable = ({rows}) => {
       renderCell: RowMenuCell,
       
     },
-  ];
+  ].map(c=>({...c, headerAlign: 'center'}));
   
   return (
     <div style={{display: 'flex', height: '100%'}}>
