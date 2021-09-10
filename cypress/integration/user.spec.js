@@ -102,7 +102,8 @@ describe('listing', () => {
   
   it('can be created by an authorized user', () => {
     cy.login(existingUser);
-    cy.visit('/listings/create');
+    cy.visit('/listings');
+    cy.get('button').contains('Add listing').click()
     for (let [key, value] of Object.entries(newListing)) {
       if (key === 'transmission' || key === 'category') {
         cy.get(`[name=${key}]`).
