@@ -39,12 +39,6 @@ const routes = [
   
   },
   {
-    path: '/listings',
-    label: 'Listings',
-    component: Listings,
-    access: 'ishost'
-  },
-  {
     path: '/reservations',
     label: 'Reservations',
     component: dummy('Reservations, not implemented (ishost)'),
@@ -120,6 +114,12 @@ const routes = [
     path: '/listings/create',
     label: 'Edit listing',
     component: EditListing,
+    access: 'ishost'
+  },
+  {
+    path: '/listings',
+    label: 'Listings',
+    component: Listings,
     access: 'ishost'
   },
   {
