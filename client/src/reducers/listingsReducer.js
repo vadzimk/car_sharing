@@ -6,12 +6,26 @@ const listingsReducer = (state = [], action) => {
   case 'CREATE_LISTING':
     return [...state, action.payload];
   
-  case 'GET_ALL_LISTINGS':
-    return [...state];
+  case 'GET_HOST_LISTINGS':
+    return action.payload;
   
   default:
     return state;
   }
+};
+
+export const getHostListings= ()=>{
+  return async (dispatch)=>{
+    const {success, error, data} = await listingsService.getHostListings();
+    if(success){
+      dispatch({
+        type: 'GET_HOST_LISTINGS',
+        payload: data.listings
+      });
+    } else {
+      dispatch(setNotification(error,'error'));
+    }
+  };
 };
 
 export const createListing = (newListing, onSuccess) => {
@@ -25,7 +39,6 @@ export const createListing = (newListing, onSuccess) => {
     const {success, error, data} = await listingsService.create(listingForApi);
     
     if (success) {
-      // TODO for each response send file upload status to api
       dispatch({
         type: 'CREATE_LISTING',
         payload: data.listing,
@@ -35,6 +48,7 @@ export const createListing = (newListing, onSuccess) => {
           item => item.key === key).preview;
         try {
           
+          // TODO for each response send file upload status to api
           const res = await listingsService.sendImage(url, blobUrl, key);
           console.log('listingsReducer res:', res.config.data.name);
           imageKeys.push(res.config.data.name);

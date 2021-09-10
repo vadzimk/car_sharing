@@ -30,7 +30,7 @@ const App = () => {
   
   useEffect(() => {
     dispatch(getUserFromStorage());
-  });
+  },[]);
   
   return (
     <ThemeProvider theme={theme}>
@@ -43,10 +43,14 @@ const App = () => {
             <Switch>
               {
                 routes.map((item) => (item.access === 'ishost' ?
-                    <HostRoute exact path={item.path} component={item.component}
-                               key={item.label}/> :
-                    <Route exact path={item.path} component={item.component}
-                           key={item.label}/>
+                    <HostRoute exact path={item.path}
+                               key={item.label}>
+                      <item.component/>
+                    </HostRoute>:
+                    <Route exact path={item.path}
+                           key={item.label}>
+                      <item.component/>
+                    </Route>
                 ))
               }
             </Switch>
