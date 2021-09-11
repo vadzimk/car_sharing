@@ -8,6 +8,9 @@ import ListingTable from './ListingTable.js';
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
+// TODO implement editing editable cells and dispatch action
+// TODO use calendar dates to calculate column values
+// TODO make column header readable
 const Listings = () => {
   const date = new Date();
   const [dateFrom, setDateFrom] = useState(new Date(date.getFullYear(), date.getMonth(), 1));
@@ -36,7 +39,7 @@ const Listings = () => {
           </GridItem>
           <GridItem>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <GridContainer direction="row" spacing={1} >
+            <GridContainer direction="row" spacing={1} justifyContent="flex-end">
               <GridItem style={{maxWidth: '150px'}} >
                 <KeyboardDatePicker
                   autoOk={true}

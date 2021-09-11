@@ -3,7 +3,6 @@ import {Route, Redirect} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 const HostRoute = ({children, ...rest}) => {
-  console.dir('host route', rest);
   
   const user = useSelector(state => state.user);
   
