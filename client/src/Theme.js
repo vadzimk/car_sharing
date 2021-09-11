@@ -1,16 +1,17 @@
 import {createTheme} from '@material-ui/core';
 
 const defaultTheme = createTheme();
-const myBlue = '#0b72b9';
-const myOrange = '#ffba60';
+
 
 // https://material.io/resources/color/#!/?view.left=1&view.right=1&primary.color=B0BEC5&secondary.color=00ACC1
 
 const theme = createTheme({
   palette: {
     common: {
-      blue: myBlue,
-      orange: myOrange,
+      orange: '#ffba60',
+      danger: '#ff1744',
+      green: '#00e676',
+      blue: '#2196f3'
     },
     primary: {
       light: '#e2f1f8',
