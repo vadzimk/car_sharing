@@ -7,7 +7,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Close';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import AlertDialog from '../ui/AlertDialog.js';
-import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
@@ -31,7 +31,7 @@ const RowMenuCell = (props) => {
   const classes = useStyles();
   const isInEditMode = api.getRowMode(id) === 'edit';
   const [dialogOpen, setDialogOpen] = useState(false);
-  const currentListing = useSelector(state=>state.listings.find(l=>l.id===id));
+  const history = useHistory();
   
   const handleEditClick = (event) => {
     event.stopPropagation();
@@ -48,14 +48,16 @@ const RowMenuCell = (props) => {
     api.updateRows([{...row, isNew: false}]);
   };
   
-  const handleDeleteClick = (event) => {
+  const handleDelete = (event) => {
+    event.stopPropagation();
+    setDialogOpen(false);
+    console.log('id', id);
+    // TODO dispatch flagDeleteListing(id) not implemented
+  };
+  
+  const openDialog = (event) => {
     event.stopPropagation();
     setDialogOpen(true);
-  };
-  const deleteRow = () => {
-    setDialogOpen(false);
-    api.updateRows([{id, _action: 'delete'}]);
-    // TODO dispatch flagDeleteListing(id)  not implemented
   };
   
   const handleCancelEditClick = (event) => {
@@ -63,6 +65,7 @@ const RowMenuCell = (props) => {
     api.setRowMode(id, 'view');
     
     const row = api.getRow(id);
+    
     if (row.isNew) {
       api.updateRows([{id, _action: 'delete'}]);
     }
@@ -70,7 +73,8 @@ const RowMenuCell = (props) => {
   
   const handleEditAttributesClick = (event) => {
     event.stopPropagation();
-    // TODO open edit attributes in modal
+    const row = api.getRow(id);
+    history.push({pathname:'/listings/edit', state: row});
   };
   
   if (isInEditMode) {
@@ -103,10 +107,10 @@ const RowMenuCell = (props) => {
     <>
       <AlertDialog
         isOpen={dialogOpen}
-        title={`Delete listing ${currentListing.plate} ?`}
+        title={`Delete listing ${api.getRow(id).plate} ?`}
         message={''}
-        onAgree={deleteRow}
-        onCancel={()=>setDialogOpen(false)}
+        onAgree={handleDelete}
+        onCancel={() => setDialogOpen(false)}
       />
       <div className={classes.root}>
         <IconButton
@@ -131,7 +135,8 @@ const RowMenuCell = (props) => {
           color="inherit"
           size="small"
           aria-label="delete"
-          onClick={handleDeleteClick}
+          className={classes.textPrimary}
+          onClick={openDialog}
         >
           <DeleteIcon fontSize="small"/>
         </IconButton>

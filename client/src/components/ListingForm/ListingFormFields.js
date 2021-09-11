@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditListingFields = (props) => {
+const ListingFormFields = (props) => {
   const classes = useStyles();
   
   return (
@@ -249,4 +249,4 @@ const EditListingFields = (props) => {
   );
 };
 
-export default EditListingFields;
+export default ListingFormFields;

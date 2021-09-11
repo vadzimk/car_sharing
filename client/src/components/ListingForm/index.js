@@ -3,28 +3,15 @@
 import React from 'react';
 import * as yup from 'yup';
 import {Formik} from 'formik';
-import EditListingFields from './EditListingFields.js';
+import ListingFormFields from './ListingFormFields.js';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {setNotification} from '../../reducers/notificationReducer.js';
 import {GridContainer} from '../ui/GridRenamed.js';
 import {createListing} from '../../reducers/listingsReducer.js';
 
-const EditListing = () => {
+const ListingForm = ({row={}}) => {
   
-  const initialValues = {
-    plate: '',
-    make: '',
-    model: '',
-    year: '',
-    transmission: '', // TODO add constraint in db
-    seat_number: '', // TODO add constraint in db
-    large_bags_number: '', // TODO add constraint in db
-    category: '',
-    miles_per_rental: '', // TODO add constraint in db
-    active: false,
-    images: [], // {key, path, preview}
-  };
   const transmissionOptions = ['Automatic', 'Manual'];
   const categoryOptions = [
     'Small',
@@ -34,6 +21,20 @@ const EditListing = () => {
     'Premium',
     'Minivan',
     'SUV'];
+  
+  const initialValues = {
+    plate: row.plate || '',
+    make: row.make || '',
+    model: row.model || '',
+    year: row.year || '',
+    transmission: row.transmission ? transmissionOptions.find(i=>i[0]===row.transmission) : '', // TODO add constraint in db
+    seat_number: row.seat_number || '', // TODO add constraint in db
+    large_bags_number: row.large_bags_number || '', // TODO add constraint in db
+    category: row.category || '',
+    miles_per_rental: row.miles_per_rental || '', // TODO add constraint in db
+    active: row.active || false,
+    images: [], // {key, path, preview}
+  };
   
   const validationSchema = yup.object().shape({
     plate: yup.string().required('required'),
@@ -81,7 +82,7 @@ const EditListing = () => {
           onSubmit={onSubmit}
         >
           {(formikProps) =>
-            <EditListingFields
+            <ListingFormFields
               {...formikProps}
               title="Listing"
               options={{transmissionOptions, categoryOptions}}
@@ -97,4 +98,4 @@ const EditListing = () => {
   );
 };
 
-export default EditListing;
+export default ListingForm;

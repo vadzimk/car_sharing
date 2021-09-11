@@ -125,11 +125,10 @@ const ListingTable = ({rows}) => {
       flex: 1,
       minWidth: 100,
       editable: true,
-      type: 'singleSelect',
-      valueOptions: [{label: '1', value: 1}, {label: '2', value: 2}],
-      valueGetter: (params) => `${params.getValue(params.id, 'street') ||
-      ''} ${params.getValue(params.id, 'number') || ''} ${params.getValue(
-        params.id, 'zip') || ''}`,
+      // type: 'singleSelect',
+      // valueOptions: [{label: '1', value: 1}, {label: '2', value: 2}],
+      valueGetter: (params) => `${params.row.street ||
+      ''} ${params.row.number || ''} ${params.row.zip || ''}`,
     }, {
       field: 'base_rate',
       headerName: 'Daly rate',
@@ -165,7 +164,7 @@ const ListingTable = ({rows}) => {
       renderCell: RowMenuCell,
       
     },
-  ].map(c=>({...c, headerAlign: 'center'}));
+  ].map(c => ({...c, headerAlign: 'center'}));
   
   return (
     <div style={{display: 'flex', height: '100%'}}>

@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import theme from '../../Theme.js';
 
 const AlertDialog=({isOpen, title, message, onAgree, onCancel})=> {
 
@@ -21,10 +22,10 @@ const AlertDialog=({isOpen, title, message, onAgree, onCancel})=> {
         </DialogContent>
         <DialogActions>
           <Button onClick={onCancel} color="secondary">
-            Disagree
+            NO
           </Button>
-          <Button onClick={onAgree} color="primary" autoFocus>
-            Agree
+          <Button onClick={onAgree} style={{color: theme.text.primary}} autoFocus>
+            YES
           </Button>
         </DialogActions>
       </Dialog>
