@@ -1,7 +1,12 @@
 import supertest from 'supertest';
 import app from '../app.js';
 import db from '../db';
-import {createUser, newTestUser, existingTestUser, deleteTestUser} from './testHelpers.js';
+import {
+  createUser,
+  newTestUser,
+  existingTestUser,
+  deleteTestUser,
+} from './testHelpers.js';
 import {customAlphabet, urlAlphabet} from 'nanoid';
 
 const api = supertest(app);
@@ -28,7 +33,7 @@ const newListing = {
   category: 'Small',
   miles_per_rental: '', // TODO add constraint in db
   active: false,
-  images: [ createKey('car.jpg'),  createKey('car.jpg')]
+  images: [createKey('car.jpg'), createKey('car.jpg')],
 };
 
 const createListing = async (newListing) => {
@@ -39,17 +44,17 @@ const createListing = async (newListing) => {
 
 describe('new listing', () => {
   
-  beforeAll(async ()=>{
+  beforeAll(async () => {
     await createUser(newTestUser);
     const response = await api.post('/api/user/login').send(existingTestUser);
     token = response.body.token;
-  
+    
   });
   
   test('can be created when valid by authorized user', async () => {
     const response = await createListing(newListing);
     
-    console.log('listing response',response.body);
+    console.log('listing response', response.body);
     
     expect(response.status).toBe(200);
     console.log('listing ERR:', response.body.error);
@@ -58,23 +63,37 @@ describe('new listing', () => {
     expect(response.body).toHaveProperty('keysToUrls');
     console.log('keysToUrls', response.body.keysToUrls);
     console.log('type', typeof response.body.keysToUrls);
-    console.log('keysToUrls value0', response.body.keysToUrls[newListing.images[0]]);
-
+    console.log('keysToUrls value0',
+      response.body.keysToUrls[newListing.images[0]]);
+    
     expect(response.body.keysToUrls[newListing.images[0]]).toBeDefined();
     expect(response.body.keysToUrls[newListing.images[1]]).toBeDefined();
     
-    
-    
     // listing from db
     let listingFromDb;
-    try{
-      listingFromDb = await db.one('select plate from listing where id=$1', [response.body.listing.id]);
+    try {
+      listingFromDb = await db.one('select plate from listing where id=$1',
+        [response.body.listing.id]);
     } catch (e) {
       console.log('can be created when valid ERROR from db:', e);
     }
     expect(listingFromDb.plate).toEqual(newListing.plate.toUpperCase());
   });
-  afterAll(async()=>{
+  
+  test('can be fetched in /get-host-listings', async () => {
+    const result = await api.get('/api/listing/get-host-listings').
+      set('Authorization', `Bearer ${token}`).
+      query({fromDate: new Date(), toDate: new Date()});
+    console.log('get-host-listings result.text.listings', JSON.parse(result.text).listings);
+    expect(result.statusCode).toEqual(200);
+    expect(JSON.parse(result.text).listings).
+      toEqual(expect.arrayContaining(
+        [expect.objectContaining({plate: newListing.plate.toUpperCase()})]
+      ));
+  });
+  
+  // TODO add test when reservation was made it should show valid values of 'num_days_rented' and 'sale_total'
+  afterAll(async () => {
     await deleteTestUser(existingTestUser);
   });
 });
