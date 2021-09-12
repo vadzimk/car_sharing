@@ -55,12 +55,10 @@ const ListingTable = ({rows}) => {
       type: 'boolean',
       editable: true,
       cellClassName: classes.column,
-      flex: 1,
       minWidth: 100,
     }, {
       field: 'plate',
       headerName: 'Plate',
-      flex: 1,
       minWidth: 100,
       
     }, {
@@ -72,20 +70,17 @@ const ListingTable = ({rows}) => {
     }, {
       field: 'model',
       headerName: 'Model',
-      flex: 1,
       minWidth: 100,
       
     }, {
       field: 'year',
       headerName: 'Year',
-      flex: 1,
       minWidth: 100,
       hide: true,
       
     }, {
       field: 'transmission',
       headerName: 'Transmission',
-      flex: 1,
       minWidth: 100,
       hide: true,
       
@@ -93,7 +88,6 @@ const ListingTable = ({rows}) => {
       field: 'seat_number',
       headerName: 'Seats',
       type: 'number',
-      flex: 1,
       minWidth: 100,
       hide: true,
       
@@ -101,29 +95,25 @@ const ListingTable = ({rows}) => {
       field: 'large_bags_number',
       headerName: 'Bags',
       type: 'number',
-      flex: 1,
       minWidth: 100,
       hide: true,
       
     }, {
       field: 'miles_per_rental',
       headerName: 'Miles/rental',
-      flex: 1,
       minWidth: 100,
       type: 'number',
       valueFormatter: (params) => `${params.value || '∞'}`,
     }, {
       field: 'category',
       headerName: 'Category',
-      flex: 1,
       minWidth: 100,
       hide: true,
       
     }, {
       field: 'location',
       headerName: 'Location',
-      flex: 1,
-      minWidth: 100,
+      minWidth: 120,
       editable: true,
       // type: 'singleSelect',
       // valueOptions: [{label: '1', value: 1}, {label: '2', value: 2}],
@@ -134,37 +124,32 @@ const ListingTable = ({rows}) => {
       headerName: 'Daly rate',
       type: 'number',
       editable: true,
-      flex: 1,
-      minWidth: 100,
+      minWidth: 120,
     }, {
       field: 'fee',
       headerName: 'Insurance fee',
       type: 'number',
       editable: true,
-      flex: 1,
-      minWidth: 120,
+      minWidth: 130,
     }, {
-      field: 'num_rentals',
-      headerName: 'Rentals total',
+      field: 'num_days_rented',
+      headerName: 'Days Rented total',
       type: 'number',
-      flex: 1,
-      minWidth: 100,
+      minWidth: 140,
     }, {
       field: 'sale_total',
       headerName: 'Sale total',
       type: 'number',
-      flex: 1,
-      minWidth: 100,
+      minWidth: 130,
     }, {
       field: 'actions',
       headerName: 'Actions',
       sortable: false,
-      flex: 1,
       minWidth: 110,
       renderCell: RowMenuCell,
       
     },
-  ].map(c => ({...c, headerAlign: 'center'}));
+  ].map(c => ({...c, headerAlign: 'center', flex: 1}));
   
   return (
     <div style={{display: 'flex', height: '100%'}}>
