@@ -18,9 +18,9 @@ const create = async (newListing) => {
   }
 };
 
-const getHostListings = async () => {
+const getHostListings = async (dateFrom, dateTo) => {
   try {
-    const res = await api.get('/listing/get-host-listings');
+    const res = await api.get('/listing/get-host-listings', {params: {dateFrom, dateTo}});
     return {
       success: res.status === 200,
       data: res.data,

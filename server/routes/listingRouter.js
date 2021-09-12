@@ -173,9 +173,9 @@ listingRouter.get('/get-host-listings', async (req, res, next) => {
   const userId = req.decodedToken.id;
 
   const text = queries.listing_getall;
-  
+ 
   try {
-    const listings = await db.many(text, [userId]);
+    const listings = await db.many(text, [userId, req.params.fromDate, req.params.toDate]);
     res.status(200).json({listings});
   } catch (e){
     res.status(400).json({error: e.message});

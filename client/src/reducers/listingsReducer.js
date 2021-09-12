@@ -14,9 +14,9 @@ const listingsReducer = (state = [], action) => {
   }
 };
 
-export const getHostListings= ()=>{
+export const getHostListings= (dateFrom, dateTo)=>{
   return async (dispatch)=>{
-    const {success, error, data} = await listingsService.getHostListings();
+    const {success, error, data} = await listingsService.getHostListings(dateFrom, dateTo);
     if(success){
       dispatch({
         type: 'GET_HOST_LISTINGS',
