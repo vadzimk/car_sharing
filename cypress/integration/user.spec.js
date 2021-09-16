@@ -124,7 +124,9 @@ describe('listing', () => {
     }
     cy.get('[type=submit]').click();
     
-    cy.intercept('POST', '/listings/create', (req) => {
+    // changed from
+    // cy.intercept('POST', '/listings/create', (req) => {
+    cy.intercept('POST', '/api/listing/create', (req) => {
       req.on('response', (res) => {
         expect(res.statusCode).to.be.eq(200);
       });

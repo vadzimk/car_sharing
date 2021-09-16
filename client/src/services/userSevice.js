@@ -1,23 +1,5 @@
 import api from './api.js';
 
-const getAllCountries = async () => {
-  try {
-    const res = await api.get('/user/countries');
-    return {
-      success: res.status === 200,
-      data: res.data,
-    };
-  } catch (e) {
-    console.log('caught error', e);
-    return {
-      success: false,
-      error: e.message,
-      data: [],
-    };
-  }
-  
-};
-
 const signUp = async (newUser) => {
   try {
     const res = await api.post('/user/signup', newUser);
@@ -48,10 +30,10 @@ const login = async (credentials) => {
     console.dir('caught error', e);
     return {
       success: false,
-      error: e.response.data.error
+      error: e.response.data.error,
     };
   }
 };
 
-const userService = {getAllCountries, signUp, login};
+const userService = {signUp, login};
 export default userService;

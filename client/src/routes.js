@@ -5,6 +5,8 @@ import ListingForm from './components/ListingForm';
 import NotFound from './components/ui/NotFound.js';
 import Listings from './components/Listings';
 import EditListing from './components/EditListing.js';
+import Locations from './components/Locations.js';
+import LocationForm from './components/LocationForm';
 
 const dummy = (content) => {
   return function NotImplemented () {
@@ -112,7 +114,7 @@ const routes = [
     access: 'public'
   },
   {
-    path: '/listings/create',
+    path: '/listings/new',
     label: 'Edit listing',
     component: ListingForm,
     access: 'ishost'
@@ -127,6 +129,18 @@ const routes = [
     path: '/listings',
     label: 'Listings',
     component: Listings,
+    access: 'ishost'
+  },
+  {
+    path: '/locations/new',
+    label: 'New location',
+    component: LocationForm,
+    access: 'ishost'
+  },
+  {
+    path: '/locations',
+    label: 'Locations',
+    component: Locations,
     access: 'ishost'
   },
   {

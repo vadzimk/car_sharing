@@ -4,6 +4,7 @@ import {Button, makeStyles, TextField, Typography} from '@material-ui/core';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const SignupFields = (props) => {
   const classes = useStyles();
-  
+  const countries = useSelector(state=>state.location.countries);
   return (
     <Form onSubmit={props.handleSubmit}
           style={{
@@ -149,6 +150,7 @@ const SignupFields = (props) => {
           />
           <AutocompleteAsync label="Country"
                              name="country"
+                             optionlist={countries}
                              value={props.values.country}
                              error={Boolean(props.errors.country)}
                              helperText={props.errors.country}

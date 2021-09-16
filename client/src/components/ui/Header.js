@@ -26,10 +26,11 @@ import {makeStyles} from '@material-ui/styles';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
 import routes, {byLabel} from '../../routes.js';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
-  toolbar:{
-    backgroundColor:theme.palette.primary.light,
+  toolbar: {
+    backgroundColor: theme.palette.primary.light,
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     [theme.breakpoints.up('lg')]: {
       marginBottom: '2em',
     },
-
+    
   },
   logo: {
     height: '5em',
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   iconButton: {
     marginLeft: '25px',
     '&:hover': {
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
   },
   drawerIconContainer: {
@@ -97,11 +98,11 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.secondary.main,
     borderBottomWidth: '2px',
-    fontFamily: theme.custom.tab.fontFamily
+    fontFamily: theme.custom.tab.fontFamily,
   },
   drawerItemText: {
-    fontFamily: theme.custom.tab.fontFamily
-  }
+    fontFamily: theme.custom.tab.fontFamily,
+  },
   
 }));
 
@@ -128,13 +129,22 @@ export default function Header () {
     setLocation(newValue);
   };
   
-  const routesForHeader = routes.filter(
-    byLabel(['Home', 'Listings', 'Reservations']),
+  const user = useSelector(state => state.user);
+  let routesForHeader = routes.filter(
+    byLabel(['Home', 'Login']),
   );
+  
+  if (user?.ishost) {
+    routesForHeader = routes.filter(
+      byLabel(['Home', 'Listings', 'Reservations', 'Locations']),
+    );
+  }
   
   const menu = (
     <>
-      <Tabs value={routesForHeader.map(r=>r.path).includes(location) ? location : false} onChange={handleChange}
+      <Tabs value={routesForHeader.map(r => r.path).includes(location) ?
+        location:
+        false} onChange={handleChange}
             className={classes.tabContainer}>
         {
           routesForHeader.map((item) => (
@@ -184,7 +194,11 @@ export default function Header () {
               >
                 <ListItemText disableTypography
                               classes={
-                                {root: location === item.path ? classes.drawerItemTextSelected : classes.drawerItemText}
+                                {
+                                  root: location === item.path ?
+                                    classes.drawerItemTextSelected:
+                                    classes.drawerItemText,
+                                }
                               }>
                   {item.label}
                 </ListItemText>

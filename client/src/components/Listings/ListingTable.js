@@ -1,53 +1,75 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import RowMenuCell from './RowMenuCell.js';
 import {makeStyles} from '@material-ui/core';
+import {createTheme} from '@material-ui/core/styles';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateListing} from '../../reducers/listingsReducer.js';
+
+function getThemePaletteMode (palette) {
+  return palette.type || palette.mode;
+}
+
+const defaultTheme = createTheme();
 
 const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      border: 0,
-      color:
-        theme.palette.type === 'light'
-          ? 'rgba(0,0,0,.85)'
-          :'rgba(255,255,255,0.85)',
-      fontFamily: theme.typography.fontFamily,
-      WebkitFontSmoothing: 'auto',
-      letterSpacing: 'normal',
-      '& .MuiDataGrid-columnsContainer': {
-        backgroundColor: theme.palette.type === 'light' ?
-          theme.palette.primary.light:
-          '#1d1d1d',
-      },
-      '& .MuiDataGrid-iconSeparator': {
-        display: 'none',
-      },
-      '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-        borderRight: `1px solid ${
-          theme.palette.type === 'light' ? '#f0f0f0':'#303030'
-        }`,
-      },
-      '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
-        borderBottom: `1px solid ${
-          theme.palette.type === 'light' ? '#f0f0f0':'#303030'
-        }`,
-      },
-      '& .MuiDataGrid-cell': {
+  (theme) => {
+    const backgroundColor =
+      getThemePaletteMode(theme.palette) === 'dark' ?
+        '#376331':
+        theme.palette.primary.light;
+    return {
+      root: {
+        border: 0,
         color:
           theme.palette.type === 'light'
             ? 'rgba(0,0,0,.85)'
-            :'rgba(255,255,255,0.65)',
+            :'rgba(255,255,255,0.85)',
+        fontFamily: theme.typography.fontFamily,
+        WebkitFontSmoothing: 'auto',
+        letterSpacing: 'normal',
+        '& .MuiDataGrid-columnsContainer': {
+          backgroundColor: theme.palette.type === 'light' ?
+            theme.palette.primary.main:
+            '#1d1d1d',
+        },
+        '& .MuiDataGrid-iconSeparator': {
+          display: 'none',
+        },
+        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+          borderRight: `1px solid ${
+            theme.palette.type === 'light' ? '#f0f0f0':'#303030'
+          }`,
+        },
+        '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+          borderBottom: `1px solid ${
+            theme.palette.type === 'light' ? '#f0f0f0':'#303030'
+          }`,
+        },
+        '& .MuiDataGrid-cell': {
+          color:
+            theme.palette.type === 'light'
+              ? 'rgba(0,0,0,.85)'
+              :'rgba(255,255,255,0.65)',
+          
+        },
+        '& .MuiPaginationItem-root': {
+          borderRadius: 0,
+        },
+        '& .MuiDataGrid-cell--editable': {
+          backgroundColor,
+        },
       },
-      '& .MuiPaginationItem-root': {
-        borderRadius: 0,
-      },
-    },
-  }),
+    };
+  },
+  {defaultTheme},
 );
 
 const ListingTable = ({rows}) => {
   const classes = useStyles();
-  
+  const locationOptions = useSelector(state => state.location.myLocations);
   const columns = [
     {
       field: 'active',
@@ -60,6 +82,7 @@ const ListingTable = ({rows}) => {
       field: 'plate',
       headerName: 'Plate',
       minWidth: 100,
+      sortable: false,
       
     }, {
       field: 'make',
@@ -115,10 +138,20 @@ const ListingTable = ({rows}) => {
       headerName: 'Location',
       minWidth: 120,
       editable: true,
-      // type: 'singleSelect',
-      // valueOptions: [{label: '1', value: 1}, {label: '2', value: 2}],
-      valueGetter: (params) => `${params.row.street ||
-      ''} ${params.row.number || ''} ${params.row.zip || ''}`,
+      type: 'singleSelect',
+      valueOptions: locationOptions.map(l => ({
+        label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
+        value: l.id,
+      })),
+      // [{label: '1', value: 1}, {label: '2', value: 2}],
+      valueGetter: (params) => {
+        console.log('valueGetter value', params.value);
+        return {
+        label: `${params.row.addr_line1 ||
+        ''}${params.row.addr_line2 || ''}${params.row.zip || ''}`.replace(
+          /\s+(?=\s|$)/g, ''),
+        value: params.row.location_id,
+      };},
     }, {
       field: 'base_rate',
       headerName: 'Daly rate',
@@ -151,10 +184,64 @@ const ListingTable = ({rows}) => {
     },
   ].map(c => ({...c, headerAlign: 'center', flex: 1}));
   
+  const [editRowsModel, setEditRowsModel] = React.useState({});
+  
+  const dispatch = useDispatch();
+  // TODO fetch all locations with their ids of the host in redux state on login
+  const handleEditRowsModelChange = React.useCallback((newModel) => {
+    const updatedModel = {...newModel};
+    if (Object.keys(updatedModel).length === 0) { // value has been submitted
+      const id = Number(Object.keys(editRowsModel)[0]);
+      const rowFromState = rows.find(r => r.id === id);
+      const getchangedAttr = (prev, cur) => {
+        const newValue = editRowsModel[id][cur].value;
+        if (rowFromState[cur] !== newValue) {
+          return {
+            ...prev,
+            [cur]: newValue,
+          };
+        } else {
+          return prev;
+        }
+      };
+      const attributes = Object.keys(editRowsModel[id]).
+        reduce(getchangedAttr, {});
+      const rowToSubmit = {id: id, ...attributes};
+      console.log('rowToSubmit', rowToSubmit);
+      // dispatch(updateListing(editRowsModel));
+      
+    }
+    setEditRowsModel(updatedModel);
+  }, [editRowsModel]);
+  
+  //
+  // // eslint-disable-next-line no-unused-vars
+  // const handleRowEditStart = (params, event) => {
+  //   // event.defaultMuiPrevented = true;  // disables double-click edit mode
+  // };
+  //
+  // eslint-disable-next-line no-unused-vars
+  
+  // const handleRowEditStop = (params) => {
+  //   console.dir('handleRowEditStop params', params);
+  // };
+  //
+  // const handleRowEditCommit = (id) => {
+  //   // event.defaultMuiPrevented = true; // disables double-click edit mode
+  //   console.dir('handleRowEditCommit id', id);
+  //   // dispatch(updateListing({}));
+  // };
+  
   return (
     <div style={{display: 'flex', height: '100%'}}>
       <div style={{flexGrow: 1}}>
         <DataGrid
+          // onRowEditStart={handleRowEditStart}
+          // onRowEditStop={handleRowEditStop}
+          // onRowEditCommit={handleRowEditCommit}
+          editRowsModel={editRowsModel}
+          onEditRowsModelChange={handleEditRowsModelChange}
+          editMode="row"
           className={classes.root}
           rows={rows}
           columns={columns}
@@ -165,9 +252,11 @@ const ListingTable = ({rows}) => {
           disableColumnMenu
           disableColumnFilter
           autoHeight
-          editMode="row"
           components={{
             Toolbar: GridToolbar,
+            NoRowsOverlay: function NoRows () {
+              return <div>loading...</div>;
+            },
           }}
         />
       </div>

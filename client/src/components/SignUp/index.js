@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import SignupFields from './SignupFields.js';
@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import {signUpUser} from '../../reducers/userReducer.js';
 import {useHistory} from 'react-router-dom';
 import {GridContainer} from '../ui/GridRenamed.js';
+import {getAllCountries} from '../../reducers/locationReducer.js';
 
 const SignUp = () => {
     
@@ -44,6 +45,9 @@ const SignUp = () => {
     
     const dispatch = useDispatch();
     const history = useHistory();
+    useEffect(()=>{
+      dispatch(getAllCountries());
+    }, []);
     const onSubmit = async (values) => {
       const newUser = {
         ...values,

@@ -39,7 +39,7 @@ const App = () => {
           
           <Header/>
           <Notification/>
-          <Container style={style.mainContent}>
+          <Container   maxWidth="xl" style={style.mainContent}>
             <Switch>
               {
                 routes.map((item) => (item.access === 'ishost' ?
