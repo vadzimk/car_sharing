@@ -9,8 +9,7 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
 
 // TODO implement editing editable cells and dispatch action
-// TODO use calendar dates to calculate column values
-// TODO make column header readable
+// TODO implement editing editable location and dispatch action
 const Listings = () => {
   const date = new Date();
   const [dateFrom, setDateFrom] = useState(new Date(date.getFullYear(), date.getMonth(), 1));
@@ -19,14 +18,17 @@ const Listings = () => {
   const history = useHistory();
   
   const handleNewListing = () => {
-    history.push('/listings/create');
+    history.push('/listings/new');
   };
   
   const dispatch = useDispatch();
+  
   const hostListings = useSelector(state => state.listings);
+  
   useEffect(() => {
-    dispatch(getHostListings());
-  }, []);
+    dispatch(getHostListings(dateFrom, dateTo));
+  }, [dateFrom, dateTo]);
+  
   
   // https://material-ui.com/components/data-grid/editing
   return (

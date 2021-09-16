@@ -2,8 +2,6 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {getAllCountries} from '../../reducers/countriesReducer.js';
-import {useDispatch, useSelector} from 'react-redux';
 
 const AutocompleteAsync = ({
   label,
@@ -12,13 +10,12 @@ const AutocompleteAsync = ({
   error,
   helperText,
   onChange,
+  optionlist
 }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   
   const loading = open && options.length === 0;
-  const dispatch = useDispatch();
-  const countries = useSelector(state=>state.countries);
   
   React.useEffect( () => {
     let active = true;
@@ -26,17 +23,15 @@ const AutocompleteAsync = ({
     if (!loading) {
       return undefined;
     }
-    dispatch(getAllCountries());
-    
- 
+  
     if (active) {
-      setOptions(countries);
+      setOptions(optionlist);
     }
     
     return () => {
       active = false;
     };
-  }, [loading, countries]);
+  }, [loading, optionlist]);
   
   React.useEffect(() => {
     if (!open) {
@@ -53,7 +48,7 @@ const AutocompleteAsync = ({
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.name.toString().
+      getOptionSelected={(option, value) => option.name?.toString().
         toLowerCase() === value.name?.toLowerCase()}
       getOptionLabel={(option) => option.name || ''}
       options={options}

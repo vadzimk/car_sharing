@@ -45,7 +45,7 @@ const ListingFormFields = (props) => {
     >
       <GridContainer
         style={{marginBottom: '3em'}}
-        justifyContent="space-around" // TODO ???
+        justifyContent="space-around"
       >
         <GridItem
           className={classes.item}

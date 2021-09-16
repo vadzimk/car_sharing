@@ -5,18 +5,33 @@ const listingsReducer = (state = [], action) => {
   switch (action.type) {
   case 'CREATE_LISTING':
     return [...state, action.payload];
-  
   case 'GET_HOST_LISTINGS':
     return action.payload;
-  
+  case 'UPDATE_LISTING':
+    return state;
   default:
     return state;
   }
 };
 
-export const getHostListings= ()=>{
+// eslint-disable-next-line no-unused-vars
+export const updateListing=(row)=>{
   return async (dispatch)=>{
-    const {success, error, data} = await listingsService.getHostListings();
+    const {success, error, data} = await listingsService.updateListing();
+    if(success){
+      dispatch({
+        type: 'UPDATE_LISTING',
+        payload: data
+      });
+    }  else {
+    dispatch(setNotification(error,'error'));
+  }
+  };
+};
+
+export const getHostListings= (dateFrom, dateTo)=>{
+  return async (dispatch)=>{
+    const {success, error, data} = await listingsService.getHostListings(dateFrom, dateTo);
     if(success){
       dispatch({
         type: 'GET_HOST_LISTINGS',

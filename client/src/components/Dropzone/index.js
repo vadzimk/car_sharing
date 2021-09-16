@@ -94,10 +94,7 @@ function Dropzone ({handleError, onChange}) {
   const areNotEqual = async (a, b) => {
     const textA = await fetch(a).then(r => r.blob()).then(b => b.text());
     const textB = await fetch(b).then(r => r.blob()).then(b => b.text());
-    console.log('textA', textA);
-    console.log('textB', textB);
     const result = textA.valueOf() !== textB.valueOf();
-    console.log('Not identical', result);
     return result;
   };
   
@@ -130,7 +127,6 @@ function Dropzone ({handleError, onChange}) {
     }
     updatedFiles = files.concat(filteredNewFiles);
     
-    console.dir('updatedFiles', updatedFiles);
     setFiles(updatedFiles);
     onChange(updatedFiles);
   }, [files, onChange]);
