@@ -35,7 +35,6 @@ const RowMenuCell = (props) => {
   
   const handleEditClick = (event) => {
     event.stopPropagation();
-    // TODO send to edit listing route
     api.setRowMode(id, 'edit');
   };
   
@@ -43,7 +42,7 @@ const RowMenuCell = (props) => {
     event.stopPropagation();
     api.commitRowChange(id);
     api.setRowMode(id, 'view');
-    
+    console.log('event from RowMenuCell', event);
     const row = api.getRow(id);
     api.updateRows([{...row, isNew: false}]);
   };
@@ -71,6 +70,7 @@ const RowMenuCell = (props) => {
     }
   };
   
+    // send to edit listing route
   const handleEditAttributesClick = (event) => {
     event.stopPropagation();
     const row = api.getRow(id);

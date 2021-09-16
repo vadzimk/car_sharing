@@ -9,7 +9,7 @@ const notificationReducer = (state={message: '', severity: 'info', handleClose: 
     return state;
   }
 };
-
+// 'success' | 'info' | 'warning' | 'error'
 export const setNotification = (message, severity, handleClose = null) => {
   
   return {
