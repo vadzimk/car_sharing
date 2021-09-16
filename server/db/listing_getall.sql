@@ -11,7 +11,7 @@ with all_listings as (
                         end)                                                                      as num_days_rented,
                     sum(coalesce((s8.to_date - s8.from_date + 1) *
                                  (select rate.base_rate from rate where rate.id = s8.rateid), 0)) as sale_total
-             from (select s6.*, location.number, location.street, location.zipcode
+             from (select s6.*, location.addr_line2, location.addr_line1, location.zipcode, location.id as location_id
                    from (select s5.*, listing_location.locationid, listing_location.timestamp as location_timestamp
                          from (select s4.*, insurance.fee
                                from (select s3.*,
@@ -40,7 +40,7 @@ with all_listings as (
                       s7.large_bags_number, s7.miles_per_rental,
                       s7.active, s7."category", s7.rateid, s7.rate_timestamp, s7.base_rate, s7.insuranceid,
                       s7.insurance_timestamp, s7.fee, s7.locationid,
-                      s7.location_timestamp, s7.number, s7.street, s7.zipcode
+                      s7.location_timestamp, s7.location_id, s7.addr_line2, s7.addr_line1, s7.zipcode
          ) as p
 )
 select listingid as id,
@@ -56,8 +56,9 @@ select listingid as id,
        "category",
        base_rate,
        fee,
-       number,
-       street,
+       location_id,
+       addr_line2,
+       addr_line1,
        zipcode,
        num_days_rented,
        sale_total

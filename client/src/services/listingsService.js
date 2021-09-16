@@ -20,7 +20,8 @@ const create = async (newListing) => {
 
 const getHostListings = async (dateFrom, dateTo) => {
   try {
-    const res = await api.get('/listing/get-host-listings', {params: {dateFrom, dateTo}});
+    const res = await api.get('/listing/get-host-listings',
+      {params: {dateFrom, dateTo}});
     return {
       success: res.status === 200,
       data: res.data,
@@ -59,5 +60,15 @@ const confirmImagesSent = async (listingId, keys) => {
   await api.post('/listing/imagekeys', {listingId, keys});
 };
 
-const listingsService = {create, sendImage, confirmImagesSent, getHostListings};
+const updateListing = async () => {
+
+};
+
+const listingsService = {
+  create,
+  sendImage,
+  confirmImagesSent,
+  getHostListings,
+  updateListing,
+};
 export default listingsService;

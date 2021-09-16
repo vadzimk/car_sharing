@@ -3,11 +3,11 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import userReducer from './reducers/userReducer.js';
 import notificationReducer from './reducers/notificationReducer.js';
-import countriesReducer from './reducers/countriesReducer.js';
+import locationReducer from './reducers/locationReducer.js';
 import listingsReducer from './reducers/listingsReducer.js';
 
 const reducer = combineReducers({
-  countries: countriesReducer,
+  location: locationReducer,
   user: userReducer,
   notification: notificationReducer,
   listings: listingsReducer,
