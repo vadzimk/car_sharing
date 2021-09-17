@@ -8,6 +8,8 @@ import CancelIcon from '@material-ui/icons/Close';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import AlertDialog from '../ui/AlertDialog.js';
 import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {deleteListing} from '../../reducers/listingsReducer.js';
 
 const defaultTheme = createTheme();
 
@@ -32,6 +34,7 @@ const RowMenuCell = (props) => {
   const isInEditMode = api.getRowMode(id) === 'edit';
   const [dialogOpen, setDialogOpen] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
   
   const handleEditClick = (event) => {
     event.stopPropagation();
@@ -51,7 +54,7 @@ const RowMenuCell = (props) => {
     event.stopPropagation();
     setDialogOpen(false);
     console.log('id', id);
-    // TODO dispatch flagDeleteListing(id) not implemented
+    dispatch(deleteListing(id));
   };
   
   const openDialog = (event) => {
@@ -108,7 +111,7 @@ const RowMenuCell = (props) => {
       <AlertDialog
         isOpen={dialogOpen}
         title={`Delete listing ${api.getRow(id).plate} ?`}
-        message={''}
+        message={'This cannot be undone!'}
         onAgree={handleDelete}
         onCancel={() => setDialogOpen(false)}
       />
