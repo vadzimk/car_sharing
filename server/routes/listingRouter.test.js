@@ -41,6 +41,8 @@ const newLocation = {
   addr_line1: '4000 German Springs Rd',
   zipcode: '90001',
 };
+let newListingId;
+let newLocationId;
 
 const createListing = async (newListing) => {
   return await api.post('/api/listing/create').
@@ -66,6 +68,7 @@ describe('new listing', () => {
     // console.log('listing ERR:', response.body.error);
     
     expect(response.body.listing).toHaveProperty('id');
+    newListingId = response.body.listing.id;
     expect(response.body).toHaveProperty('keysToUrls');
     // console.log('keysToUrls', response.body.keysToUrls);
     // console.log('type', typeof response.body.keysToUrls);
@@ -90,10 +93,9 @@ describe('new listing', () => {
     const result = await api.get('/api/listing/get-host-listings').
       set('Authorization', `Bearer ${token}`).
       query({fromDate: new Date(), toDate: new Date()});
-    console.log('get-host-listings result.text.listings',
-      JSON.parse(result.text).listings);
+    console.log('/get-host-listings result.error', result.error);
     expect(result.statusCode).toEqual(200);
-    expect(JSON.parse(result.text).listings).
+    expect(result.body.listings).
       toEqual(expect.arrayContaining(
         [expect.objectContaining({plate: newListing.plate.toUpperCase()})],
       ));
@@ -103,10 +105,34 @@ describe('new listing', () => {
     const result = await api.post('/api/listing/add-location').
       set('Authorization', `Bearer ${token}`).
       send({newLocation});
-    console.log('add-location result.text', result.text);
+    
     expect(result.statusCode).toEqual(200);
-    expect(JSON.parse(result.text).location.addr_line1).toEqual(newLocation.addr_line1);
+    expect(result.body.location.addr_line1).toEqual(newLocation.addr_line1);
+    expect(result.body.location.id).toBeDefined();
+    newLocationId = result.body.location.id;
   });
+  
+  test('can update location, year, active, base_rate, fee in existing listing',
+    async () => {
+      const rowToSubmit = {
+        id: newListingId,
+        location_id: newLocationId,
+        year: 2001,
+        active: !newListing.active,
+        base_rate: '99.00',
+        fee: '29.00',
+        miles_per_rental: 100,
+      };
+      const result = await api.post('/api/listing/update-listing').
+        set('Authorization', `Bearer ${token}`).
+        send(rowToSubmit);
+      
+      console.log('/api/listing/update-listing result error', result.error);
+      expect(result.statusCode).toEqual(200);
+      console.log('/api/listing/update-listing result.body', result.body);
+      expect(result.body.listing_update).toMatchObject(rowToSubmit);
+      
+    });
   
   // TODO add test when reservation was made it should show valid values of 'num_days_rented' and 'sale_total'
   

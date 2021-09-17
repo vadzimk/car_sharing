@@ -196,7 +196,8 @@ listingRouter.post('/add-location', async (req, res, next) => {
     const result = await db.tx(async t => {
       await t.one('select * from zip where code=$1', [zipcode]); // if not found will abort
       console.log('zip found');
-      const location = await t.one(text_location, [addr_line2, addr_line1, zipcode]);
+      const location = await t.one(text_location,
+        [addr_line2, addr_line1, zipcode]);
       console.log('inserted location', location);
       console.log('appuserlocation values', location.id, userId);
       await t.one(text_appuser_location, [location.id, userId]);
@@ -210,4 +211,101 @@ listingRouter.post('/add-location', async (req, res, next) => {
   }
 });
 
+listingRouter.post('/update-listing', async (req, res, next) => {
+  const userId = req.decodedToken.id;
+  
+  const {
+    id,
+    plate, // implemented update
+    make,  // implemented update
+    model, // implemented update
+    year,  // implemented update
+    transmission, // implemented update
+    seat_number, // implemented update
+    large_bags_number, // implemented update
+    miles_per_rental, // implemented update
+    active, // implemented update
+    category, // implemented update
+    base_rate,  // implemented update
+    fee, // implemented update
+    location_id, // implemented update
+    addr_line2,
+    addr_line1,
+    zipcode,
+    num_days_rented,
+    sale_total,
+  } = req.body;
+  
+  console.log('/update-listing req.body', req.body);
+  
+  const text_listing_location = 'insert into listing_location (locationid, listingid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP) returning locationid as location_id;';
+  const text_appuser_location = 'select id from appuser_location where appuserid=$1 and locationid=$2;';
+  const text_location = 'select id as location_id, addr_line1, addr_line2, zipcode from location where id=$1;';
+  const text_rate = 'insert into rate (base_rate) values ($1) returning id as rate_id, base_rate;';
+  const text_listing_rate = 'insert into listing_rate (listingid, rateid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP);';
+  const text_insurance = 'insert into insurance (fee) values ($1) returning id as insurance_id, fee;';
+  const text_listing_insurance = 'insert into listing_insurance (insuranceid, listingid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP);';
+  const listing_columns = [
+    'plate',
+    'make',
+    'model',
+    'year',
+    'transmission',
+    'seat_number',
+    'large_bags_number',
+    'miles_per_rental',
+    'active',
+    'category',
+  ];
+  
+  const listing_data = Object.keys(req.body).
+    filter(k => listing_columns.includes(k)).
+    reduce((obj, key) => ({...obj, [key]: req.body[key]}), {});
+  
+  console.log('listing_data', listing_data);
+  console.log('listing_data_keys', Object.keys(req.body).
+    filter(k => listing_columns.includes(k)));
+  try {
+    const result = await db.tx(async t => {
+      let result = {id};
+      if (location_id) {
+        await t.one(text_appuser_location, [userId, location_id]); // verify this location belongs to this user
+        const location_id_result = await t.one(text_listing_location,
+          [location_id, id]);
+        const location_result = await t.one(text_location,
+          [location_id_result.location_id]);
+        result = {...result, ...location_result};
+        console.log('/update-listing listing_location result', result);
+      }
+      if (Object.keys(listing_data).length) {
+        console.log('begin listing_data', listing_data);
+        const query_listing = pgp.helpers.update(listing_data,
+          Object.keys(listing_data),
+          'listing') + ' where id=$1' +
+          ` returning ${Object.keys(listing_data).toString()}`;
+        console.log('query_listing', query_listing);
+        const listing_result = await t.one(query_listing, [id]);
+        result = {...result, ...listing_result};
+      }
+      if (typeof base_rate !== 'undefined') {
+        const rate_result = await t.one(text_rate, [base_rate]);
+        console.log('rate_result', rate_result);
+        await t.none(text_listing_rate, [id, rate_result.rate_id]);
+        result = {...result, base_rate: rate_result.base_rate};
+      }
+      if (typeof fee !== 'undefined') {
+        // TODO implement update
+        const insurance_result = await t.one(text_insurance, [fee]);
+        await t.none(text_listing_insurance, [insurance_result.insurance_id, id]);
+        result = {...result, fee: insurance_result.fee};
+      }
+      return result;
+    });
+    console.log('listing_update', result);
+    res.status(200).json({listing_update: result});
+  } catch (e) {
+    res.status(400).json({error: e.message});
+    return next(e);
+  }
+});
 export default listingRouter;

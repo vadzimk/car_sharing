@@ -8,7 +8,7 @@ const initOptions = {
 
 export const pgp = pgPromise(initOptions);
 
-
 const db = pgp(config.db); // database instance
+
 
 export default db;
