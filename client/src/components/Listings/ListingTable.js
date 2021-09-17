@@ -134,7 +134,7 @@ const ListingTable = ({rows}) => {
       hide: true,
       
     }, {
-      field: 'location',
+      field: 'location_id',
       headerName: 'Location',
       minWidth: 120,
       editable: true,
@@ -144,14 +144,13 @@ const ListingTable = ({rows}) => {
         value: l.id,
       })),
       // [{label: '1', value: 1}, {label: '2', value: 2}],
-      valueGetter: (params) => {
-        console.log('valueGetter value', params.value);
-        return {
-        label: `${params.row.addr_line1 ||
-        ''}${params.row.addr_line2 || ''}${params.row.zip || ''}`.replace(
-          /\s+(?=\s|$)/g, ''),
-        value: params.row.location_id,
-      };},
+      valueFormatter: (params) => {
+        console.log('location value', params.value);
+        return `${params.row.addr_line1 ||
+        ''} ${params.row.addr_line2 || ''} ${params.row.zip || ''}`.replace(
+          /\s+(?=\s|$)/g, '');},
+      // valueParser: (value)=>{
+      //   console.log('valueparser', value);}
     }, {
       field: 'base_rate',
       headerName: 'Daly rate',
@@ -189,6 +188,7 @@ const ListingTable = ({rows}) => {
   const dispatch = useDispatch();
   // TODO fetch all locations with their ids of the host in redux state on login
   const handleEditRowsModelChange = React.useCallback((newModel) => {
+    // TODO add validation of updated fields
     const updatedModel = {...newModel};
     if (Object.keys(updatedModel).length === 0) { // value has been submitted
       const id = Number(Object.keys(editRowsModel)[0]);
@@ -208,7 +208,7 @@ const ListingTable = ({rows}) => {
         reduce(getchangedAttr, {});
       const rowToSubmit = {id: id, ...attributes};
       console.log('rowToSubmit', rowToSubmit);
-      // dispatch(updateListing(editRowsModel));
+      dispatch(updateListing(rowToSubmit));
       
     }
     setEditRowsModel(updatedModel);
@@ -254,9 +254,9 @@ const ListingTable = ({rows}) => {
           autoHeight
           components={{
             Toolbar: GridToolbar,
-            NoRowsOverlay: function NoRows () {
-              return <div>loading...</div>;
-            },
+            // NoRowsOverlay: function NoRows () {
+            //   return <div>loading...</div>;
+            // },
           }}
         />
       </div>

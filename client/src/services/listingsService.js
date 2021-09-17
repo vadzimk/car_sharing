@@ -60,15 +60,43 @@ const confirmImagesSent = async (listingId, keys) => {
   await api.post('/listing/imagekeys', {listingId, keys});
 };
 
-const updateListing = async () => {
-
+// eslint-disable-next-line no-unused-vars
+const updateListing = async (rowToSubmit) => {
+  try {
+    const res = await api.put('/listing/update-listing', rowToSubmit);
+    return {
+      success: res.status === 200,
+      data: res.data.listing_update,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: e.response.data.error,
+    };
+  }
 };
 
-const listingsService = {
-  create,
-  sendImage,
-  confirmImagesSent,
-  getHostListings,
-  updateListing,
+const deleteListing = async (id) => {
+  const listing = {id};
+  try {
+    const res = await api.delete('/listing/delete-host-listing',
+      {data: listing});
+    return {success: res.status === 204};
+  } catch (e) {
+    return {
+      success: false,
+      error: e.response.data.error,
+    };
+    
+  }
 };
-export default listingsService;
+  
+  const listingsService = {
+    create,
+    sendImage,
+    confirmImagesSent,
+    getHostListings,
+    updateListing,
+    deleteListing,
+  };
+  export default listingsService;
