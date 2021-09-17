@@ -123,7 +123,7 @@ describe('new listing', () => {
         fee: '29.00',
         miles_per_rental: 100,
       };
-      const result = await api.post('/api/listing/update-listing').
+      const result = await api.put('/api/listing/update-listing').
         set('Authorization', `Bearer ${token}`).
         send(rowToSubmit);
       
@@ -133,6 +133,13 @@ describe('new listing', () => {
       expect(result.body.listing_update).toMatchObject(rowToSubmit);
       
     });
+  
+  test('can be marked deleted', async()=>{
+    const listing={id: newListingId};
+    await api.delete('/api/listing/delete-host-listing').
+      set('Authorization', `Bearer ${token}`).
+      send(listing).expect(204);
+  });
   
   // TODO add test when reservation was made it should show valid values of 'num_days_rented' and 'sale_total'
   

@@ -254,9 +254,9 @@ const ListingTable = ({rows}) => {
           autoHeight
           components={{
             Toolbar: GridToolbar,
-            NoRowsOverlay: function NoRows () {
-              return <div>loading...</div>;
-            },
+            // NoRowsOverlay: function NoRows () {
+            //   return <div>loading...</div>;
+            // },
           }}
         />
       </div>

@@ -211,7 +211,7 @@ listingRouter.post('/add-location', async (req, res, next) => {
   }
 });
 
-listingRouter.post('/update-listing', async (req, res, next) => {
+listingRouter.put('/update-listing', async (req, res, next) => {
   const userId = req.decodedToken.id;
   
   const {
@@ -236,6 +236,7 @@ listingRouter.post('/update-listing', async (req, res, next) => {
     sale_total,
   } = req.body;
   
+  // TODO add validation to update-listing
   console.log('/update-listing req.body', req.body);
   
   const text_listing_location = 'insert into listing_location (locationid, listingid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP) returning locationid as location_id;';
@@ -296,7 +297,8 @@ listingRouter.post('/update-listing', async (req, res, next) => {
       if (typeof fee !== 'undefined') {
         // TODO implement update
         const insurance_result = await t.one(text_insurance, [fee]);
-        await t.none(text_listing_insurance, [insurance_result.insurance_id, id]);
+        await t.none(text_listing_insurance,
+          [insurance_result.insurance_id, id]);
         result = {...result, fee: insurance_result.fee};
       }
       return result;
@@ -308,4 +310,25 @@ listingRouter.post('/update-listing', async (req, res, next) => {
     return next(e);
   }
 });
+
+listingRouter.delete('/delete-host-listing', async (req, res, next) => {
+  const userId = req.decodedToken.id;
+  const text_appuser_listing_findid = 'select id as appuser_listing_id from appuser_listing where appuserid=$1 and listingid=$2;';
+  const text_listing = 'update listing set active=false where id=$1';
+  const text_appuser_listing_delete = 'update appuser_listing set deleted=true where id=$1;';
+  
+  try{
+    await db.tx(async t=>{
+      const appuser_listing_result =  await t.one(text_appuser_listing_findid, [userId, req.body.id]);
+      console.log('appuser_listing_result', appuser_listing_result);
+      await t.none(text_listing, [req.body.id]);
+      await t.none(text_appuser_listing_delete, [appuser_listing_result.appuser_listing_id]);
+    });
+    res.status(204).end();
+  } catch (e) {
+    res.status(400).json({error: e.message});
+    return next(e);
+  }
+});
+
 export default listingRouter;

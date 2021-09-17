@@ -8,38 +8,58 @@ const listingsReducer = (state = [], action) => {
   case 'GET_HOST_LISTINGS':
     return action.payload;
   case 'UPDATE_LISTING':
-    return state.map(r=>r.id===action.payload.id ? {...r, ...action.payload} : r);
+    return state.map(
+      r => r.id === action.payload.id ? {...r, ...action.payload}:r);
+  case 'DELETE_LISTING':
+    return state.filter(l => l.id !== action.payload);
   default:
     return state;
   }
 };
 
-// eslint-disable-next-line no-unused-vars
-export const updateListing=(rowToSubmit)=>{
-  return async (dispatch)=>{
-    const {success, error, data} = await listingsService.updateListing(rowToSubmit);
-    if(success){
+export const updateListing = (rowToSubmit) => {
+  return async (dispatch) => {
+    const {success, error, data} = await listingsService.updateListing(
+      rowToSubmit);
+    if (success) {
       dispatch({
         type: 'UPDATE_LISTING',
-        payload: data
+        payload: data,
       });
-    }  else {
-    dispatch(setNotification(error,'error'));
-  }
+    } else {
+      dispatch(setNotification(error, 'error'));
+    }
   };
 };
 
-export const getHostListings= (dateFrom, dateTo)=>{
-  return async (dispatch)=>{
-    const {success, error, data} = await listingsService.getHostListings(dateFrom, dateTo);
-    if(success){
+export const deleteListing = (id) => {
+  return async (dispatch) => {
+    const {success, error} = await listingsService.deleteListing(id);
+    if (success) {
       dispatch({
-        type: 'GET_HOST_LISTINGS',
-        payload: data.listings
+        type: 'DELETE_LISTING',
+        payload: id,
       });
     } else {
-      dispatch(setNotification(error,'error'));
+      dispatch(setNotification(error, 'error'));
     }
+  };
+};
+
+export const getHostListings = (dateFrom, dateTo) => {
+  return async (dispatch) => {
+    // eslint-disable-next-line no-unused-vars
+    const {success, error, data} = await listingsService.getHostListings(
+      dateFrom, dateTo);
+    if (success) {
+      dispatch({
+        type: 'GET_HOST_LISTINGS',
+        payload: data.listings,
+      });
+    }
+    // else {
+    //   dispatch(setNotification(error, 'error'));
+    // }
   };
 };
 

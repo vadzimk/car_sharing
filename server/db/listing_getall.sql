@@ -24,7 +24,7 @@ with all_listings as (
                                                  from (select listing.id as listingid, listing.*
                                                        from appuser_listing
                                                                 join listing on appuser_listing.listingid = listing.id
-                                                       where appuserid = $1) s1
+                                                       where appuserid = $1 and deleted=false) s1
                                                           left outer join listing_rate on listing_rate.listingid = s1.listingid) s2
                                                     left outer join rate on rate.id = s2.rateid) s3
                                               left outer join listing_insurance on listing_insurance.listingid = s3.listingid) s4
