@@ -15,12 +15,12 @@ const LocationFields = (props) => {
   const dispatch = useDispatch();
   
   useEffect(() => {
-    if (props.touched.zipcode && !props.errors.zipcode) {
+    if (props.touched.zipcode && !props.errors.zipcode && props.values.zipcode.length===5) {
       dispatch(getCityStateForZip(props.values.zipcode));
     } else {
       dispatch(clearCityState());
     }
-  }, [props.touched.zipcode, props.errors.zipcode]);
+  }, [props.touched.zipcode, props.errors.zipcode, props.values.zipcode.length]);
   
   useEffect(() => {
     if (props.touched.zipcode &&

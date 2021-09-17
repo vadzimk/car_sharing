@@ -8,16 +8,16 @@ const listingsReducer = (state = [], action) => {
   case 'GET_HOST_LISTINGS':
     return action.payload;
   case 'UPDATE_LISTING':
-    return state;
+    return state.map(r=>r.id===action.payload.id ? {...r, ...action.payload} : r);
   default:
     return state;
   }
 };
 
 // eslint-disable-next-line no-unused-vars
-export const updateListing=(row)=>{
+export const updateListing=(rowToSubmit)=>{
   return async (dispatch)=>{
-    const {success, error, data} = await listingsService.updateListing();
+    const {success, error, data} = await listingsService.updateListing(rowToSubmit);
     if(success){
       dispatch({
         type: 'UPDATE_LISTING',
