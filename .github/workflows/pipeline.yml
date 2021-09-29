@@ -29,6 +29,9 @@ jobs:
         run: npm run test
       - name: e2e tests
         env:
+          accessKeyId: ${{secrets.AWS_ACCESS_KEY_ID}},
+          secretAccessKey: ${{secrets.AWS_SECRET_ACCESS_KEY}},
+          region: ${{secrets.AWS_REGION}},
           DATABASE_URL: ${{secrets.DATABASE_URL}}
           JWT_KEY: ${{secrets.JWT_KEY}}
           CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
