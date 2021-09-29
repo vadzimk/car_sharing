@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import {makeStyles} from '@material-ui/core';
+import {makeStyles} from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => ({
 
 const Locations = () => {
   const classes = useStyles();
+  // eslint-disable-next-line no-unused-vars
   const locations = useSelector(state => state.location.myLocations);
   const history = useHistory();
   

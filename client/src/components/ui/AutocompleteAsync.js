@@ -1,7 +1,7 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AutocompleteAsync = ({
   label,
@@ -48,7 +48,7 @@ const AutocompleteAsync = ({
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.name?.toString().
+      isOptionEqualToValue={(option, value) => option.name?.toString().
         toLowerCase() === value.name?.toLowerCase()}
       getOptionLabel={(option) => option.name || ''}
       options={options}
