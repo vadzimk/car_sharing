@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core';
+import {makeStyles} from '@mui/styles';
 import {Link} from 'react-router-dom';
 import {GridContainer, GridItem} from './GridRenamed.js';
 import routes, {byLabel} from '../../routes.js';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   girdColumn: {
     flexGrow: 1,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: '2rem',
     },
     

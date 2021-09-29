@@ -14,16 +14,16 @@ import {
   ListItem,
   ListItemText,
   Divider,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
-import {makeStyles} from '@material-ui/styles';
-import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import {makeStyles} from '@mui/styles';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
 import routes, {byLabel} from '../../routes.js';
 import {useSelector} from 'react-redux';
@@ -42,10 +42,10 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
   },
   logo: {
     height: '5em',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: '4em',
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       height: '3.5em',
     },
   },
@@ -111,7 +111,7 @@ export default function Header () {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('xs'));
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
   
   const classes = useStyles();
   
@@ -142,10 +142,15 @@ export default function Header () {
   
   const menu = (
     <>
-      <Tabs value={routesForHeader.map(r => r.path).includes(location) ?
+      <Tabs
+        value={routesForHeader.map(r => r.path).includes(location) ?
         location:
-        false} onChange={handleChange}
-            className={classes.tabContainer}>
+        false}
+        onChange={handleChange}
+        className={classes.tabContainer}
+        indicatorColor={'secondary'}
+        textColor={'inherit'}
+      >
         {
           routesForHeader.map((item) => (
             <Tab label={item.label} component={Link} to={item.path}
@@ -160,14 +165,14 @@ export default function Header () {
         className={classes.iconButton}
         disableRipple
         disableFocusRipple
-      >
+        size="large">
         <ExitToAppOutlinedIcon/>
       </IconButton>
     </>
   );
   
   const drawer = (
-    <>
+    <div className={classes.tabContainer}>
       <SwipeableDrawer disableBackdropTransition={!iOS} disableDiscovery={iOS}
                        open={openDrawer} onClose={() => setOpenDrawer(false)}
                        onOpen={() => setOpenDrawer(true)}
@@ -207,11 +212,14 @@ export default function Header () {
           }
         </List>
       </SwipeableDrawer>
-      <IconButton onClick={() => setOpenDrawer(!openDrawer)} disableRipple
-                  className={classes.drawerIconContainer}>
+      <IconButton
+        onClick={() => setOpenDrawer(!openDrawer)}
+        disableRipple
+        className={classes.drawerIconContainer}
+        size="large">
         <MenuIcon/>
       </IconButton>
-    </>
+    </div>
   );
   
   return (
@@ -223,7 +231,7 @@ export default function Header () {
             <img src={logo} alt="company logo" className={classes.logo}/>
           </Button>
           {
-            matches ? drawer:menu
+            matches ? drawer : menu
           }
         </Toolbar>
       </AppBar>

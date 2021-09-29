@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Button, TextField, Typography} from '@material-ui/core';
+import {Button, TextField, Typography} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   clearCityState,
@@ -48,6 +48,7 @@ const LocationFields = (props) => {
         </GridItem>
         <GridItem>
           <TextField
+            variant="standard"
             name="addr_line1"
             label="Street Address"
             fullWidth
@@ -59,6 +60,7 @@ const LocationFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="addr_line2"
             label="Apt, Unit, etc."
             fullWidth
@@ -69,6 +71,7 @@ const LocationFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="zipcode"
             label="Zip code"
             fullWidth
@@ -81,6 +84,7 @@ const LocationFields = (props) => {
             onBlur={props.handleBlur}
           />
           <TextField
+            variant="standard"
             name="city"
             label="City"
             fullWidth
@@ -92,6 +96,7 @@ const LocationFields = (props) => {
           />
           {/*TODO refactor to use for city and state*/}
           <TextField
+            variant="standard"
             name="state"
             label="State"
             fullWidth
@@ -99,7 +104,6 @@ const LocationFields = (props) => {
             size="small"
             value={props.values.state || ''}
             onChange={props.handleChange}
-          
           />
         
         </GridItem>

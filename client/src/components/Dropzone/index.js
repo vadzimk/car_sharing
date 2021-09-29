@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
-import ClearIcon from '@material-ui/icons/Clear';
-import {makeStyles} from '@material-ui/styles';
+import ClearIcon from '@mui/icons-material/Clear';
+import {makeStyles} from '@mui/styles';
 import {GridItem} from '../ui/GridRenamed.js';
 import {customAlphabet, urlAlphabet} from 'nanoid';
 import {useDispatch} from 'react-redux';
