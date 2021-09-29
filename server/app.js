@@ -41,5 +41,5 @@ app.get('/api/version', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 // });
 app.use(express.static(path.resolve(__dirname, '../client/build')));
-
+console.log('static path', path.resolve(__dirname, '../client/build'));
 export default app;
