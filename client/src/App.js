@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import theme from './Theme.js';
 import routes from './routes.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {ThemeProvider, Container} from '@material-ui/core';
-
+import {StyledEngineProvider, Container} from '@mui/material';
+import {ThemeProvider} from '@mui/material/styles';
 import Header from './components/ui/Header.js';
 import Footer from './components/ui/Footer.js';
 import Notification from './components/ui/Notification.js';
@@ -30,35 +30,37 @@ const App = () => {
   
   useEffect(() => {
     dispatch(getUserFromStorage());
-  },[]);
+  }, []);
   
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <div style={style.mainContainer}>
-          
-          <Header/>
-          <Notification/>
-          <Container   maxWidth="xl" style={style.mainContent}>
-            <Switch>
-              {
-                routes.map((item) => (item.access === 'ishost' ?
-                    <HostRoute exact path={item.path}
-                               key={item.label}>
-                      <item.component/>
-                    </HostRoute>:
-                    <Route exact path={item.path}
-                           key={item.label}>
-                      <item.component/>
-                    </Route>
-                ))
-              }
-            </Switch>
-          </Container>
-          <Footer style={style.footer}/>
-        </div>
-      </Router>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div style={style.mainContainer}>
+            
+            <Header/>
+            <Notification/>
+            <Container maxWidth="xl" style={style.mainContent}>
+              <Switch>
+                {
+                  routes.map((item) => (item.access === 'ishost' ?
+                      <HostRoute exact path={item.path}
+                                 key={item.label}>
+                        <item.component/>
+                      </HostRoute>:
+                      <Route exact path={item.path}
+                             key={item.label}>
+                        <item.component/>
+                      </Route>
+                  ))
+                }
+              </Switch>
+            </Container>
+            <Footer style={style.footer}/>
+          </div>
+        </Router>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

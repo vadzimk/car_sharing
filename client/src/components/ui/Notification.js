@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import {makeStyles} from '@material-ui/core/styles';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import {makeStyles} from '@mui/styles';
 import {useSelector} from 'react-redux';
 
 // severity: error, warning, info, success
-function Alert (props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +41,8 @@ const Notification = () => {
     <div className={classes.root}>
       <Snackbar open={open}
                 autoHideDuration={typeof notification.handleClose ===
-                'function' ? null:6000} onClose={() => setOpen(false)}
+                'function' ? null:6000}
+                onClose={() => setOpen(false)}
                 anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
         <Alert onClose={onCloseAlert} severity={notification.severity}>
           {notification.message}

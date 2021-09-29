@@ -1,6 +1,8 @@
 import React from 'react';
 import {GridContainer, GridItem} from './GridRenamed.js';
-import {makeStyles, Typography} from '@material-ui/core';
+import {Typography} from '@mui/material';
+import {makeStyles} from '@mui/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -10,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormContainer = ({title, children})=>{
   // const theme = useTheme();
-  // const matches = useMediaQuery(theme.breakpoints.down('xs'));
+  // const matches = useMediaQuery(theme.breakpoints.down('md'));
   const classes = useStyles();
   
   return(
