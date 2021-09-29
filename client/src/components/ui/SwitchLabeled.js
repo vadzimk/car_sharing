@@ -2,11 +2,10 @@ import {GridContainer, GridItem} from './GridRenamed.js';
 import {
   FormControl,
   FormControlLabel,
-  makeStyles,
   Switch,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+  Typography
+} from '@mui/material';
+import {withStyles, makeStyles} from '@mui/styles';
 import React from 'react';
 
 export const SwitchSecondary = withStyles(theme => ({

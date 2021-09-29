@@ -1,6 +1,7 @@
 import React from 'react';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {Button, makeStyles, TextField, Typography} from '@material-ui/core';
+import {Button, TextField, Typography} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 import AutocompleteAsync from '../ui/AutocompleteAsync.js';
 import {Form} from 'formik';
 import {SwitchLabeledSym} from '../ui/SwitchLabeled.js';
@@ -8,24 +9,22 @@ import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   item: {
-    marginLeft: '1em',
-    marginRight: '1em',
+    // marginLeft: '1em',
+    // marginRight: '1em',
     maxWidth: '25em',
   },
   title: {
-    marginLeft: '1em',
-    marginRight: '1em',
+    // marginLeft: '1em',
+    // marginRight: '1em',
     paddingTop: '5px',
     paddingBottom: '5px',
   },
   
   hiddenTitle: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
-    [theme.breakpoints.only('sm')]: {
-      display: 'none',
-    },
+
   },
 }));
 const SignupFields = (props) => {
@@ -42,16 +41,21 @@ const SignupFields = (props) => {
       <GridContainer
         style={{marginBottom: '3em'}}
         justifyContent="space-around" // TODO ???
+        columnSpacing={3}
       >
         <GridItem
           className={classes.item}
           xs={12}
           sm={6}
         >
-          <Typography variant="h5">
+          <Typography
+            variant="h5"
+            className={classes.title}
+          >
             {props.title}
           </Typography>
           <TextField
+            variant="standard"
             name="first_name"
             label="First Name"
             fullWidth
@@ -63,6 +67,7 @@ const SignupFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             label="Last Name"
             name="last_name"
             fullWidth
@@ -75,6 +80,7 @@ const SignupFields = (props) => {
           />
           <TextField
             label="Email"
+            variant="standard"
             name="email"
             fullWidth
             size="small"
@@ -85,6 +91,7 @@ const SignupFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             label="Password"
             name="password"
             fullWidth
@@ -97,6 +104,7 @@ const SignupFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             label="Confirm password"
             name="passwordConfirm"
             fullWidth
@@ -121,6 +129,7 @@ const SignupFields = (props) => {
             &zwnj;
           </Typography>
           <TextField
+            variant="standard"
             label="Drivers license"
             name="dl_number"
             fullWidth
@@ -158,6 +167,7 @@ const SignupFields = (props) => {
                                value)}
           />
           <TextField
+            variant="standard"
             label="Phone"
             name="phone"
             fullWidth
