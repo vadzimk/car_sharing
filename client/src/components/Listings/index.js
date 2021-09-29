@@ -3,10 +3,10 @@ import {useHistory} from 'react-router-dom';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHostListings} from '../../reducers/listingsReducer.js';
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@mui/material';
 import ListingTable from './ListingTable.js';
-import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import {LocalizationProvider, DatePicker } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 // TODO implement editing editable cells and dispatch action
 // TODO implement editing editable location and dispatch action
@@ -20,7 +20,7 @@ const Listings = () => {
   const handleNewListing = () => {
     history.push('/listings/new');
   };
-  
+
   const dispatch = useDispatch();
   
   const hostListings = useSelector(state => state.listings);
@@ -40,10 +40,12 @@ const Listings = () => {
                     color="secondary">NEW LISTING</Button>
           </GridItem>
           <GridItem>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
             <GridContainer direction="row" spacing={1} justifyContent="flex-end">
-              <GridItem style={{maxWidth: '150px'}} >
-                <KeyboardDatePicker
+              <GridItem
+                style={{maxWidth: '180px'}}
+              >
+                <DatePicker
                   autoOk={true}
                   disableToolbar
                   variant="inline"
@@ -55,10 +57,13 @@ const Listings = () => {
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
+                  renderInput={(params) => <TextField {...params} />}
                 />
               </GridItem>
-              <GridItem style={{maxWidth: '150px'}}>
-                <KeyboardDatePicker
+              <GridItem
+                style={{maxWidth: '180px'}}
+              >
+                <DatePicker
                   autoOk={true}
                   disableToolbar
                   variant="inline"
@@ -70,11 +75,12 @@ const Listings = () => {
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
+                  renderInput={(params) => <TextField {...params} />}
                 />
               </GridItem>
               
             </GridContainer>
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
           </GridItem>
         </GridContainer>
       </GridItem>

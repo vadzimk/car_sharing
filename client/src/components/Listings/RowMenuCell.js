@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/styles';
-import {createTheme, IconButton} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Close';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import {makeStyles} from '@mui/styles';
+import {createTheme, IconButton} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import AlertDialog from '../ui/AlertDialog.js';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
