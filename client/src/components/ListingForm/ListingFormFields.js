@@ -2,33 +2,32 @@ import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {
-  Button, makeStyles,
+  Button,
   TextField, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 import SelectField from '../ui/SelectField.js';
 import {SwitchLabeled} from '../ui/SwitchLabeled.js';
 import Dropzone from '../Dropzone';
 
 const useStyles = makeStyles((theme) => ({
   item: {
-    marginLeft: '1em',
-    marginRight: '1em',
+    // marginLeft: '1em',
+    // marginRight: '1em',
     maxWidth: '25em',
   },
   title: {
-    marginLeft: '1em',
-    marginRight: '1em',
+    // marginLeft: '1em',
+    // marginRight: '1em',
     paddingTop: '5px',
     paddingBottom: '5px',
   },
   
   hiddenTitle: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
-    [theme.breakpoints.only('sm')]: {
-      display: 'none',
-    },
+
   },
 }));
 
@@ -46,6 +45,7 @@ const ListingFormFields = (props) => {
       <GridContainer
         style={{marginBottom: '3em'}}
         justifyContent="space-around"
+        columnSpacing={3}
       >
         <GridItem
           className={classes.item}
@@ -56,6 +56,7 @@ const ListingFormFields = (props) => {
             {props.title}
           </Typography>
           <TextField
+            variant="standard"
             name="plate"
             label="Plate#"
             fullWidth
@@ -67,6 +68,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="make"
             label="Make"
             fullWidth
@@ -78,6 +80,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="model"
             label="Model"
             fullWidth
@@ -89,6 +92,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="year"
             label="Year"
             fullWidth
@@ -107,6 +111,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <SelectField
+            variant="standard"
             name="transmission"
             label="Transmission"
             required
@@ -118,6 +123,7 @@ const ListingFormFields = (props) => {
             onChange={(value) => props.setFieldValue('transmission', value)}
           />
           <TextField
+            variant="standard"
             name="seat_number"
             label="Seat#"
             fullWidth
@@ -136,6 +142,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <TextField
+            variant="standard"
             name="large_bags_number"
             label="Large Bags#"
             fullWidth
@@ -154,6 +161,7 @@ const ListingFormFields = (props) => {
             onChange={props.handleChange}
           />
           <SelectField
+            variant="standard"
             name="category"
             label="Category"
             size="small"
@@ -165,6 +173,7 @@ const ListingFormFields = (props) => {
             onChange={(value) => props.setFieldValue('category', value)}
           />
           <TextField
+            variant="standard"
             name="miles_per_rental"
             label="Miles/rental (empty - unlimited)"
             fullWidth

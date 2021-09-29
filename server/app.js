@@ -36,10 +36,10 @@ app.get('/api/version', (req, res) => {
   res.send('1'); // change to make sure new version is deployed
 });
 
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
-
+// // All other GET requests not handled before will return our React app
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+// });
+app.use(express.static(path.resolve(__dirname, '../client/public')));
 
 export default app;

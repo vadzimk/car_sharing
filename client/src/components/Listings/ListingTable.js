@@ -3,13 +3,13 @@
 import React from 'react';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import RowMenuCell from './RowMenuCell.js';
-import {makeStyles} from '@material-ui/core';
-import {createTheme} from '@material-ui/core/styles';
+import {makeStyles} from '@mui/styles';
+import {createTheme} from '@mui/material/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateListing} from '../../reducers/listingsReducer.js';
 
 function getThemePaletteMode (palette) {
-  return palette.type || palette.mode;
+  return palette.mode || palette.mode;
 }
 
 const defaultTheme = createTheme();
@@ -24,14 +24,14 @@ const useStyles = makeStyles(
       root: {
         border: 0,
         color:
-          theme.palette.type === 'light'
+          theme.palette.mode === 'light'
             ? 'rgba(0,0,0,.85)'
             :'rgba(255,255,255,0.85)',
         fontFamily: theme.typography.fontFamily,
         WebkitFontSmoothing: 'auto',
         letterSpacing: 'normal',
         '& .MuiDataGrid-columnsContainer': {
-          backgroundColor: theme.palette.type === 'light' ?
+          backgroundColor: theme.palette.mode === 'light' ?
             theme.palette.primary.main:
             '#1d1d1d',
         },
@@ -40,17 +40,17 @@ const useStyles = makeStyles(
         },
         '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
           borderRight: `1px solid ${
-            theme.palette.type === 'light' ? '#f0f0f0':'#303030'
+            theme.palette.mode === 'light' ? '#f0f0f0':'#303030'
           }`,
         },
         '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
           borderBottom: `1px solid ${
-            theme.palette.type === 'light' ? '#f0f0f0':'#303030'
+            theme.palette.mode === 'light' ? '#f0f0f0':'#303030'
           }`,
         },
         '& .MuiDataGrid-cell': {
           color:
-            theme.palette.type === 'light'
+            theme.palette.mode === 'light'
               ? 'rgba(0,0,0,.85)'
               :'rgba(255,255,255,0.65)',
           
@@ -68,8 +68,21 @@ const useStyles = makeStyles(
 );
 
 const ListingTable = ({rows}) => {
+  console.dir('rows', rows);
   const classes = useStyles();
-  const locationOptions = useSelector(state => state.location.myLocations);
+  const locations = useSelector(state => state.location.myLocations);
+  const locationOptions = locations.map(l => ({
+    label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
+    value: l.id,
+  }));
+  const formatLocationValue = (...theArgs)=>{
+    return theArgs.reduce((prev, curr)=>{
+      return `${prev} ${curr || ''}`;
+    }, '').replace(
+      /\s+(?=\s|$)/g, '');
+  };
+  
+  
   const columns = [
     {
       field: 'active',
@@ -139,18 +152,11 @@ const ListingTable = ({rows}) => {
       minWidth: 120,
       editable: true,
       type: 'singleSelect',
-      valueOptions: locationOptions.map(l => ({
-        label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
-        value: l.id,
-      })),
+      valueOptions: locationOptions,
       // [{label: '1', value: 1}, {label: '2', value: 2}],
-      valueFormatter: (params) => {
-        console.log('location value', params.value);
-        return `${params.row.addr_line1 ||
-        ''} ${params.row.addr_line2 || ''} ${params.row.zip || ''}`.replace(
-          /\s+(?=\s|$)/g, '');},
-      // valueParser: (value)=>{
-      //   console.log('valueparser', value);}
+      renderCell: ({row}) =>(
+          formatLocationValue(row.addr_line1, row.addr_line2, row.zipcode)
+        ),
     }, {
       field: 'base_rate',
       headerName: 'Daly rate',

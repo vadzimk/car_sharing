@@ -5,8 +5,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
   formControl: {
@@ -23,6 +23,7 @@ const SelectField = (props) => {
       error={props.error}
       size={props.size}
       name={props.name}
+      variant="standard"
     >
       <InputLabel
         required={props.required}
