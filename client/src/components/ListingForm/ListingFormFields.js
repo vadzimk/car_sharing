@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   
   hiddenTitle: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
 

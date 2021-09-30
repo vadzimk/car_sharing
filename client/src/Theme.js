@@ -54,7 +54,7 @@ const theme = createTheme({
     },
     h6: {
       ...defaultTheme.typography.h6,
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Roboto',
     },
   },
   custom: {

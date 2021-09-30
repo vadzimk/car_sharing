@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import db from './db/index.js';
+
 const requestLogger = (req, res, next) => {
   
   if (process.env.NODE_ENV !== 'test9') {
@@ -38,4 +41,37 @@ const getTokenFromRequest = (req, res, next) => {
   next();
 };
 
-export default {requestLogger, errorHandler, getTokenFromRequest};
+const decodeHostToken = async (req, res, next) => {
+  console.log('hello from decodeHostToken');
+  try {
+    console.log('req.token', req.token);
+    const decodedToken = jwt.verify(req.token, process.env.JWT_KEY);
+    req.decodedToken = decodedToken;
+    
+    if (!decodedToken.ishost) {
+      throw new Error('Unauthorized token');
+    }
+    
+    const userId = req.decodedToken.id;
+    console.log('userId', userId);
+    try {
+      const text_appuser = 'select id from appuser where id=$1';
+      await db.one(text_appuser, [userId]);
+      console.log('decodeHostToken success');
+    } catch (e) {
+      throw new Error('User not found');
+    }
+    next();
+  } catch (e) {
+    res.status(401).json({error: e.message});
+    return next(e);
+  }
+  
+};
+
+export default {
+  requestLogger,
+  errorHandler,
+  getTokenFromRequest,
+  decodeHostToken,
+};
