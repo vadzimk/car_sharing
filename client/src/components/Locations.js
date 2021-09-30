@@ -2,15 +2,41 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@mui/styles';
+import AddIcon from '@mui/icons-material/Add';
+import {Typography} from '@mui/material';
+import {GridContainer} from './ui/GridRenamed.js';
 
 const useStyles = makeStyles(() => ({
-  card: {
-    width: '100px',
-    height: '100px',
-    border: '1px solid black',
+  baseCard: {
+    width: '200px',
+    height: '200px',
+    border: '1px gray',
+    borderRadius: '10px',
+    display: 'flex',
+ 
+  },
+  addCard: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '0.5rem',
+    borderStyle: 'dashed',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  addressCard: {
+    borderStyle: 'solid',
+    flexDirection: 'column',
   },
   container: {
+    margin: '1rem',
     display: 'flex',
+  },
+  iconContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
@@ -25,23 +51,48 @@ const Locations = () => {
   };
   
   return (
-    <div>
-      <h5>My locations</h5>
+    <GridContainer
+      direction="column"
+      justifyContent="flex-start"
+      style={{
+        height: '100%',
+        margin: 'auto',
+        maxWidth: '60em',
+      }}
+    >
+      <Typography variant="h5">Your locations</Typography>
       <div className={classes.container}>
-        <div className={classes.card}>
-          <button onClick={handleAddLocation}>Add location</button>
+        <div className={`${classes.baseCard} ${classes.addCard}`}
+             onClick={handleAddLocation}
+        >
+          <div
+            className={classes.iconContainer}
+          >
+            <AddIcon
+              sx={{fontSize: '4rem'}}
+            />
+            <Typography variant="h6">Add address</Typography>
+          </div>
         </div>
         {locations.map(
           l => (
             <div
               key={l.locationid}
-              className={classes.card}
+              className={`${classes.baseCard} ${classes.addressCard}`}
             >
-              {l.addr_line1} ${l.addr_line2}
+              <Typography paragraph>
+                {l.addr_line1}
+              </Typography>
+              <Typography paragraph>
+                {l.addr_line2}
+              </Typography>
+              <Typography paragraph>
+                {l.zipcode}
+              </Typography>
             </div>
           ))}
       </div>
-    </div>
+    </GridContainer>
   );
 };
 
