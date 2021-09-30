@@ -6,7 +6,7 @@ const listingsReducer = (state = [], action) => {
   case 'CREATE_LISTING':
     return [...state, action.payload];
   case 'GET_HOST_LISTINGS':
-    return action.payload;
+    return [...action.payload];
   case 'UPDATE_LISTING':
     return state.map(
       r => r.id === action.payload.id ? {...r, ...action.payload}:r);

@@ -8,8 +8,6 @@ import ListingTable from './ListingTable.js';
 import {LocalizationProvider, DatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
-// TODO implement editing editable cells and dispatch action
-// TODO implement editing editable location and dispatch action
 const Listings = () => {
   const date = new Date();
   const [dateFrom, setDateFrom] = useState(new Date(date.getFullYear(), date.getMonth(), 1));
