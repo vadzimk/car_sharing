@@ -3,23 +3,25 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@mui/styles';
 import AddIcon from '@mui/icons-material/Add';
-import {Typography} from '@mui/material';
+import {IconButton, Typography} from '@mui/material';
 import {GridContainer} from './ui/GridRenamed.js';
 import {getUserLocations} from '../reducers/locationReducer.js';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import {setNotification} from '../reducers/notificationReducer.js';
 
 const useStyles = makeStyles(() => ({
   baseCard: {
-    width: '200px',
-    height: '200px',
+    width: '150px',
+    height: '150px',
     border: '1px gray',
     borderRadius: '10px',
     display: 'flex',
- 
+    margin: '0.5rem',
   },
   addCard: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: '0.5rem',
     borderStyle: 'dashed',
     '&:hover': {
       cursor: 'pointer',
@@ -29,9 +31,17 @@ const useStyles = makeStyles(() => ({
     borderStyle: 'solid',
     flexDirection: 'column',
   },
+  addressCardContent: {
+    margin: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'space-between',
+  },
   container: {
     margin: '1rem',
     display: 'flex',
+    flexWrap: 'wrap',
   },
   iconContainer: {
     display: 'flex',
@@ -48,12 +58,22 @@ const Locations = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getUserLocations());
   }, []);
   
   const handleAddLocation = () => {
     history.push('/locations/new');
+  };
+  
+  const handleDeleteAddress = () => {
+    // TODO implement delete location
+    dispatch(setNotification('not implemented', 'warning'));
+  };
+  
+  const handleEditAddress = () => {
+    // TODO implement edit location
+    dispatch(setNotification('not implemented', 'warning'));
   };
   
   return (
@@ -86,15 +106,27 @@ const Locations = () => {
               key={l.locationid}
               className={`${classes.baseCard} ${classes.addressCard}`}
             >
-              <Typography paragraph>
-                {l.addr_line1}
-              </Typography>
-              <Typography paragraph>
-                {l.addr_line2}
-              </Typography>
-              <Typography paragraph>
-                {l.zipcode}
-              </Typography>
+              <div className={classes.addressCardContent}>
+                <div>
+                  <Typography>
+                    {l.addr_line1}
+                  </Typography>
+                  <Typography>
+                    {l.addr_line2}
+                  </Typography>
+                  <Typography>
+                    {l.zipcode}
+                  </Typography>
+                </div>
+                <div style={{alignSelf: 'flex-end'}}>
+                  <IconButton onClick={handleEditAddress}>
+                    <EditIcon/>
+                  </IconButton>
+                  <IconButton onClick={handleDeleteAddress}>
+                    <DeleteOutlineIcon/>
+                  </IconButton>
+                </div>
+              </div>
             </div>
           ))}
       </div>

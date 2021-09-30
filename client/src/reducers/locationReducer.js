@@ -12,7 +12,7 @@ const locationReducer = (state = {countries: [], zip_city_state: {}, userLocatio
   case 'NEW_LOCATION':
     return {...state, userLocations: [...state.userLocations, action.payload ] };
   case 'GET_USER_LOCATIONS':
-    return {...state, userLocations: action.payload};
+    return {...state, userLocations: [...action.payload]};
   default:
     return state;
   }
