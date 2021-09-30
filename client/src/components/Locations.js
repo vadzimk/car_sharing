@@ -1,10 +1,11 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@mui/styles';
 import AddIcon from '@mui/icons-material/Add';
 import {Typography} from '@mui/material';
 import {GridContainer} from './ui/GridRenamed.js';
+import {getUserLocations} from '../reducers/locationReducer.js';
 
 const useStyles = makeStyles(() => ({
   baseCard: {
@@ -43,8 +44,13 @@ const useStyles = makeStyles(() => ({
 const Locations = () => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
-  const locations = useSelector(state => state.location.myLocations);
+  const locations = useSelector(state => state.location.userLocations);
   const history = useHistory();
+  const dispatch = useDispatch();
+  
+  useEffect(()=>{
+    dispatch(getUserLocations());
+  }, []);
   
   const handleAddLocation = () => {
     history.push('/locations/new');

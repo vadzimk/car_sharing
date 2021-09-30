@@ -1,7 +1,7 @@
 import {setNotification} from './notificationReducer.js';
 import locationService from '../services/locationService.js';
 
-const locationReducer = (state = {countries: [], zip_city_state: {}, myLocations:[]}, action) => {
+const locationReducer = (state = {countries: [], zip_city_state: {}, userLocations:[]}, action) => {
   switch (action.type) {
   case 'GET_ALL_COUNTRIES':
     return {...state, countries: action.payload};
@@ -10,7 +10,9 @@ const locationReducer = (state = {countries: [], zip_city_state: {}, myLocations
   case 'CLEAR_CITY_STATE':
     return {...state, zip_city_state: {}};
   case 'NEW_LOCATION':
-    return {...state, myLocations: [...state.myLocations, action.payload ] };
+    return {...state, userLocations: [...state.userLocations, action.payload ] };
+  case 'GET_USER_LOCATIONS':
+    return {...state, userLocations: action.payload};
   default:
     return state;
   }
@@ -74,6 +76,20 @@ export const createLocation = (newLocation, onSuccess = () => {
       dispatch(setNotification(error, 'error'));
     }
     onSuccess();
+  };
+};
+
+export const getUserLocations =()=>{
+  return async (dispatch)=>{
+    const {success, error, data}= await locationService.getUserLocations();
+    if(success){
+      dispatch({
+        type: 'GET_USER_LOCATIONS',
+        payload: data
+      });
+    } else{
+      dispatch(setNotification(error, 'error'));
+    }
   };
 };
 

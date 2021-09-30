@@ -101,29 +101,7 @@ userRouter.post('/login', async (req, res, next) => {
       first_name: user.first_name,
     };
     
-    if (user.ishost) {
-      // get host locations
-      const text_locations = 'select s5.locationid, s5.addr_line2, s5.addr_line1, s5.zipcode, s5.city, s5.country, state.name as state, state.abbreviation as state_abbr\n' +
-        'from (\n' +
-        '         select s4.*, country.name as country\n' +
-        '         from (\n' +
-        '                  select s3.*, city.name as city, city.countryid, city.stateid\n' +
-        '                  from (\n' +
-        '                           select s2.*, zip.cityid\n' +
-        '                           from (\n' +
-        '                                    select s1.locationid, location.addr_line2, location.addr_line1, location.zipcode\n' +
-        '                                    from (select appuser_location.locationid\n' +
-        '                                          from appuser_location\n' +
-        '                                          where appuserid = $1) as s1\n' +
-        '                                             join location on location.id = s1.locationid) as s2\n' +
-        '                                    join zip on zip.code = s2.zipcode) as s3\n' +
-        '                           join city on city.id = s3.cityid) as s4\n' +
-        '                  join country on country.id = s4.countryid) as s5\n' +
-        '         join state on state.id = s5.stateid';
-      const hostLocations = await db.any(text_locations, [user.id]);
-      
-      userForToken.locations = hostLocations;
-    }
+   
     console.log('userForToken', userForToken);
     const token = jwt.sign(userForToken, process.env.JWT_KEY);
     res.status(200).json({
@@ -131,7 +109,6 @@ userRouter.post('/login', async (req, res, next) => {
       first_name: user.first_name,
       email: user.username,
       ishost: user.ishost,
-      locations:userForToken.locations
     });
   } catch (e) {
     if (e instanceof pgp.errors.QueryResultError) {

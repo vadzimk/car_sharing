@@ -57,5 +57,18 @@ const createLocation = async (newLocation) => {
   }
 };
 
-const locationService = {getAllCountries, createLocation, getStatesForZip, getCityStateForZip};
+const getUserLocations = async()=>{
+  try{
+    const res = await api.get('/location');
+    return {
+      success: res.status === 200,
+      data: res.data
+    };
+  } catch (e) {
+    return {success: false, error: e.response.data.error};
+  
+  }
+};
+
+const locationService = {getAllCountries, createLocation, getStatesForZip, getCityStateForZip, getUserLocations};
 export default locationService;
