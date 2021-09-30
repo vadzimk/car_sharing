@@ -70,10 +70,10 @@ const useStyles = makeStyles(
 const ListingTable = ({rows}) => {
   console.dir('rows', rows);
   const classes = useStyles();
-  const locations = useSelector(state => state.location.myLocations);
+  const locations = useSelector(state => state.location.userLocations);
   const locationOptions = locations.map(l => ({
     label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
-    value: l.id,
+    value: l.locationid,
   }));
   const formatLocationValue = (...theArgs)=>{
     return theArgs.reduce((prev, curr)=>{
@@ -81,8 +81,7 @@ const ListingTable = ({rows}) => {
     }, '').replace(
       /\s+(?=\s|$)/g, '');
   };
-  
-  
+
   const columns = [
     {
       field: 'active',
@@ -154,9 +153,9 @@ const ListingTable = ({rows}) => {
       type: 'singleSelect',
       valueOptions: locationOptions,
       // [{label: '1', value: 1}, {label: '2', value: 2}],
-      renderCell: ({row}) =>(
-          formatLocationValue(row.addr_line1, row.addr_line2, row.zipcode)
-        ),
+      renderCell: ({row}) => {
+        return formatLocationValue(row.addr_line1, row.addr_line2, row.zipcode);
+      },
     }, {
       field: 'base_rate',
       headerName: 'Daly rate',
