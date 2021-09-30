@@ -70,7 +70,7 @@ const useStyles = makeStyles(
 const ListingTable = ({rows}) => {
   console.dir('rows', rows);
   const classes = useStyles();
-  const locations = useSelector(state => state.location.myLocations);
+  const locations = useSelector(state => state.location.userLocations);
   const locationOptions = locations.map(l => ({
     label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
     value: l.id,
