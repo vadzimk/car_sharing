@@ -4,13 +4,13 @@ import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@mui/styles';
 import AddIcon from '@mui/icons-material/Add';
 import {IconButton, Typography} from '@mui/material';
-import {GridContainer} from './ui/GridRenamed.js';
+import {GridContainer} from '../ui/GridRenamed.js';
 import {
   deleteUserLocation,
   getUserLocations,
-} from '../reducers/locationReducer.js';
+} from '../../reducers/locationReducer.js';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import AlertDialog from './ui/AlertDialog.js';
+import AlertDialog from '../ui/AlertDialog.js';
 
 const useStyles = makeStyles(() => ({
   baseCard: {
@@ -28,6 +28,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       cursor: 'pointer',
     },
+    backgroundColor: 'inherit',
   },
   addressCard: {
     borderStyle: 'solid',
@@ -100,7 +101,7 @@ const Locations = () => {
       >
         <Typography variant="h5">Your locations</Typography>
         <div className={classes.container}>
-          <div className={`${classes.baseCard} ${classes.addCard}`}
+          <button className={`${classes.baseCard} ${classes.addCard}`}
                onClick={handleAddLocation}
           >
             <div
@@ -111,12 +112,13 @@ const Locations = () => {
               />
               <Typography variant="h6">Add address</Typography>
             </div>
-          </div>
+          </button>
           {locations.map(
             l => (
               <div
                 key={l.locationid}
                 className={`${classes.baseCard} ${classes.addressCard}`}
+                data-cy="addressCard"
               >
                 <div className={classes.addressCardContent}>
                   <div>
@@ -131,7 +133,10 @@ const Locations = () => {
                     </Typography>
                   </div>
                   <div style={{alignSelf: 'flex-end'}}>
-                    <IconButton onClick={()=> handleBinClick(l)}>
+                    <IconButton
+                      onClick={()=> handleBinClick(l)}
+                      data-cy="deleteButton"
+                    >
                       <DeleteOutlineIcon/>
                     </IconButton>
                   </div>

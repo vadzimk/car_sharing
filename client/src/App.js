@@ -10,6 +10,7 @@ import Notification from './components/ui/Notification.js';
 import {useDispatch} from 'react-redux';
 import {getUserFromStorage} from './reducers/userReducer.js';
 import HostRoute from './components/HostRoute.js';
+import {CypressHistorySupport} from 'cypress-react-router';
 
 const App = () => {
   const style = {
@@ -36,8 +37,8 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <Router>
+          <CypressHistorySupport/>
           <div style={style.mainContainer}>
-            
             <Header/>
             <Notification/>
             <Container maxWidth="xl" style={style.mainContent}>

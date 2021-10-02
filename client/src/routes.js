@@ -5,7 +5,7 @@ import ListingForm from './components/ListingForm';
 import NotFound from './components/ui/NotFound.js';
 import Listings from './components/Listings';
 import EditListing from './components/EditListing.js';
-import Locations from './components/Locations.js';
+import Locations from './components/Locations';
 import LocationForm from './components/LocationForm';
 
 const dummy = (content) => {
