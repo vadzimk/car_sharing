@@ -36,6 +36,14 @@ describe('location', () => {
     console.log('getUserLocations', result.body);
   });
   
+  test('can be deleted', async () => {
+    await api.delete('/api/location').
+      set('Authorization', `Bearer ${token}`).
+      send({locationid: newLocationId}).
+      expect(204);
+    
+  });
+  
   afterAll(async () => {
     await deleteTestUser(existingTestUser);
   });
