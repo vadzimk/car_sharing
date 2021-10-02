@@ -20,7 +20,7 @@ const getAllCountries = async () => {
 
 const getStatesForZip = async (zipcode) => {
   try {
-    const res = await api.get('/user/states', {params:{zipcode}});
+    const res = await api.get('/user/states', {params: {zipcode}});
     return {
       success: res.status === 200,
       data: res.data,
@@ -30,17 +30,17 @@ const getStatesForZip = async (zipcode) => {
   }
 };
 
-const getCityStateForZip = async (zipcode)=>{
+const getCityStateForZip = async (zipcode) => {
   console.log('locationService.getCityStateForZip', zipcode);
-  try{
-    const res = await api.get('/user/data-for-zip', {params:{zipcode}});
+  try {
+    const res = await api.get('/user/data-for-zip', {params: {zipcode}});
     return {
       success: res.status === 200,
       data: res.data,
     };
   } catch (e) {
     return {success: false, error: e.response.data.error};
-  
+    
   }
 };
 
@@ -57,18 +57,31 @@ const createLocation = async (newLocation) => {
   }
 };
 
-const getUserLocations = async()=>{
-  try{
+const getUserLocations = async () => {
+  try {
     const res = await api.get('/location');
     return {
       success: res.status === 200,
-      data: res.data
+      data: res.data,
     };
   } catch (e) {
     return {success: false, error: e.response.data.error};
-  
   }
 };
-
-const locationService = {getAllCountries, createLocation, getStatesForZip, getCityStateForZip, getUserLocations};
+const deleteUserLocation = async (locationid) => {
+  try {
+    const res = await api.delete('/location', {data: {locationid}});
+    return {success: res.status === 204};
+  } catch (e) {
+    return {success: false, error: e.response.data.error};
+  }
+};
+const locationService = {
+  getAllCountries,
+  createLocation,
+  getStatesForZip,
+  getCityStateForZip,
+  getUserLocations,
+  deleteUserLocation,
+};
 export default locationService;
