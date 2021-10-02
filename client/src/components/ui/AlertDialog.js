@@ -7,8 +7,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import theme from '../../Theme.js';
 
-const AlertDialog=({isOpen, title, message, onAgree, onCancel})=> {
-
+const AlertDialog = ({isOpen, title, message, onAgree, onCancel}) => {
+  
   return (
     <div>
       <Dialog
@@ -24,7 +24,10 @@ const AlertDialog=({isOpen, title, message, onAgree, onCancel})=> {
           <Button onClick={onCancel} color="secondary">
             NO
           </Button>
-          <Button onClick={onAgree} style={{color: theme.text.primary}} autoFocus>
+          <Button onClick={onAgree} style={{color: theme.text.primary}}
+                  autoFocus
+                  data-cy="btnConfirm"
+          >
             YES
           </Button>
         </DialogActions>
