@@ -22,9 +22,8 @@ import pgPromise from 'pg-promise';
 import dotenv from 'dotenv';
 
 dotenv.config();
-import config from '../../../server/config.js';
+import config from './config.js';
 
-console.log('config', config);
 
 const initOptions = {
   promiseLib: promise, // overriding the default (ES6 Promise);
