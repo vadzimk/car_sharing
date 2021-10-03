@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.spec.js"
+      ],
+      "rules": {
+        "jest/valid-expect": 0
+      }
+    }
+  ]
+}
