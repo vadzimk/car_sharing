@@ -7,7 +7,6 @@
   },
   "scripts": {
     "test": "cd ./server && npm run test && cd ../client && npm run test -- --watchAll=false",
-    "testOld:e2e": "cross-env NODE_ENV=test cypress run",
     "test:e2e": "cd ./client && npm run cypress:e2e",
     "start": "cd ./server && npm run start",
     "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run start\"",
@@ -15,7 +14,6 @@
     "build": "cd ./client && npm run build",
     "postinstall": "cd ./server && npm install && cd ../client && npm install",
     "prepare": "husky install",
-    "e2eOld": "cross-env NODE_ENV=test cypress open",
     "e2e": "cd ./client && npm run cypress:open",
     "test:silent": "cd ./server && npm run test -- --silent && cd ../client && npm run test -- --watchAll=false --silent"
   },
@@ -23,19 +21,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-register": "^6.26.0",
-    "bluebird": "^3.7.2",
-    "concurrently": "^6.2.0",
-    "cross-env": "^7.0.3",
-    "dotenv": "^10.0.0",
-    "pg": "^8.7.1",
-    "pg-promise": "^10.11.0"
+    "concurrently": "^6.2.0"
   },
   "devDependencies": {
-    "@testing-library/cypress": "^8.0.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "cypress": "^7.7.0",
-    "cypress-file-upload": "^5.0.8",
     "husky": "^7.0.0"
   }
 }

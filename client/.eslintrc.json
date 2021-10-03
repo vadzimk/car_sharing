@@ -57,14 +57,11 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "jest/globals": true,
-    "cypress/globals": true
+    "jest/globals": true
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:cypress/recommended",
-    "plugin:chai-friendly/recommended"
+    "plugin:react/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -75,9 +72,7 @@
   },
   "plugins": [
     "react",
-    "jest",
-    "cypress",
-    "chai-friendly"
+    "jest"
   ],
   "rules": {
     "indent": [
@@ -101,14 +96,6 @@
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
     "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error",
-    "cypress/no-assigning-return-values": "error",
-    "cypress/no-unnecessary-waiting": "error",
-    "cypress/assertion-before-screenshot": "warn",
-    "cypress/no-force": "warn",
-    "cypress/no-async-tests": "error",
-    "cypress/no-pause": "error",
-    "no-unused-expressions": 0,
-    "chai-friendly/no-unused-expressions": 2
+    "jest/valid-expect": "error"
   }
 }
