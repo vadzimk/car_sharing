@@ -68,4 +68,17 @@ locationRouter.get('/', async (req, res, next) => {
   
 });
 
+locationRouter.delete('/', async(req, res, next)=>{
+  // TODO allow only to delete location if no car is assigned to it
+  const userId = req.decodedToken.id;
+  const text = 'delete from appuser_location where appuserid=$1 and locationid=$2;';
+  try{
+    await db.none(text, [userId, req.body.locationid]);
+    res.status(204).end();
+  } catch (e) {
+    res.status(400).json({error: e.message});
+    return next(e);
+  }
+});
+
 export default locationRouter;
