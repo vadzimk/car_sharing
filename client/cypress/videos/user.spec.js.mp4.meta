@@ -1,0 +1,31 @@
+;FFMETADATA1
+[CHAPTER]
+TIMEBASE=1/1000
+START=-7284
+END=16906
+title=user can signup successfully
+[CHAPTER]
+TIMEBASE=1/1000
+START=41064
+END=41108
+title=user redirects to /login after successful signup
+[CHAPTER]
+TIMEBASE=1/1000
+START=35919
+END=41158
+title=user can login successfully
+[CHAPTER]
+TIMEBASE=1/1000
+START=18800
+END=46406
+title=listing can be created by an authorized user
+[CHAPTER]
+TIMEBASE=1/1000
+START=65554
+END=74104
+title=location can be created by host
+[CHAPTER]
+TIMEBASE=1/1000
+START=81651
+END=82666
+title=location can be deleted
