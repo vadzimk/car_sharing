@@ -13,9 +13,21 @@ const userReducer = (state = null, action) => {
     };
   case 'GET_USER_FROM_STORAGE':
     return action.payload;
+  case 'LOGOUT':
+    return null;
   default:
     return state;
   }
+};
+
+export const logoutUser = ()=>{
+  window.localStorage.removeItem('user');
+  
+  return (dispatch)=>{
+    dispatch({
+      type: 'LOGOUT'
+    });
+  };
 };
 
 export const loginUser = (credentials, onSuccess = () => {

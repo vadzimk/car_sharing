@@ -26,7 +26,8 @@ import {makeStyles} from '@mui/styles';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import logo from '../../assets/logo.png';
 import routes, {byLabel} from '../../routes.js';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {logoutUser} from '../../reducers/userReducer.js';
 
 const useStyles = makeStyles(theme => ({ // get access to the theme properties
   toolbar: {
@@ -69,10 +70,17 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
       backgroundColor: 'transparent',
     },
   },
+  iconButtonDrawer: {
+    padding: '3px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
   drawerIconContainer: {
     marginLeft: 'auto',
     '&:hover': {
       backgroundColor: 'transparent',
+      cursor: 'pointer',
     },
   },
   drawer: {
@@ -140,12 +148,17 @@ export default function Header () {
     );
   }
   
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+  
   const menu = (
     <>
       <Tabs
         value={routesForHeader.map(r => r.path).includes(location) ?
-        location:
-        false}
+          location:
+          false}
         onChange={handleChange}
         className={classes.tabContainer}
         indicatorColor={'secondary'}
@@ -161,13 +174,16 @@ export default function Header () {
           ))
         }
       </Tabs>
-      <IconButton
+      {user && <IconButton
         className={classes.iconButton}
         disableRipple
         disableFocusRipple
-        size="large">
+        size="large"
+        onClick={handleLogout}
+      >
         <ExitToAppOutlinedIcon/>
       </IconButton>
+      }
     </>
   );
   
@@ -210,6 +226,20 @@ export default function Header () {
               </ListItem>
             ))
           }
+          {user && <ListItem
+            onClick={handleLogout}
+            className={classes.drawerIconContainer}
+          >
+            <IconButton
+              disableRipple
+              disableFocusRipple
+              size="large"
+              className={classes.iconButtonDrawer}
+            >
+              <ExitToAppOutlinedIcon/>
+            </IconButton>
+          </ListItem>
+          }
         </List>
       </SwipeableDrawer>
       <IconButton
@@ -231,7 +261,7 @@ export default function Header () {
             <img src={logo} alt="company logo" className={classes.logo}/>
           </Button>
           {
-            matches ? drawer : menu
+            matches ? drawer:menu
           }
         </Toolbar>
       </AppBar>
