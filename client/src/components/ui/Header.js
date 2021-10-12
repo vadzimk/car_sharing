@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({ // get access to the theme properties
     marginLeft: 'auto',
     '&:hover': {
       backgroundColor: 'transparent',
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   },
   drawer: {
@@ -174,7 +174,7 @@ export default function Header () {
           ))
         }
       </Tabs>
-      <IconButton
+      {user && <IconButton
         className={classes.iconButton}
         disableRipple
         disableFocusRipple
@@ -183,6 +183,7 @@ export default function Header () {
       >
         <ExitToAppOutlinedIcon/>
       </IconButton>
+      }
     </>
   );
   
@@ -225,7 +226,7 @@ export default function Header () {
               </ListItem>
             ))
           }
-          <ListItem
+          {user && <ListItem
             onClick={handleLogout}
             className={classes.drawerIconContainer}
           >
@@ -238,6 +239,7 @@ export default function Header () {
               <ExitToAppOutlinedIcon/>
             </IconButton>
           </ListItem>
+          }
         </List>
       </SwipeableDrawer>
       <IconButton
