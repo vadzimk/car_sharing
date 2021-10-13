@@ -16,11 +16,13 @@
     "cypress-react-router": "^1.0.2",
     "date-fns": "^2.23.0",
     "formik": "^2.2.9",
+    "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "nanoid": "^3.1.25",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.4",
+    "react-leaflet": "^3.2.2",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
@@ -45,18 +47,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "proxy": "http://127.0.0.1:3001",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.4",
