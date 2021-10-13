@@ -7,6 +7,7 @@ import Listings from './components/Listings';
 import EditListing from './components/EditListing.js';
 import Locations from './components/Locations';
 import LocationForm from './components/LocationForm';
+import HomeMap from './components/HomeMap';
 
 const dummy = (content) => {
   return function NotImplemented () {
@@ -24,7 +25,7 @@ const routes = [
   {
     path: '/',
     label: 'Home',
-    component: SignUp,
+    component: HomeMap,
     access: 'public'
   },
   {
