@@ -12,11 +12,21 @@ import provider from '../../leaflet/provider.js';
 
 const Map = () => {
   const [height, setHeight] = useState(0);
-  
+  const [, setWindowHeight] = useState(0); // watch window resize only
   const ref = useRef(null);
-  
+
   useEffect(() => {
+    const handleResize = ()=>{
+      setWindowHeight(window.innerHeight);
+      setHeight(ref.current.clientHeight);
+    };
     setHeight(ref.current.clientHeight);
+  
+    window.addEventListener('resize', handleResize);
+      
+      return ()=>{
+        window.removeEventListener('resize', handleResize);
+      };
   });
   
   console.log('height', height);
@@ -31,12 +41,12 @@ const Map = () => {
   // maybe anchor it at the bottom right corner
   return (
     <div ref={ref} style={{height: '100%', width: '100%'}}>
-      <div style={{height: `${height}px`, width: '100%', overflow: 'hidden'}}>
-        <MapContainer
+      <div style={{height:`${height}px`, width: '100%'}}>
+        {height && <MapContainer
           center={center}
           zoom={13}
           scrollWheelZoom={false}
-          style={{width: '100%', height: '100vh'}}
+          style={{width: '100%', height: '100%'}}
         >
           <TileLayer
             attribution={provider.attribution}
@@ -47,8 +57,9 @@ const Map = () => {
               A pretty CSS3 popup. <br/> Easily customizable.
             </Popup>
           </Marker>
-        </MapContainer>
+        </MapContainer>}
       </div>
+     
     </div>
   
   );
