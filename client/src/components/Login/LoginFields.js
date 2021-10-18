@@ -2,6 +2,7 @@ import React from 'react';
 import {Form} from 'formik';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {Button, TextField, Typography} from '@mui/material';
+import {Link} from 'react-router-dom';
 
 const LoginFields = (props) => {
   
@@ -23,29 +24,39 @@ const LoginFields = (props) => {
           </Typography>
         </GridItem>
         <GridItem>
-          <TextField
-            name="email"
-            label="email"
-            fullWidth
-            size="small"
-            required
-            value={props.values.email}
-            error={Boolean(props.errors.email)}
-            helperText={props.errors.email}
-            onChange={props.handleChange}
-          />
-          <TextField
-            name="password"
-            label="password"
-            fullWidth
-            size="small"
-            required
-            type="password"
-            value={props.values.password}
-            error={Boolean(props.errors.password)}
-            helperText={props.errors.password}
-            onChange={props.handleChange}
-          />
+          <GridContainer direction="column"
+                         // spacing={1}
+          >
+            <GridItem>
+              <TextField
+                variant="standard"
+                name="email"
+                label="email"
+                fullWidth
+                size="small"
+                required
+                value={props.values.email}
+                error={Boolean(props.errors.email)}
+                helperText={props.errors.email}
+                onChange={props.handleChange}
+              />
+            </GridItem>
+            <GridItem>
+              <TextField
+                variant="standard"
+                name="password"
+                label="password"
+                fullWidth
+                size="small"
+                required
+                type="password"
+                value={props.values.password}
+                error={Boolean(props.errors.password)}
+                helperText={props.errors.password}
+                onChange={props.handleChange}
+              />
+            </GridItem>
+          </GridContainer>
         </GridItem>
         <GridItem container justifyContent="flex-end">
           <Button
@@ -56,6 +67,14 @@ const LoginFields = (props) => {
           >
             Login
           </Button>
+        </GridItem>
+        <GridItem>
+          <Typography variant="p">Don&apos;t have an account? </Typography>
+          <Link to={'/signup'}>
+            <Typography variant="p">
+              Sign up
+            </Typography>
+          </Link>
         </GridItem>
       
       </GridContainer>
