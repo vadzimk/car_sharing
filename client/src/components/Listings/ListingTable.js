@@ -239,7 +239,9 @@ const ListingTable = ({rows}) => {
   
   return (
     <div style={{display: 'flex', height: '100%'}}>
-      <div style={{flexGrow: 1}}>
+      <div
+        style={{flexGrow: 1}}
+      >
         <DataGrid
           // onRowEditStart={handleRowEditStart}
           // onRowEditStop={handleRowEditStop}
@@ -250,13 +252,15 @@ const ListingTable = ({rows}) => {
           className={classes.root}
           rows={rows}
           columns={columns}
-          pageSize={5}
+
           rowsPerPageOptions={[5]}
           // checkboxSelection
           disableSelectionOnClick
           disableColumnMenu
           disableColumnFilter
           autoHeight
+          autoPageSize
+          pagination
           components={{
             Toolbar: GridToolbar,
             // NoRowsOverlay: function NoRows () {

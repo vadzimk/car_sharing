@@ -24,7 +24,7 @@ import {
 
 import {makeStyles} from '@mui/styles';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo1.png';
 import routes, {byLabel} from '../../routes.js';
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutUser} from '../../reducers/userReducer.js';
