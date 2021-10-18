@@ -70,7 +70,11 @@ const LoginFields = (props) => {
         </GridItem>
         <GridItem>
           <Typography variant="p">Don&apos;t have an account? </Typography>
-          <Link to={'/signup'}>Sign up</Link>
+          <Link to={'/signup'}>
+            <Typography variant="p">
+              Sign up
+            </Typography>
+          </Link>
         </GridItem>
       
       </GridContainer>

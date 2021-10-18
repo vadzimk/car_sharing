@@ -56,6 +56,10 @@ const theme = createTheme({
       ...defaultTheme.typography.h6,
       fontFamily: 'Roboto',
     },
+    p: {
+      ...defaultTheme.typography.p,
+      fontFamily: 'Roboto',
+    }
   },
   custom: {
     mainColumn: {

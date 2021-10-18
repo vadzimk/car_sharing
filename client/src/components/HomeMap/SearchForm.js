@@ -2,14 +2,18 @@ import React, {useState} from 'react';
 import {Button, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
-import {LocalizationProvider, DateTimePicker} from '@mui/lab';
+import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
+const noonFor = (date, n) => {
+  const newDate = date.setDate(date.getDate() + n);
+  const newDateStr = new Date(newDate).toDateString();
+  return new Date(newDateStr + ' 12:00:00');
+};
 const SearchForm = () => {
-  const date = new Date();
-  const [dateFrom, setDateFrom] = useState(
-    new Date(date.getFullYear(), date.getMonth(), 1));
-  const [dateTo, setDateTo] = useState(new Date());
+  
+  const [dateFrom, setDateFrom] = useState(noonFor(new Date(), 1));
+  const [dateTo, setDateTo] = useState(noonFor(new Date(), 2));
   
   return (
     <GridContainer
@@ -89,12 +93,11 @@ const SearchForm = () => {
             <Button
               type="submit"
               aria-label="search"
-              variant="outlined"
+              variant="contained"
               style={{height: '56px', width: '100%', borderColor: '#cbcbcb'}}
+              color="secondary"
             >
-              <SearchIcon
-                sx={{color: 'secondary.main'}}
-              />
+              <SearchIcon/>
             </Button>
           </GridItem>
         </GridContainer>
