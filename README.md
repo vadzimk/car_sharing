@@ -7,8 +7,7 @@
 - AWS S3 file storage
 - GitHub Actions CI
 - Jest and Cypress tests
-
-
+- Leaflet, Maptiler, OpenStreetMap - geocoding and map APIs
 
 #### Hosts can
 - list their cars for share
@@ -22,4 +21,4 @@
 
 ### Preview *(coming soon)*
 
-[Check production Application here](https://p2p_car_share.herokuapp.com)
+[Check production Application here](https://p2p-car-sharing.herokuapp.com/)
