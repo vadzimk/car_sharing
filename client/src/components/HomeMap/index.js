@@ -31,7 +31,8 @@ const HomeMap = () => {
           alignItems="stretch"
           className={classes.container}
         >
-          <GridItem xs={12} sm={6} style={{minWidth: '400px'}}>
+          <GridItem xs={12} sm={6}
+          >
             <Results/>
           </GridItem>
           <GridItem style={{flexGrow: 1}}>
