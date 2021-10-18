@@ -6,15 +6,23 @@ import notificationReducer from './reducers/notificationReducer.js';
 import locationReducer from './reducers/locationReducer.js';
 import listingsReducer from './reducers/listingsReducer.js';
 
-const reducer = combineReducers({
+const appReducer = combineReducers({
   location: locationReducer,
   user: userReducer,
   notification: notificationReducer,
   listings: listingsReducer,
 });
 
+const rootReducer = (state, action)=>{
+  if(action.type==='LOGOUT'){
+    // reset state
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
+
 const store = createStore(
-  reducer,
+  rootReducer,
   composeWithDevTools(
     applyMiddleware(thunk),
   ),
