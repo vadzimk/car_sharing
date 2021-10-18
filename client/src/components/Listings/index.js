@@ -107,7 +107,9 @@ const Listings = () => {
           </GridItem>
         </GridContainer>
       </GridItem>
-      <GridItem style={{height: 400, width: '100%'}}>
+      <GridItem style={{
+        width: '100%'}}
+      >
         <ListingTable
           rows={hostListings}
         />
