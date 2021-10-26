@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: .
+    destination: /home/ubuntu/applications/car_sharing
+hooks:
+#  BeforeInstall: (backup db)
+  AfterInstall:
+    - location: aws_scripts/setup.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: aws_scripts/run.sh
+      timeout: 300
+      runas: root

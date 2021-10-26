@@ -4,6 +4,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {useDispatch} from 'react-redux';
+import {getMapResults} from '../../reducers/mapReducer.js';
 
 const noonFor = (date, n) => {
   const newDate = date.setDate(date.getDate() + n);
@@ -14,7 +16,16 @@ const SearchForm = () => {
   
   const [dateFrom, setDateFrom] = useState(noonFor(new Date(), 1));
   const [dateTo, setDateTo] = useState(noonFor(new Date(), 2));
+  const [where, setWhere] = useState('');
+  const dispatch = useDispatch();
+  const handleWhereChange = (e) => {
+    setWhere(e.target.value);
+  };
   
+
+  const handleSubmit = () => {
+    dispatch(getMapResults(where));
+  };
   return (
     <GridContainer
       direction="row"
@@ -27,6 +38,12 @@ const SearchForm = () => {
         <TextField
           placeholder="Where?"
           fullWidth
+          onChange={handleWhereChange}
+          value={where}
+          InputProps={{
+            inputProps: {id: 'search'}
+          }}
+          
         />
       </GridItem>
       <GridItem
@@ -96,6 +113,7 @@ const SearchForm = () => {
               variant="contained"
               style={{height: '56px', width: '100%', borderColor: '#cbcbcb'}}
               color="secondary"
+              onClick={handleSubmit}
             >
               <SearchIcon/>
             </Button>

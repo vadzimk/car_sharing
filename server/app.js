@@ -11,6 +11,7 @@ import testRouter from './routes/testRouter.js';
 import userRouter from './routes/userRouter.js';
 import listingRouter from './routes/listingRouter.js';
 import locationRouter from './routes/locationRouter.js';
+import mapRouter from './routes/mapRouter.js';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/test', testRouter);
 app.use('/api/user', userRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/location', locationRouter);
+app.use('/api/map', mapRouter);
 
 // checks in ci pipeline if the app is running after deployment
 app.get('/api/health', (req, res) => {

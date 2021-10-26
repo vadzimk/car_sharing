@@ -7,9 +7,9 @@ const config = {
   PORT: process.env.PORT || 3001,
   db: {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    // ssl: {
+    //   rejectUnauthorized: false,
+    // },
   },
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
