@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-createdb -U postgres -T template0 car_sharing_container_production
-pg_restore --dbname=car_sharing_container_production --verbose ../backup/dump.tar
+createdb -U $POSTGRES_USER -T template0 $DATABASE_NAME
+pg_restore --dbname=$DATABASE_NAME --verbose ../backup/dump.tar
