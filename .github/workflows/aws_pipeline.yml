@@ -63,9 +63,7 @@ jobs:
             --deployment-group-name deployment_group \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
-#          healthcheck: "https://p2p-car-sharing.herokuapp.com/api/health"
-#          checkstring: "ok"
-#          rollbackonhealthcheckfailed: true
+
 
 
 
