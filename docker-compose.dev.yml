@@ -1,0 +1,70 @@
+version: "3"
+
+# this network is created with docker-compose up and destroyed with docker-compose down
+networks:
+  dev-network: #name in this docker-compose file
+    name: dev-network # the actual name of the network
+
+
+services:
+  frontend:
+    container_name: carsharing_frontend_dev
+    image: carsharing_frontend_dev
+    build:
+      context: ./client/
+      dockerfile: dev.Dockerfile
+      args:
+        backendHost: carsharing_backend_dev
+        backendPort: 3001
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client/:/usr/src/app
+    depends_on:
+      - backend
+    networks:
+      - dev-network
+
+
+  backend:
+    container_name: carsharing_backend_dev
+    image: carsharing_backend_dev
+    build:
+      context: ./server/
+      dockerfile: dev.Dockerfile
+    volumes:
+    - ./server/:/usr/src/app
+    env_file:
+      - ./server/.env
+    networks:
+      - dev-network
+    ports:
+      - 3001:3001
+
+  postgres:
+    container_name: postgres_dev
+    image: postgis/postgis
+    restart: unless-stopped
+    expose:
+      - "5432"
+    volumes:
+      - ./backup:/backup
+      - ./postgres-init-db.sh:/docker-entrypoint-initdb.d/postgres-init-db.sh
+      - postgres_data_dev:/var/lib/postgresql/data
+    env_file:
+      - .env.dev.postgres
+    networks:
+      - dev-network
+
+  adminer:
+    image: adminer
+    container_name: adminer_dev
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - dev-network
+
+
+volumes:
+  postgres_data_dev:
