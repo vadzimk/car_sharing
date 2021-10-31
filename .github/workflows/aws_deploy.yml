@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
-      if: ${ { github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true } }
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -19,11 +19,11 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Create CodeDeploy Deployment
-      if: ${ { github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true } }
-          id: deploy
-          run: |
-            aws deploy create-deployment \
-              --application-name car_sharing \
-              --deployment-group-name deployment_group \
-              --deployment-config-name CodeDeployDefault.OneAtATime \
-              --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name car_sharing \
+            --deployment-group-name deployment_group \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
