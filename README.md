@@ -3,12 +3,11 @@
 ### CRUD application using 
 - React frontend and Material-ui
 - Express backend and REST API
-- PostgreSQL database
+- PostgreSQL database with PostGIS
 - AWS S3 file storage
 - GitHub Actions CI
 - Jest and Cypress tests
-
-
+- Leaflet, Maptiler, OpenStreetMap - geocoding and map APIs
 
 #### Hosts can
 - list their cars for share
@@ -20,6 +19,15 @@
 - reserve chosen car and make down payment
 - receive email confirmation of the reservation
 
+### Deployment
+- AWS EC2 
+- AWS S3
+- Docker
+- nginx
+
+
 ### Preview *(coming soon)*
 
-[Check production Application here](https://p2p_car_share.herokuapp.com)
+[Old deployment](https://p2p-car-sharing.herokuapp.com/)
+
+[New deployment](http://carsharing.vadzimk.link/)
