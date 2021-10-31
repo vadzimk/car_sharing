@@ -47,6 +47,7 @@ jobs:
 # make two separate workflows sequential:
 # https://stackoverflow.com/questions/62750603/github-actions-trigger-another-action-after-one-action-is-completed
       - name: Configure AWS credentials
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}  # runs only on push to master or pull_request merge with master, skips when message contains #skip
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
