@@ -6,10 +6,10 @@ const config = {
   node_env: process.env.NODE_ENV,
   PORT: process.env.PORT || 3001,
   db: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    connectionString: process.env.DATABASE_URL_PRODUCTION,
+    // ssl: {
+    //   rejectUnauthorized: false,
+    // },
   },
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -20,9 +20,13 @@ const config = {
 
 if ((process.env.NODE_ENV === 'development' || process.env.NODE_ENV ===
   'test') && !process.env.GITHUB_ACTIONS) {
-  
-  config.db = {connectionString: process.env.DATABASE_URL_LOCAL};
-  
+  config.db = {connectionString: process.env.DATABASE_URL_DEV};
+} 
+if(process.env.GITHUB_ACTIONS){
+  config.db = {connectionString: process.env.DATABASE_URL_TEST};
 }
 
+console.log('NODE_ENV', process.env.NODE_ENV);
+console.log('connectionString', config.db
+  .connectionString);
 export default config;
