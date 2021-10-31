@@ -20,10 +20,12 @@ const config = {
 
 if ((process.env.NODE_ENV === 'development' || process.env.NODE_ENV ===
   'test') && !process.env.GITHUB_ACTIONS) {
-  config.db = {connectionString: process.env.DATABASE_URL_LOCAL};
+  config.db = {connectionString: process.env.DATABASE_URL_DEV};
 } else if(process.env.GITHUB_ACTIONS){
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
 }
 
 console.log('NODE_ENV', process.env.NODE_ENV);
+console.log('connectionString', config.db
+  .connectionString);
 export default config;

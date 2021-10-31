@@ -1,9 +1,9 @@
 {
   "name": "p2p-car-sharing",
   "version": "1.0.0",
-  "description": "",
+  "description": "carsharing",
   "engines": {
-    "node": "14.15.x"
+    "node": "16.13.x"
   },
   "scripts": {
     "test": "cd ./server && npm run test && cd ../client && npm run test -- --watchAll=false",
