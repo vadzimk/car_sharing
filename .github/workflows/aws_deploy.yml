@@ -1,9 +1,9 @@
 name: Aws_Deploy
 
 on:
-  workflow_run:
-    workflows: ["Build_Test"]
-    types: [completed]
+  push:
+    branches:
+      - master
 
 jobs:
   deploy_to_ec2:
