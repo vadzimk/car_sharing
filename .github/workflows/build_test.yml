@@ -1,0 +1,43 @@
+name: Build_Test
+
+on:
+  pull_request:
+    branches: [ master ]  # change to master
+    types: [ opened, synchronize ] #    will run on pull request
+
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2  # (checks out project source code from git)
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.15.x'
+      - name: install root dependencies  # uses postinstall
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
+      - name: test
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_REGION: ${{secrets.AWS_REGION}}
+          DATABASE_URL_TEST: ${{secrets.DATABASE_URL}}
+          JWT_KEY: ${{secrets.JWT_KEY}}
+        run: npm run test
+      - name: e2e tests
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_REGION: ${{secrets.AWS_REGION}}
+          DATABASE_URL_TEST: ${{secrets.DATABASE_URL}}
+          JWT_KEY: ${{secrets.JWT_KEY}}
+          CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm run start
+          wait-on: http://localhost:3001
