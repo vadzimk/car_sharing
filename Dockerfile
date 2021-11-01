@@ -4,6 +4,7 @@ COPY client/package-lock.json /usr/src/app/client/
 COPY client/package.json /usr/src/app/client/
 RUN npm ci
 COPY client /usr/src/app/client/
+ENV GENERATE_SOURCEMAP=false
 RUN npm run build
 
 
