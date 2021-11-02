@@ -4,3 +4,4 @@
 **.env*
 .gitignore
 backup
+.history

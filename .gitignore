@@ -6,3 +6,4 @@ build
 yarn.lock
 backup
 backup-script.sh
+.history
