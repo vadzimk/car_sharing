@@ -1,4 +1,4 @@
-# car share
+# cashare
 
 ### CRUD application using 
 - React frontend and Material-ui
@@ -26,8 +26,5 @@
 - nginx
 
 
-### Preview *(coming soon)*
-
-[Old deployment](https://p2p-car-sharing.herokuapp.com/)
-
-[New deployment](http://carsharing.vadzimk.link/)
+### Preview 
+[carshare.vadzimk.link](http://carshare.vadzimk.link)
