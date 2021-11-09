@@ -12,7 +12,7 @@ delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: marker_icon_2x,
   iconUrl: marker_icon,
-  shadowUrl: marker_shadow
+  shadowUrl: marker_shadow,
 });
 
 // const useStyles = makeStyles(() => ({
@@ -26,6 +26,9 @@ const Map = () => {
   const [height, setHeight] = useState(0);
   const [, setWindowHeight] = useState(0); // watch window resize only
   const ref = useRef(null);
+  // eslint-disable-next-line no-unused-vars
+  const [center, setCenter] = useState({lat: 37.090, lng: -95.712});
+  const [map, setMap] = useState(null);
   
   useEffect(() => {
     const handleResize = () => {
@@ -40,18 +43,32 @@ const Map = () => {
     };
   });
   
-  
-  // eslint-disable-next-line no-unused-vars
-  const [center, setCenter] = useState({lat: 51.505, lng: -0.09});
+  useEffect(() => {
+    let userCoordinates;
+    if (navigator.geolocation && map) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        userCoordinates = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        if(map){
+          map.flyTo(userCoordinates, 10);
+        }
+        console.log('current position', userCoordinates);
+      });
+    }
+  }, [navigator.geolocation, map]);
   
   return (
     <div ref={ref} style={{height: '100%', width: '100%'}}>
       <div style={{height: `${height}px`, width: '100%'}}>
-        {height && <MapContainer
+        {height &&
+        <MapContainer
           center={center}
-          zoom={13}
+          zoom={3}
           scrollWheelZoom={false}
           style={{width: '100%', height: '100%'}}
+          whenCreated={setMap}
         >
           <TileLayer
             attribution={provider.attribution}
