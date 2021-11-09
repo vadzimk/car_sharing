@@ -6,7 +6,7 @@ export default {
       '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
     geoCoder: new Geocoder({
         input: 'search',
-        key: 'bPEJWbME340vCtM938RN'
+        key: 'bPEJWbME340vCtM938RN' // api key
     }),
 
 };
