@@ -20,7 +20,7 @@ const config = {
 
 if ((process.env.NODE_ENV === 'development' || process.env.NODE_ENV ===
   'test') && !process.env.GITHUB_ACTIONS) {
-  config.db = {connectionString: process.env.DATABASE_URL_DEV};
+  config.db = {connectionString: process.env.DATABASE_URL_TEST};
 } 
 if(process.env.GITHUB_ACTIONS){
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
