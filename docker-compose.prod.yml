@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - /home/ubuntu/applications/SECRETS/car_sharing/server/.env
+      - ../SECRETS/car_sharing/server/.env
     networks:
       - common-network
     ports:
@@ -23,11 +23,11 @@ services:
     expose:
       - "5432"
     volumes:
-      - /home/ubuntu/applications/BACKUPS/car_sharing/:/backup
+      - ../BACKUPS/car_sharing/:/backup
       - ./postgres-init-db.sh:/docker-entrypoint-initdb.d/postgres-init-db.sh
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - /home/ubuntu/applications/SECRETS/car_sharing/.env.prod.postgres
+      - ../SECRETS/car_sharing/.env.prod.postgres
     networks:
       - common-network
 
