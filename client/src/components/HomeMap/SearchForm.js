@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {useDispatch} from 'react-redux';
-import {getMapResults} from '../../reducers/mapReducer.js';
+import SearchBox from './SearchBox.js';
+import mapService from '../../services/mapService.js';
 
 const noonFor = (date, n) => {
   const newDate = date.setDate(date.getDate() + n);
@@ -17,15 +17,37 @@ const SearchForm = () => {
   const [dateFrom, setDateFrom] = useState(noonFor(new Date(), 1));
   const [dateTo, setDateTo] = useState(noonFor(new Date(), 2));
   const [where, setWhere] = useState('');
-  const dispatch = useDispatch();
-  const handleWhereChange = (e) => {
-    setWhere(e.target.value);
+  const [options, setOptions] = useState([]);
+  const [selectedFeature, setSelectedFeature] = useState(null);
+  const handleWhereChange = (value) => {
+    setWhere(value);
   };
   
-
   const handleSubmit = () => {
-    dispatch(getMapResults(where));
+    // submits request to api with date range and bbox
+    
   };
+  
+  
+  
+  useEffect(() => {
+    const delayFn = setTimeout(async () => {
+      console.log('where', where);
+      // send request
+      if (where && selectedFeature?.place_name !== where) {
+        console.log(`${selectedFeature?.text.toLowerCase()} !== ${where.toLowerCase()}`, selectedFeature?.text.toLowerCase() !== where.toLowerCase());
+        console.log('fetching', where);
+        const features = await mapService.getGeoSearchResults(where);
+        setOptions(features);
+      }
+    }, 2000);
+    // clear options when cleared search box
+    if(!where && options?.length){
+      setOptions([]);
+    }
+    return () => clearTimeout(delayFn);
+  }, [where]);
+  
   return (
     <GridContainer
       direction="row"
@@ -33,17 +55,14 @@ const SearchForm = () => {
       spacing={1}
     >
       <GridItem
-        style={{flexGrow: 3}}
+        style={{flexGrow: 3, width: '250px'}}
       >
-        <TextField
-          placeholder="Where?"
-          fullWidth
-          onChange={handleWhereChange}
-          value={where}
-          InputProps={{
-            inputProps: {id: 'search'}
-          }}
-          
+        <SearchBox
+          optionlist={options}
+          inputValue={where}
+          onInputChange={handleWhereChange}
+          value={selectedFeature}
+          onValueChange={setSelectedFeature}
         />
       </GridItem>
       <GridItem
