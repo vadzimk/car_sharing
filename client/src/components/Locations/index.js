@@ -3,14 +3,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@mui/styles';
 import AddIcon from '@mui/icons-material/Add';
-import {IconButton, Typography} from '@mui/material';
+import {
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import {GridContainer} from '../ui/GridRenamed.js';
 import {
   deleteUserLocation,
   getUserLocations,
 } from '../../reducers/locationReducer.js';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import AlertDialog from '../ui/AlertDialog.js';
+import AlertDialog from '../ui/Dialogs/AlertDialog.js';
+import InfoDialog from '../ui/Dialogs/InfoDialog.js';
 
 const useStyles = makeStyles(() => ({
   baseCard: {
@@ -58,37 +65,79 @@ const Locations = () => {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const locations = useSelector(state => state.location.userLocations);
+  const listings = useSelector(state => state.listings);
   const history = useHistory();
   const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation]= useState(null);
+  const [dialogContent, setDialogContent] = useState({title: '', message: ''});
+  const [dialogType, setDialogType] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
   
   useEffect(() => {
     dispatch(getUserLocations());
-  }, []);
+  }, [dispatch]);
   
   const handleAddLocation = () => {
     history.push('/locations/new');
   };
   
   const handleBinClick = (loc) => {
-    // TODO implement delete location
-    setDialogOpen(true);
     setSelectedLocation(loc);
+    setDialogContent({
+      title: `Delete address ${selectedLocation?.addr_line1} ?`,
+      message: 'This cannot be undone!',
+    });
+    setDialogType('alert');
+    setDialogOpen(true);
   };
   
-  const handleLocationDelete = () =>{
-    dispatch(deleteUserLocation(selectedLocation.locationid));
+  const handleLocationDelete = () => {
+    const listingsInLocation = listings.filter(
+      item => item.location_id === selectedLocation.locationid);
+    console.log('listingsInLocation', listingsInLocation);
+    if (listingsInLocation.length) {
+      // there is/are cars assigned to this location
+      setDialogContent({
+        title: `Cannot delete
+          address "${selectedLocation?.addr_line1}"`,
+        message: <div>
+          <div>Move the following listings to another address first:</div>
+          <List>
+            {listingsInLocation.map(item => <ListItem key={item.id}>
+              <ListItemText
+              primary={`${item.make} ${item.model}`}
+              secondary={`${item.plate}`}
+              />
+            </ListItem>)}
+          </List>
+        </div>,
+      });
+      setDialogType('info');
+      setDialogOpen(true);
+    } else {
+      dispatch(deleteUserLocation(selectedLocation.locationid));
+      setDialogOpen(false);
+    }
+  };
+  
+  const closeDialog = () => {
     setDialogOpen(false);
+    setDialogContent({title: '', message: ''});
   };
   
   return (<>
       <AlertDialog
-        isOpen={dialogOpen}
-        title={`Delete address ${selectedLocation?.addr_line1} ?`}
-        message={'This cannot be undone!'}
+        isOpen={dialogOpen && dialogType === 'alert'}
+        title={dialogContent.title}
+        message={dialogContent.message}
         onAgree={handleLocationDelete}
-        onCancel={() => setDialogOpen(false)}
+        onCancel={closeDialog}
+      />
+      <InfoDialog
+        isOpen={dialogOpen && dialogType === 'info'}
+        title={dialogContent.title}
+        message={dialogContent.message}
+        onClose={closeDialog}
       />
       <GridContainer
         direction="column"
@@ -102,7 +151,7 @@ const Locations = () => {
         <Typography variant="h5">Your locations</Typography>
         <div className={classes.container}>
           <button className={`${classes.baseCard} ${classes.addCard}`}
-               onClick={handleAddLocation}
+                  onClick={handleAddLocation}
           >
             <div
               className={classes.iconContainer}
@@ -134,7 +183,7 @@ const Locations = () => {
                   </div>
                   <div style={{alignSelf: 'flex-end'}}>
                     <IconButton
-                      onClick={()=> handleBinClick(l)}
+                      onClick={() => handleBinClick(l)}
                       data-cy="deleteButton"
                     >
                       <DeleteOutlineIcon/>
