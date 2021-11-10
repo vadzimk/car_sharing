@@ -40,7 +40,7 @@ const Listings = () => {
   
   useEffect(() => {
     dispatch(getHostListings(dateFrom, dateTo));
-  }, [dateFrom, dateTo]);
+  }, [dateFrom, dateTo, dispatch]);
   
   // https://material-ui.com/components/data-grid/editing
   return (

@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import AlertDialog from '../ui/AlertDialog.js';
+import AlertDialog from '../ui/Dialogs/AlertDialog.js';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {deleteListing} from '../../reducers/listingsReducer.js';
@@ -28,8 +28,8 @@ const useStyles = makeStyles(
   {defaultTheme},
 );
 
-const RowMenuCell = (props) => {
-  const {api, id} = props;
+const RowMenuCell = ({params}) => {
+  const {api, id} = params;
   const classes = useStyles();
   const isInEditMode = api.getRowMode(id) === 'edit';
   const [dialogOpen, setDialogOpen] = useState(false);
