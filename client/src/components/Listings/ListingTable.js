@@ -74,14 +74,17 @@ const ListingTable = ({rows}) => {
   const locationOptions = locations.map(l => ({
     label: `${l.addr_line1} ${l.addr_line2} ${l.zipcode}`,
     value: l.locationid,
-  }));
-  const formatLocationValue = (...theArgs)=>{
-    return theArgs.reduce((prev, curr)=>{
+  })).concat({
+    label: '',
+    value: null
+  });
+  const formatLocationValue = (...theArgs) => {
+    return theArgs.reduce((prev, curr) => {
       return `${prev} ${curr || ''}`;
     }, '').replace(
       /\s+(?=\s|$)/g, '');
   };
-
+  
   const columns = [
     {
       field: 'active',
@@ -183,7 +186,7 @@ const ListingTable = ({rows}) => {
       headerName: 'Actions',
       sortable: false,
       minWidth: 110,
-      renderCell: RowMenuCell,
+      renderCell: (params) => <RowMenuCell params={params}/>, // must be a function, not a component!
       
     },
   ].map(c => ({...c, headerAlign: 'center', flex: 1}));
@@ -217,7 +220,7 @@ const ListingTable = ({rows}) => {
       
     }
     setEditRowsModel(updatedModel);
-  }, [editRowsModel]);
+  }, [editRowsModel, dispatch, rows]);
   
   //
   // // eslint-disable-next-line no-unused-vars
@@ -252,7 +255,7 @@ const ListingTable = ({rows}) => {
           className={classes.root}
           rows={rows}
           columns={columns}
-
+          
           rowsPerPageOptions={[5]}
           // checkboxSelection
           disableSelectionOnClick

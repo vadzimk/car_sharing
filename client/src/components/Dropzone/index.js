@@ -85,17 +85,13 @@ function Dropzone ({handleError, onChange}) {
   const [files, setFiles] = useState([]);
   
   const nanoid = customAlphabet(urlAlphabet, 10);
-  const createKey = (filename) => {
-    const dotIndex = filename.lastIndexOf('.');
-    return filename.slice(0, dotIndex) + '_' + nanoid() +
-      filename.slice(dotIndex);
-  };
+  
+
   
   const areNotEqual = async (a, b) => {
     const textA = await fetch(a).then(r => r.blob()).then(b => b.text());
     const textB = await fetch(b).then(r => r.blob()).then(b => b.text());
-    const result = textA.valueOf() !== textB.valueOf();
-    return result;
+    return textA.valueOf() !== textB.valueOf();
   };
   
   const dispatch = useDispatch();
@@ -103,6 +99,12 @@ function Dropzone ({handleError, onChange}) {
    * onDrop without duplicates
    * */
   const onDrop = useCallback(async (acceptedFiles) => {
+    const createKey = (filename) => {
+      const dotIndex = filename.lastIndexOf('.');
+      return filename.slice(0, dotIndex) + '_' + nanoid() +
+        filename.slice(dotIndex);
+    };
+    
     console.dir('acceptedFiles', acceptedFiles);
     const newFiles = acceptedFiles.map(file => ({
       ...file,
@@ -129,7 +131,7 @@ function Dropzone ({handleError, onChange}) {
     
     setFiles(updatedFiles);
     onChange(updatedFiles);
-  }, [files, onChange]);
+  }, [files, onChange,dispatch, nanoid]);
   
   
   /**
@@ -181,6 +183,7 @@ function Dropzone ({handleError, onChange}) {
     isDragActive,
     isDragReject,
     isDragAccept,
+    classes
   ]);
   
   const handleClear = (file) => {

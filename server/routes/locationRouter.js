@@ -69,7 +69,7 @@ locationRouter.get('/', async (req, res, next) => {
 });
 
 locationRouter.delete('/', async(req, res, next)=>{
-  // TODO allow only to delete location if no car is assigned to it
+  // TODO allow only to delete location if no car is assigned to it (causes warning when reassigning MUI: You have provided an out-of-range value `107` for the select component. for now will check it only on the frontend)
   const userId = req.decodedToken.id;
   const text = 'delete from appuser_location where appuserid=$1 and locationid=$2;';
   try{

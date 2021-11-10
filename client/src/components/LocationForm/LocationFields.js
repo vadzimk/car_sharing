@@ -20,7 +20,7 @@ const LocationFields = (props) => {
     } else {
       dispatch(clearCityState());
     }
-  }, [props.touched.zipcode, props.errors.zipcode, props.values.zipcode.length]);
+  }, [dispatch, props.touched.zipcode, props.errors.zipcode, props.values.zipcode]);
   
   useEffect(() => {
     if (props.touched.zipcode &&
@@ -28,7 +28,7 @@ const LocationFields = (props) => {
       props.setFieldValue('city', city);
       props.setFieldValue('state', state);
     }
-  }, [city, props.touched.zipcode]);
+  }, [city, state, props]);
   return (
     <Form onSubmit={props.handleSubmit}
           style={{
