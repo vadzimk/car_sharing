@@ -32,7 +32,7 @@ const App = () => {
   
   useEffect(() => {
     dispatch(getUserFromStorage());
-  }, []);
+  }, [dispatch]);
   const location = useLocation();
   console.log('location', location);
   return (
