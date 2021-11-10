@@ -47,7 +47,7 @@ const SignUp = () => {
     const history = useHistory();
     useEffect(()=>{
       dispatch(getAllCountries());
-    }, []);
+    }, [dispatch]);
     const onSubmit = async (values) => {
       const newUser = {
         ...values,

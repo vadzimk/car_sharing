@@ -129,7 +129,7 @@ function Dropzone ({handleError, onChange}) {
     
     setFiles(updatedFiles);
     onChange(updatedFiles);
-  }, [files, onChange]);
+  }, [files, onChange, createKey,dispatch]);
   
   
   /**
@@ -181,6 +181,7 @@ function Dropzone ({handleError, onChange}) {
     isDragActive,
     isDragReject,
     isDragAccept,
+    classes
   ]);
   
   const handleClear = (file) => {

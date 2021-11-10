@@ -41,7 +41,7 @@ const Map = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  });
+  }, []);
   
   useEffect(() => {
     let userCoordinates;
@@ -57,7 +57,7 @@ const Map = () => {
         console.log('current position', userCoordinates);
       });
     }
-  }, [navigator.geolocation, map]);
+  }, [map]);
   
   return (
     <div ref={ref} style={{height: '100%', width: '100%'}}>

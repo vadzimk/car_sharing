@@ -46,7 +46,7 @@ const SearchForm = () => {
       setOptions([]);
     }
     return () => clearTimeout(delayFn);
-  }, [where]);
+  }, [where, options, selectedFeature]);
   
   return (
     <GridContainer
