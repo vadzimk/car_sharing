@@ -268,7 +268,6 @@ listingRouter.delete('/delete-host-listing', async (req, res, next) => {
   const text_appuser_listing_findid = 'select id as appuser_listing_id from appuser_listing where appuserid=$1 and listingid=$2;';
   const text_listing = 'update listing set active=false where id=$1';
   const text_appuser_listing_delete = 'update appuser_listing set deleted=true where id=$1;';
-  
   try{
     await db.tx(async t=>{
       const appuser_listing_result =  await t.one(text_appuser_listing_findid, [userId, req.body.id]);
