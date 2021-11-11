@@ -19,7 +19,7 @@
 - reserve chosen car and make down payment
 - receive email confirmation of the reservation
 
-### Deployment
+### Deployment¡
 - AWS EC2 
 - AWS S3
 - Docker
