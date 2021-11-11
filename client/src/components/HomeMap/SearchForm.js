@@ -6,6 +6,7 @@ import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import SearchBox from './SearchBox.js';
 import mapService from '../../services/mapService.js';
+import {area, bboxPolygon} from '@turf/turf';
 
 const noonFor = (date, n) => {
   const newDate = date.setDate(date.getDate() + n);
@@ -25,28 +26,41 @@ const SearchForm = () => {
   
   const handleSubmit = () => {
     // submits request to api with date range and bbox
+    // flyto selectedFeature
     
   };
   
-  
-  
+  const searchQueryChanged = selectedFeature?.text.toLowerCase() !==
+    where.toLowerCase();
+  console.log(
+    `${selectedFeature?.text.toLowerCase()} !== ${where.toLowerCase()}`,
+    searchQueryChanged);
+  const searchQueryIsFeature = options.find(
+    option => option.place_name.toLowerCase() === where.toLowerCase());
   useEffect(() => {
     const delayFn = setTimeout(async () => {
       console.log('where', where);
       // send request
-      if (where && selectedFeature?.place_name !== where) {
-        console.log(`${selectedFeature?.text.toLowerCase()} !== ${where.toLowerCase()}`, selectedFeature?.text.toLowerCase() !== where.toLowerCase());
+      if (where && searchQueryChanged && !searchQueryIsFeature) {
         console.log('fetching', where);
         const features = await mapService.getGeoSearchResults(where);
+        features.sort((a,b)=>(
+          area(bboxPolygon(b.bbox)) - area(bboxPolygon(a.bbox))
+        ));
         setOptions(features);
       }
-    }, 2000);
+    }, 500);
+    
+    return () => clearTimeout(delayFn);
+  }, [where, searchQueryChanged, searchQueryIsFeature]);
+  
+  useEffect(() => {
     // clear options when cleared search box
-    if(!where && options?.length){
+    
+    if (options.length && !where) {
       setOptions([]);
     }
-    return () => clearTimeout(delayFn);
-  }, [where, options, selectedFeature]);
+  }, [where, options]);
   
   return (
     <GridContainer

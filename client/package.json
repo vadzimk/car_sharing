@@ -13,6 +13,7 @@
     "@mui/material": "^5.1.0",
     "@mui/styles": "^5.1.0",
     "@mui/x-data-grid": "^5.0.0-beta.2",
+    "@turf/turf": "^6.5.0",
     "axios": "^0.24.0",
     "cypress-react-router": "^1.0.2",
     "date-fns": "^2.25.0",

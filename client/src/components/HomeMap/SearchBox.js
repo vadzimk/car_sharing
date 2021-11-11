@@ -16,6 +16,9 @@ const SearchBox = ({
   const loading = open && options.length === 0;
   
   React.useEffect(() => {
+    if(open && options !== optionlist){
+      setOptions(optionlist);
+    }
     let active = true;
     
     if (!loading) {
@@ -26,10 +29,11 @@ const SearchBox = ({
       setOptions(optionlist);
     }
     
+    
     return () => {
       active = false;
     };
-  }, [loading, optionlist]);
+  }, [loading, optionlist, options, open]);
   
   React.useEffect(() => {
     if (!open) {
@@ -37,12 +41,15 @@ const SearchBox = ({
     }
   }, [open]);
   
-  console.log('optionlist', optionlist);
+  console.log('SearchBox optionlist', optionlist);
+  console.log('SearchBox    options', options);
   return (
     <Autocomplete
       freeSolo
+      disablePortal
       disableClearable
       options={options}
+      loadingText="Start typing"
       getOptionLabel={(option) => option.place_name}
       open={open}
       onOpen={() => setOpen(true)}
