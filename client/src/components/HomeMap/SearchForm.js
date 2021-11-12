@@ -13,7 +13,7 @@ const noonFor = (date, n) => {
   const newDateStr = new Date(newDate).toDateString();
   return new Date(newDateStr + ' 12:00:00');
 };
-const SearchForm = () => {
+const SearchForm = ({map}) => {
   
   const [dateFrom, setDateFrom] = useState(noonFor(new Date(), 1));
   const [dateTo, setDateTo] = useState(noonFor(new Date(), 2));
@@ -25,18 +25,15 @@ const SearchForm = () => {
   };
   
   const handleSubmit = () => {
-    // submits request to api with date range and bbox
-    // flyto selectedFeature
+    // submit request to api with date range and bbox
     
   };
   
   const searchQueryChanged = selectedFeature?.text.toLowerCase() !==
     where.toLowerCase();
-  console.log(
-    `${selectedFeature?.text.toLowerCase()} !== ${where.toLowerCase()}`,
-    searchQueryChanged);
   const searchQueryIsFeature = options.find(
     option => option.place_name.toLowerCase() === where.toLowerCase());
+  // fetch options
   useEffect(() => {
     const delayFn = setTimeout(async () => {
       console.log('where', where);
@@ -44,7 +41,7 @@ const SearchForm = () => {
       if (where && searchQueryChanged && !searchQueryIsFeature) {
         console.log('fetching', where);
         const features = await mapService.getGeoSearchResults(where);
-        features.sort((a,b)=>(
+        features.sort((a, b) => (
           area(bboxPolygon(b.bbox)) - area(bboxPolygon(a.bbox))
         ));
         setOptions(features);
@@ -54,13 +51,24 @@ const SearchForm = () => {
     return () => clearTimeout(delayFn);
   }, [where, searchQueryChanged, searchQueryIsFeature]);
   
+  // clear options when cleared search box
   useEffect(() => {
-    // clear options when cleared search box
     
     if (options.length && !where) {
       setOptions([]);
     }
   }, [where, options]);
+  
+  // navigates map to selectedFeature bbox
+  useEffect(() => {
+    if (map && selectedFeature) {
+      const bounds = [
+        selectedFeature.bbox.slice(0, 2).reverse(),
+        selectedFeature.bbox.slice(2).reverse()];
+      console.log('bounds', bounds);
+      map.flyToBounds(bounds);
+    }
+  }, [map, selectedFeature]);
   
   return (
     <GridContainer
