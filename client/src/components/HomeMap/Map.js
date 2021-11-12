@@ -22,14 +22,13 @@ L.Icon.Default.mergeOptions({
 //   },
 // }));
 
-const Map = () => {
+const Map = ({map, setMap}) => {
   const [height, setHeight] = useState(0);
   const [, setWindowHeight] = useState(0); // watch window resize only
   const ref = useRef(null);
   // eslint-disable-next-line no-unused-vars
-  const [center, setCenter] = useState({lat: 37.090, lng: -95.712});
-  const [map, setMap] = useState(null);
   
+  // handles map height change
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
@@ -43,18 +42,19 @@ const Map = () => {
     };
   }, []);
   
+  // navigates map to user's location on start
   useEffect(() => {
     let userCoordinates;
+    console.log('navigator.geolocation', Boolean(navigator.geolocation));
+    console.log('map', Boolean(map));
     if (navigator.geolocation && map) {
       navigator.geolocation.getCurrentPosition((position) => {
         userCoordinates = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        if(map){
-          map.flyTo(userCoordinates, 10);
-        }
-        console.log('current position', userCoordinates);
+        console.log('userCoordinates', userCoordinates);
+        map.flyTo(userCoordinates, 10);
       });
     }
   }, [map]);
@@ -64,8 +64,8 @@ const Map = () => {
       <div style={{height: `${height}px`, width: '100%'}}>
         {height &&
         <MapContainer
-          center={center}
-          zoom={3}
+          center={{lat: 37.090, lng: -95.712}}
+          zoom={4}
           scrollWheelZoom={false}
           style={{width: '100%', height: '100%'}}
           whenCreated={setMap}
