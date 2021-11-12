@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Map from './Map.js';
 import {makeStyles} from '@mui/styles';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
@@ -15,6 +15,7 @@ const useStyles = makeStyles(() => ({
 
 const HomeMap = () => {
   const classes = useStyles();
+  const [map, setMap] = useState(null);
   
   return (
     <GridContainer
@@ -23,7 +24,7 @@ const HomeMap = () => {
       className={classes.container}
     >
       <GridItem>
-        <SearchForm/>
+        <SearchForm map={map}/>
       </GridItem>
       <GridItem style={{flexGrow: 1}}>
         <GridContainer
@@ -36,7 +37,7 @@ const HomeMap = () => {
             <Results/>
           </GridItem>
           <GridItem style={{flexGrow: 1}}>
-            <Map/>
+            <Map map={map} setMap={setMap}/>
           </GridItem>
         </GridContainer>
       </GridItem>
