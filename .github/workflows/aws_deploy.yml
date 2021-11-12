@@ -6,7 +6,7 @@ on:
       - master
     types:
       - closed
-
+# add bump version
 jobs:
   deploy_to_ec2:
     runs-on: ubuntu-latest
@@ -26,3 +26,9 @@ jobs:
             --deployment-group-name deployment_group \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+      - uses: actions/checkout@v2
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.33.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.BUMP_VERSION_GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch

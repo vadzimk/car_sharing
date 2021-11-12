@@ -41,7 +41,7 @@ const SearchForm = ({map}) => {
       if (where && searchQueryChanged && !searchQueryIsFeature) {
         console.log('fetching', where);
         const features = await mapService.getGeoSearchResults(where);
-        features.sort((a,b)=>(
+        features.sort((a, b) => (
           area(bboxPolygon(b.bbox)) - area(bboxPolygon(a.bbox))
         ));
         setOptions(features);
@@ -60,10 +60,13 @@ const SearchForm = ({map}) => {
   }, [where, options]);
   
   // navigates map to selectedFeature bbox
-  useEffect(()=>{
-    if(map && selectedFeature){
-      const bounds = [selectedFeature.bbox.slice(0,2).reverse(), selectedFeature.bbox.slice(2).reverse()];
-      map.fitBounds(bounds);
+  useEffect(() => {
+    if (map && selectedFeature) {
+      const bounds = [
+        selectedFeature.bbox.slice(0, 2).reverse(),
+        selectedFeature.bbox.slice(2).reverse()];
+      console.log('bounds', bounds);
+      map.flyToBounds(bounds);
     }
   }, [map, selectedFeature]);
   
