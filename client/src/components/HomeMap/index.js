@@ -32,11 +32,20 @@ const HomeMap = () => {
           alignItems="stretch"
           className={classes.container}
         >
-          <GridItem xs={12} sm={6}
+          <GridItem
+          sm={6}
+          sx={{
+            display:{
+              xs: 'none',
+              sm: 'block'
+            }
+          }}
           >
             <Results/>
           </GridItem>
-          <GridItem style={{flexGrow: 1}}>
+          <GridItem style={{flexGrow: 1}}
+                    xs={12} sm={6}
+          >
             <Map map={map} setMap={setMap}/>
           </GridItem>
         </GridContainer>
