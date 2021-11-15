@@ -65,11 +65,11 @@ describe('new listing', () => {
     expect(listingFromDb.plate).toEqual(newListing.plate.toUpperCase());
   });
   
-  test('can be fetched in /get-host-listings', async () => {
-    const result = await api.get('/api/listing/get-host-listings').
+  test('can be fetched in /api/listing', async () => {
+    const result = await api.get('/api/listing').
       set('Authorization', `Bearer ${token}`).
       query({fromDate: new Date(), toDate: new Date()});
-    console.log('/get-host-listings result.error', result.error);
+    console.log('get /listing result.error', result.error);
     expect(result.statusCode).toEqual(200);
     expect(result.body.listings).
       toEqual(expect.arrayContaining(

@@ -20,7 +20,7 @@ const create = async (newListing) => {
 
 const getHostListings = async (dateFrom, dateTo) => {
   try {
-    const res = await api.get('/listing/get-host-listings',
+    const res = await api.get('/listing',
       {params: {dateFrom, dateTo}});
     return {
       success: res.status === 200,

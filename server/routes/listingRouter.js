@@ -148,10 +148,11 @@ listingRouter.post('/imagekeys', async (req, res, next) => {
   
 });
 
-listingRouter.get('/get-host-listings', async (req, res, next) => {
+// get-host-listings
+listingRouter.get('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   const {fromDate, toDate} = req.query;
-  console.log('/get-host-listings query', req.query);
+  console.log('get /listing query', req.query);
   const text = queries.listing_getall;
   
   try {
