@@ -19,7 +19,7 @@ describe('location', () => {
   });
   
   test('can be added', async () => {
-    const result = await api.post('/api/location/add-location').
+    const result = await api.post('/api/location').
       set('Authorization', `Bearer ${token}`).
       send({newLocation});
     

@@ -46,7 +46,7 @@ const getCityStateForZip = async (zipcode) => {
 
 const createLocation = async (newLocation) => {
   try {
-    const res = await api.post('/location/add-location', {newLocation});
+    const res = await api.post('/location', {newLocation});
     return {
       success: res.status === 200,
       data: res.data,
