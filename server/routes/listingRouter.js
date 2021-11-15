@@ -265,7 +265,8 @@ listingRouter.put('/', async (req, res, next) => {
   }
 });
 
-listingRouter.delete('/delete-host-listing', async (req, res, next) => {
+// delete-host-listing
+listingRouter.delete('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   const text_appuser_listing_findid = 'select id as appuser_listing_id from appuser_listing where appuserid=$1 and listingid=$2;';
   const text_listing = 'update listing set active=false where id=$1';

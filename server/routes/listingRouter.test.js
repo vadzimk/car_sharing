@@ -101,7 +101,7 @@ describe('new listing', () => {
   
   test('can be marked deleted', async()=>{
     const listing={id: newListingId};
-    await api.delete('/api/listing/delete-host-listing').
+    await api.delete('/api/listing').
       set('Authorization', `Bearer ${token}`).
       send(listing).expect(204);
   });
