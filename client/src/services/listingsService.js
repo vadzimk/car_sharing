@@ -5,7 +5,7 @@ const create = async (newListing) => {
   try {
     
     const res = await api.post(
-      '/listing/create', newListing,
+      '/listing', newListing,
     );
     
     return {
