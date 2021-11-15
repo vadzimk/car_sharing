@@ -11,11 +11,11 @@ const locationRouter = express.Router();
  * */
 locationRouter.use(middleware.decodeHostToken);
 
-locationRouter.post('/add-location', async (req, res, next) => {
+locationRouter.post('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
-  console.log('/add-location req.body', req.body);
+  console.log('/location req.body', req.body);
   const {addr_line2, addr_line1, zipcode} = req.body.newLocation;
-  console.log('/add-location body', addr_line1, addr_line2, zipcode);
+  console.log('/location body', addr_line1, addr_line2, zipcode);
   const text_location = 'insert into location(addr_line2, addr_line1, zipcode) values ($1, $2, $3) returning *;';
   const text_appuser_location = 'insert into appuser_location(locationid, appuserid) values ($1, $2) returning id;';
   
