@@ -5,14 +5,14 @@ import userReducer from './reducers/userReducer.js';
 import notificationReducer from './reducers/notificationReducer.js';
 import locationReducer from './reducers/locationReducer.js';
 import listingsReducer from './reducers/listingsReducer.js';
-import mapReducer from './reducers/mapReducer.js';
+import offersReducer from './reducers/offersReducer.js';
 
 const appReducer = combineReducers({
   location: locationReducer,
   user: userReducer,
   notification: notificationReducer,
   listings: listingsReducer,
-  mapResults: mapReducer,
+  offers: offersReducer
 });
 
 const rootReducer = (state, action)=>{

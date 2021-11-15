@@ -7,6 +7,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import SearchBox from './SearchBox.js';
 import mapService from '../../services/mapService.js';
 import {area, bboxPolygon} from '@turf/turf';
+import {useDispatch} from 'react-redux';
+import {getOffers} from '../../reducers/offersReducer.js';
 
 const noonFor = (date, n) => {
   const newDate = date.setDate(date.getDate() + n);
@@ -20,15 +22,20 @@ const SearchForm = ({map}) => {
   const [where, setWhere] = useState('');
   const [options, setOptions] = useState([]);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  
   const handleWhereChange = (value) => {
     setWhere(value);
   };
   
+  const dispatch = useDispatch();
+  
   const handleSubmit = () => {
     // submit request to api with date range and bbox
-    
+    if (selectedFeature) {
+      dispatch(getOffers(selectedFeature.bbox, dateFrom, dateTo));
+    }
   };
-  
+  console.log('selectedFeature', selectedFeature);
   const searchQueryChanged = selectedFeature?.text.toLowerCase() !==
     where.toLowerCase();
   const searchQueryIsFeature = options.find(

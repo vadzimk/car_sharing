@@ -45,7 +45,7 @@ const SearchBox = ({
   console.log('SearchBox    options', options);
   return (
     <Autocomplete
-      freeSolo
+      // freeSolo  // disable any value - only one of the options
       disablePortal
       disableClearable
       options={options}
