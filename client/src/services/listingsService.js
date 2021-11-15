@@ -63,7 +63,7 @@ const confirmImagesSent = async (listingId, keys) => {
 // eslint-disable-next-line no-unused-vars
 const updateListing = async (rowToSubmit) => {
   try {
-    const res = await api.put('/listing/update-listing', rowToSubmit);
+    const res = await api.put('/listing', rowToSubmit);
     return {
       success: res.status === 200,
       data: res.data.listing_update,

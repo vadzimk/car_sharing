@@ -164,7 +164,8 @@ listingRouter.get('/', async (req, res, next) => {
   }
 });
 
-listingRouter.put('/update-listing', async (req, res, next) => {
+// update-listing
+listingRouter.put('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   
   const {
@@ -190,7 +191,7 @@ listingRouter.put('/update-listing', async (req, res, next) => {
   } = req.body;
   
   // TODO add validation to update-listing
-  console.log('/update-listing req.body', req.body);
+  console.log('put /listing req.body', req.body);
   
   const text_listing_location = 'insert into listing_location (locationid, listingid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP) returning locationid as location_id;';
   const text_appuser_location = 'select id from appuser_location where appuserid=$1 and locationid=$2;';
@@ -229,7 +230,7 @@ listingRouter.put('/update-listing', async (req, res, next) => {
         const location_result = await t.one(text_location,
           [location_id_result.location_id]);
         result = {...result, ...location_result};
-        console.log('/update-listing listing_location result', result);
+        console.log('put /listing listing_location result', result);
       }
       if (Object.keys(listing_data).length) {
         console.log('begin listing_data', listing_data);

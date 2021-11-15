@@ -88,13 +88,13 @@ describe('new listing', () => {
         fee: '29.00',
         miles_per_rental: 100,
       };
-      const result = await api.put('/api/listing/update-listing').
+      const result = await api.put('/api/listing').
         set('Authorization', `Bearer ${token}`).
         send(rowToSubmit);
       
-      console.log('/api/listing/update-listing result error', result.error);
+      console.log('put /api/listing result error', result.error);
       expect(result.statusCode).toEqual(200);
-      console.log('/api/listing/update-listing result.body', result.body);
+      console.log('put /api/listing result.body', result.body);
       expect(result.body.listing_update).toMatchObject(rowToSubmit);
       
     });
