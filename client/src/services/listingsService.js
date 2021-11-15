@@ -79,7 +79,7 @@ const updateListing = async (rowToSubmit) => {
 const deleteListing = async (id) => {
   const listing = {id};
   try {
-    const res = await api.delete('/listing/delete-host-listing',
+    const res = await api.delete('/listing',
       {data: listing});
     return {success: res.status === 204};
   } catch (e) {
