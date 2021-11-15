@@ -4,11 +4,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import SearchBox from './SearchBox.js';
 import mapService from '../../services/mapService.js';
-import {area, bboxPolygon} from '@turf/turf';
 import {useDispatch} from 'react-redux';
 import {getOffers} from '../../reducers/offersReducer.js';
+import AutocompleteGeocode from '../ui/AutocompleteGeocode';
 
 const noonFor = (date, n) => {
   const newDate = date.setDate(date.getDate() + n);
@@ -20,12 +19,7 @@ const SearchForm = ({map}) => {
   const [dateFrom, setDateFrom] = useState(noonFor(new Date(), 1));
   const [dateTo, setDateTo] = useState(noonFor(new Date(), 2));
   const [where, setWhere] = useState('');
-  const [options, setOptions] = useState([]);
   const [selectedFeature, setSelectedFeature] = useState(null);
-  
-  const handleWhereChange = (value) => {
-    setWhere(value);
-  };
   
   const dispatch = useDispatch();
   
@@ -35,36 +29,6 @@ const SearchForm = ({map}) => {
       dispatch(getOffers(selectedFeature.bbox, dateFrom, dateTo));
     }
   };
-  console.log('selectedFeature', selectedFeature);
-  const searchQueryChanged = selectedFeature?.text.toLowerCase() !==
-    where.toLowerCase();
-  const searchQueryIsFeature = options.find(
-    option => option.place_name.toLowerCase() === where.toLowerCase());
-  // fetch options
-  useEffect(() => {
-    const delayFn = setTimeout(async () => {
-      console.log('where', where);
-      // send request
-      if (where && searchQueryChanged && !searchQueryIsFeature) {
-        console.log('fetching', where);
-        const features = await mapService.getGeoSearchResults(where);
-        features.sort((a, b) => (
-          area(bboxPolygon(b.bbox)) - area(bboxPolygon(a.bbox))
-        ));
-        setOptions(features);
-      }
-    }, 500);
-    
-    return () => clearTimeout(delayFn);
-  }, [where, searchQueryChanged, searchQueryIsFeature]);
-  
-  // clear options when cleared search box
-  useEffect(() => {
-    
-    if (options.length && !where) {
-      setOptions([]);
-    }
-  }, [where, options]);
   
   // navigates map to selectedFeature bbox
   useEffect(() => {
@@ -86,12 +50,13 @@ const SearchForm = ({map}) => {
       <GridItem
         style={{flexGrow: 3, width: '250px'}}
       >
-        <SearchBox
-          optionlist={options}
-          inputValue={where}
-          onInputChange={handleWhereChange}
-          value={selectedFeature}
-          onValueChange={setSelectedFeature}
+        <AutocompleteGeocode
+          geoCodeFn={mapService.getGeoSearchResults}
+          provider="maptiler"
+          inputText={where}
+          setInputText={setWhere}
+          selectedFeature={selectedFeature}
+          setSelectedFeature={setSelectedFeature}
         />
       </GridItem>
       <GridItem

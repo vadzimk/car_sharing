@@ -9,6 +9,7 @@ const SearchBox = ({
   onInputChange,
   value,
   onValueChange,
+  getOptionLabel
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -50,7 +51,7 @@ const SearchBox = ({
       disableClearable
       options={options}
       loadingText="Start typing"
-      getOptionLabel={(option) => option.place_name}
+      getOptionLabel={getOptionLabel}
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
