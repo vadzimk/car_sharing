@@ -25,7 +25,7 @@ const categoryOptions = [
   'Minivan',
   'SUV'];
 
-listingRouter.post('/create', async (req, res, next) => {
+listingRouter.post('/', async (req, res, next) => {
   
   const userId = req.decodedToken.id;
   

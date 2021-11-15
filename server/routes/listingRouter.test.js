@@ -22,7 +22,7 @@ let newListingId;
 
 
 const createListing = async (newListing) => {
-  return await api.post('/api/listing/create').
+  return await api.post('/api/listing').
     set('Authorization', `Bearer ${token}`).
     send(newListing);
 };

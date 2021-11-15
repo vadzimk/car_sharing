@@ -135,7 +135,7 @@ describe('listing', () => {
     
     // changed from
     // cy.intercept('POST', '/listings/create', (req) => {
-    cy.intercept('POST', '/api/listing/create', (req) => {
+    cy.intercept('POST', '/api/listing', (req) => {
       req.on('response', (res) => {
         expect(res.statusCode).to.be.eq(200);
       });
@@ -160,7 +160,7 @@ describe('location', () => {
       cy.contains('New Location').click();
       
       cy.get('[type=submit]').click();
-      cy.intercept('POST', '/api/location/add-location', (req) => {
+      cy.intercept('POST', '/api/location', (req) => {
         req.on('response', (res) => {
           expect(res.statusCode).to.be.eq(200);
         });
