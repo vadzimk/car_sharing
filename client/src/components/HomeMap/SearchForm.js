@@ -57,6 +57,7 @@ const SearchForm = ({map}) => {
           setInputText={setWhere}
           selectedFeature={selectedFeature}
           setSelectedFeature={setSelectedFeature}
+          textFieldProps={{placeholder:'Where?'}}
         />
       </GridItem>
       <GridItem

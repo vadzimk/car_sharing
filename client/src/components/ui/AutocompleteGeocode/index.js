@@ -10,6 +10,7 @@ const AutocompleteGeocode = ({
   setInputText,
   selectedFeature=null,
   setSelectedFeature,
+  textFieldProps
 }) => {
   const providerConfig = useMemo(() => {
     const config = {
@@ -83,6 +84,7 @@ const AutocompleteGeocode = ({
   
   return (
     <SearchBox
+      textFieldProps={textFieldProps}
       optionlist={options}
       inputValue={inputText}
       onInputChange={handleInputChange}

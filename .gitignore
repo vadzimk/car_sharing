@@ -7,3 +7,4 @@ yarn.lock
 backup
 backup-script.sh
 .history
+issues.csv

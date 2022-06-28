@@ -1,9 +1,10 @@
-version: "3"
+version: "3.5"
 
 services:
   carsharing_app:
     container_name: carsharing_app
     image: carsharing_app
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
