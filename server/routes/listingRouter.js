@@ -5,7 +5,9 @@ import yup from 'yup';
 import db, {pgp} from '../db/index.js';
 import middleware from '../middleware.js';
 
-import {getPutUrl} from '../aws/s3.js';
+// import {getPutUrl} from '../aws/s3.js'; // migrated to OCI
+import {getPutUrl} from '../oci/objectStorage.js';
+
 import queries from '../db/model.js';
 
 const listingRouter = express.Router();

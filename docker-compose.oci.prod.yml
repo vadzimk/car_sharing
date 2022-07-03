@@ -1,0 +1,26 @@
+version: "3.5"
+
+services:
+  carshare:
+    container_name: carshare
+    image: ${DC_IMAGE_NAME}:${DC_IMAGE_TAG}
+    restart: always
+    networks:
+      - common_network
+    ports:
+      - 3001:3001
+    environment:
+      - AWS_ACCESS_KEY_ID=AKIAVYBDKTU3YMUEP7IE
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=us-west-1
+      - JWT_KEY=sURYPhydRIpTinExPeNeRficTraTErNb
+      - DATABASE_URL_DEV=postgresql://postgres:1@localhost:5432/car_sharing_dev
+      - DATABASE_URL_PRODUCTION=postgresql://postgres:Ns3T6zTtDmI2@postgres:5432/car_sharing_container_production
+      - DATABASE_URL_TEST=postgresql://postgres:dR77dqI1otPk@54.241.254.196:5432/car_sharing_container_test
+
+
+
+networks:
+  common_network:
+    external:
+      name: common_network  # must match the actual name of the network created in the external file
