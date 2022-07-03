@@ -30,6 +30,8 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.25",
+    "oci-common": "^2.33.0",
+    "oci-objectstorage": "^2.33.0",
     "pg": "^8.6.0",
     "pg-promise": "^10.10.2",
     "yup": "^0.32.9"
