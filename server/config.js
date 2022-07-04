@@ -35,5 +35,5 @@ if(process.env.GITHUB_ACTIONS){
 console.log('NODE_ENV', process.env.NODE_ENV);
 console.log('connectionString', config.db
   .connectionString);
-console.log('FCK', process.env.FCK);
+
 export default config;
