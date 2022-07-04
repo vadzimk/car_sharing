@@ -37,6 +37,8 @@ run_unit_tests:
     policy: pull
   before_script:
     - ls -al
+    - ls -al client/
+    - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
   script:
     - npm run test
@@ -57,6 +59,8 @@ run_e2e_tests:
     policy: pull
   before_script:
     - ls -al
+    - ls -al client/
+    - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
     - npm run build
   variables:
