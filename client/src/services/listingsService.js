@@ -5,7 +5,7 @@ const create = async (newListing) => {
   try {
     
     const res = await api.post(
-      '/listing/create', newListing,
+      '/listing', newListing,
     );
     
     return {
@@ -20,7 +20,7 @@ const create = async (newListing) => {
 
 const getHostListings = async (dateFrom, dateTo) => {
   try {
-    const res = await api.get('/listing/get-host-listings',
+    const res = await api.get('/listing',
       {params: {dateFrom, dateTo}});
     return {
       success: res.status === 200,
@@ -63,7 +63,7 @@ const confirmImagesSent = async (listingId, keys) => {
 // eslint-disable-next-line no-unused-vars
 const updateListing = async (rowToSubmit) => {
   try {
-    const res = await api.put('/listing/update-listing', rowToSubmit);
+    const res = await api.put('/listing', rowToSubmit);
     return {
       success: res.status === 200,
       data: res.data.listing_update,
@@ -79,7 +79,7 @@ const updateListing = async (rowToSubmit) => {
 const deleteListing = async (id) => {
   const listing = {id};
   try {
-    const res = await api.delete('/listing/delete-host-listing',
+    const res = await api.delete('/listing',
       {data: listing});
     return {success: res.status === 204};
   } catch (e) {

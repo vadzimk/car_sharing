@@ -5,7 +5,9 @@ import yup from 'yup';
 import db, {pgp} from '../db/index.js';
 import middleware from '../middleware.js';
 
-import {getPutUrl} from '../aws/s3.js';
+// import {getPutUrl} from '../aws/s3.js'; // migrated to OCI
+import {getPutUrl} from '../oci/objectStorage.js';
+
 import queries from '../db/model.js';
 
 const listingRouter = express.Router();
@@ -25,7 +27,7 @@ const categoryOptions = [
   'Minivan',
   'SUV'];
 
-listingRouter.post('/create', async (req, res, next) => {
+listingRouter.post('/', async (req, res, next) => {
   
   const userId = req.decodedToken.id;
   
@@ -148,10 +150,11 @@ listingRouter.post('/imagekeys', async (req, res, next) => {
   
 });
 
-listingRouter.get('/get-host-listings', async (req, res, next) => {
+// get-host-listings
+listingRouter.get('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   const {fromDate, toDate} = req.query;
-  console.log('/get-host-listings query', req.query);
+  console.log('get /listing query', req.query);
   const text = queries.listing_getall;
   
   try {
@@ -163,7 +166,8 @@ listingRouter.get('/get-host-listings', async (req, res, next) => {
   }
 });
 
-listingRouter.put('/update-listing', async (req, res, next) => {
+// update-listing
+listingRouter.put('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   
   const {
@@ -189,7 +193,7 @@ listingRouter.put('/update-listing', async (req, res, next) => {
   } = req.body;
   
   // TODO add validation to update-listing
-  console.log('/update-listing req.body', req.body);
+  console.log('put /listing req.body', req.body);
   
   const text_listing_location = 'insert into listing_location (locationid, listingid, "timestamp") values ($1, $2, CURRENT_TIMESTAMP) returning locationid as location_id;';
   const text_appuser_location = 'select id from appuser_location where appuserid=$1 and locationid=$2;';
@@ -228,7 +232,7 @@ listingRouter.put('/update-listing', async (req, res, next) => {
         const location_result = await t.one(text_location,
           [location_id_result.location_id]);
         result = {...result, ...location_result};
-        console.log('/update-listing listing_location result', result);
+        console.log('put /listing listing_location result', result);
       }
       if (Object.keys(listing_data).length) {
         console.log('begin listing_data', listing_data);
@@ -263,7 +267,8 @@ listingRouter.put('/update-listing', async (req, res, next) => {
   }
 });
 
-listingRouter.delete('/delete-host-listing', async (req, res, next) => {
+// delete-host-listing
+listingRouter.delete('/', async (req, res, next) => {
   const userId = req.decodedToken.id;
   const text_appuser_listing_findid = 'select id as appuser_listing_id from appuser_listing where appuserid=$1 and listingid=$2;';
   const text_listing = 'update listing set active=false where id=$1';

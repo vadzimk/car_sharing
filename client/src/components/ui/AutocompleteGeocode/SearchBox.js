@@ -9,6 +9,8 @@ const SearchBox = ({
   onInputChange,
   value,
   onValueChange,
+  getOptionLabel,
+  textFieldProps
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -50,7 +52,7 @@ const SearchBox = ({
       disableClearable
       options={options}
       loadingText="Start typing"
-      getOptionLabel={(option) => option.place_name}
+      getOptionLabel={getOptionLabel}
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
@@ -63,17 +65,18 @@ const SearchBox = ({
         console.log('selected value', newValue);
         onValueChange(newValue);
       }}
-      renderInput={(params) => (
-        <TextField
+      renderInput={(params) => {
+        console.log('params2',params);
+        return <TextField
           fullWidth
           {...params}
-          placeholder="Where?"
+          {...textFieldProps}
           InputProps={{
             ...params.InputProps,
             type: 'search',
           }}
-        />
-      )}
+        />;
+      }}
     />
   );
 };

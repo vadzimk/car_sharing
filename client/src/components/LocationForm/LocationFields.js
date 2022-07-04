@@ -7,6 +7,7 @@ import {
   clearCityState,
   getCityStateForZip,
 } from '../../reducers/locationReducer.js';
+import AutocompleteGeocode from '../ui/AutocompleteGeocode';
 
 const LocationFields = (props) => {
   const {city, state} = useSelector(
@@ -47,17 +48,24 @@ const LocationFields = (props) => {
           </Typography>
         </GridItem>
         <GridItem>
-          <TextField
-            variant="standard"
-            name="addr_line1"
-            label="Street Address"
-            fullWidth
-            size="small"
-            required
-            value={props.values.addr_line1}
-            error={Boolean(props.errors.addr_line1)}
-            helperText={props.errors.addr_line1}
-            onChange={props.handleChange}
+          <AutocompleteGeocode
+            textFieldProps={{variant: 'standard',
+              name:'addr_line1',
+              label: 'Street Address',
+              fullWidth: true,
+              size: 'small',
+              required: true
+            }}
+            // variant="standard"
+            // name="addr_line1"
+            // label="Street Address"
+            // fullWidth
+            // size="small"
+            // required
+            // value={props.values.addr_line1}
+            // error={Boolean(props.errors.addr_line1)}
+            // helperText={props.errors.addr_line1}
+            // onChange={props.handleChange}
           />
           <TextField
             variant="standard"
