@@ -22,7 +22,7 @@ let newListingId;
 
 
 const createListing = async (newListing) => {
-  return await api.post('/api/listing/create').
+  return await api.post('/api/listing').
     set('Authorization', `Bearer ${token}`).
     send(newListing);
 };
@@ -65,11 +65,11 @@ describe('new listing', () => {
     expect(listingFromDb.plate).toEqual(newListing.plate.toUpperCase());
   });
   
-  test('can be fetched in /get-host-listings', async () => {
-    const result = await api.get('/api/listing/get-host-listings').
+  test('can be fetched in /api/listing', async () => {
+    const result = await api.get('/api/listing').
       set('Authorization', `Bearer ${token}`).
       query({fromDate: new Date(), toDate: new Date()});
-    console.log('/get-host-listings result.error', result.error);
+    console.log('get /listing result.error', result.error);
     expect(result.statusCode).toEqual(200);
     expect(result.body.listings).
       toEqual(expect.arrayContaining(
@@ -88,20 +88,20 @@ describe('new listing', () => {
         fee: '29.00',
         miles_per_rental: 100,
       };
-      const result = await api.put('/api/listing/update-listing').
+      const result = await api.put('/api/listing').
         set('Authorization', `Bearer ${token}`).
         send(rowToSubmit);
       
-      console.log('/api/listing/update-listing result error', result.error);
+      console.log('put /api/listing result error', result.error);
       expect(result.statusCode).toEqual(200);
-      console.log('/api/listing/update-listing result.body', result.body);
+      console.log('put /api/listing result.body', result.body);
       expect(result.body.listing_update).toMatchObject(rowToSubmit);
       
     });
   
   test('can be marked deleted', async()=>{
     const listing={id: newListingId};
-    await api.delete('/api/listing/delete-host-listing').
+    await api.delete('/api/listing').
       set('Authorization', `Bearer ${token}`).
       send(listing).expect(204);
   });

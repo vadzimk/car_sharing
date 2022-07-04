@@ -1,0 +1,141 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "master" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+run_lint:
+  stage: lint
+  image: node:16.13.0
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run lint
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - clent/node_modules
+      - server/node_modules
+      - .npm/
+    policy: pull-push
+
+
+run_unit_tests:
+  stage: test
+  image: node:16.13.0
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - client/node_modules
+      - server/node_modules
+    policy: pull
+  before_script:
+    - ls -al
+    - source $SERVER_ENV # export all environment variables from the file
+  script:
+    - npm run test
+  artifacts:
+    when: always
+    reports:
+      junit: server/junit.xml
+
+
+run_e2e_tests:
+  stage: test
+  image: node:16.13.0
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - client/node_modules
+      - server/node_modules
+    policy: pull
+  before_script:
+    - ls -al
+    - source $SERVER_ENV # export all environment variables from the file
+    - npm run build
+  variables:
+    CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
+  script:
+    - npm run start:ci &    # start the server in the background
+    - npm run e2e    # run Cypress tests
+  artifacts:
+    when: always
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+    expire_in: 1 week
+
+
+build_backend_image:
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  before_script: # authenticate in gitlab registry from inside the executor
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - apk add jq
+    - export PACKAGE_VERSION=$(cat server/package.json | jq -r .version) # parses json object and returns an attribute
+    - export APP_VERSION=$PACKAGE_VERSION.$CI_PIPELINE_IID # append the pipeline build version
+    - echo "VERSION=$APP_VERSION" >> build.env # save artifact file
+  script:
+    - cd server
+    - docker build -t $CI_REGISTRY_IMAGE:$APP_VERSION -f oci.prod.Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE:$APP_VERSION # must be on the same executor with build
+  artifacts:
+    reports:
+      dotenv: build.env # loaded in all subsequent jobs
+
+
+deploy_backend:
+  stage: deploy
+  before_script:
+    - chmod 400 $WS_KEY
+  - ls -al
+  - source $SERVER_ENV # export all environment variables from the file
+  - source $POSTGRES_ENV
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
+      if [ ! -d /home/ubuntu/applications/carshare/server ];
+      then mkdir -p /home/ubuntu/applications/carshare/server;
+      fi;
+      if [ ! -d /home/ubuntu/applications/carshare/server/backup ];
+      then mkdir -p /home/ubuntu/applications/carshare/server/backup;
+      fi;
+      '
+    - scp -o StrictHostKeyChecking=no -i $WS_KEY postgres-init-db.sh server/docker-compose.oci.prod.yml ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
+    - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST "
+    docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+    export \
+    DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+    DC_IMAGE_TAG=$VERSION
+    JWT_KEY=${JWT_KEY}
+    DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
+    DATABASE_URL_TEST=${DATABASE_URL_TEST}
+    OCI_NAMESPACE=${OCI_NAMESPACE}
+    OCI_BUCKET=${OCI_BUCKET}
+    OCI_CLI_USER=${OCI_CLI_USER}
+    OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
+    OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
+    OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
+    OCI_COMPARTMENT=${OCI_COMPARTMENT} &&
+    export
+    POSTGRES_USER=${POSTGRES_USER}
+    POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    DATABASE_NAME=${DATABASE_NAME} &&
+    cd /home/ubuntu/applications/carshare/server &&
+    docker-compose -f docker-compose.oci.prod.yml down &&
+    docker-compose -f docker-compose.oci.prod.yml up -d
+    "
+
+
+deploy_dbms:
+#      - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
+#       if [ ! -d /home/ubuntu/applications/BACKUPS/car_sharing ];
+#      then mkdir -p /home/ubuntu/applications/BACKUPS/car_sharing;
+#      fi;'

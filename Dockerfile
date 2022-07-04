@@ -1,3 +1,6 @@
+# This is legacy configuration for production in aws
+# Two-stage build. App is served completely by Express server
+
 FROM node:lts-alpine AS build-frontend-static
 WORKDIR /usr/src/app/client
 COPY client/package-lock.json /usr/src/app/client/
