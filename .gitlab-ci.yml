@@ -110,32 +110,25 @@ deploy_backend:
       '
     - scp -o StrictHostKeyChecking=no -i $WS_KEY postgres-init-db.sh server/docker-compose.oci.prod.yml ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST "
-    docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-    export \
-    DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
-    DC_IMAGE_TAG=$VERSION
-    JWT_KEY=${JWT_KEY}
-    DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
-    DATABASE_URL_TEST=${DATABASE_URL_TEST}
-    OCI_NAMESPACE=${OCI_NAMESPACE}
-    OCI_BUCKET=${OCI_BUCKET}
-    OCI_CLI_USER=${OCI_CLI_USER}
-    OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
-    OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
-    OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
-    OCI_COMPARTMENT=${OCI_COMPARTMENT} &&
-    export
-    POSTGRES_USER=${POSTGRES_USER}
-    POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    DATABASE_NAME=${DATABASE_NAME} &&
-    cd /home/ubuntu/applications/carshare/server &&
-    docker-compose -f docker-compose.oci.prod.yml down &&
-    docker-compose -f docker-compose.oci.prod.yml up -d
-    "
-
-
-deploy_dbms:
-#      - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
-#       if [ ! -d /home/ubuntu/applications/BACKUPS/car_sharing ];
-#      then mkdir -p /home/ubuntu/applications/BACKUPS/car_sharing;
-#      fi;'
+      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+      export
+      DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+      DC_IMAGE_TAG=$VERSION
+      JWT_KEY=${JWT_KEY}
+      DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
+      DATABASE_URL_TEST=${DATABASE_URL_TEST}
+      OCI_NAMESPACE=${OCI_NAMESPACE}
+      OCI_BUCKET=${OCI_BUCKET}
+      OCI_CLI_USER=${OCI_CLI_USER}
+      OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
+      OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
+      OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
+      OCI_COMPARTMENT=${OCI_COMPARTMENT} &&
+      export
+      POSTGRES_USER=${POSTGRES_USER}
+      POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      DATABASE_NAME=${DATABASE_NAME} &&
+      cd /home/ubuntu/applications/carshare/server &&
+      docker-compose -f docker-compose.oci.prod.yml down &&
+      docker-compose -f docker-compose.oci.prod.yml up -d
+      "
