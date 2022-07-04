@@ -96,9 +96,9 @@ deploy_backend:
   stage: deploy
   before_script:
     - chmod 400 $WS_KEY
-  - ls -al
-  - source $SERVER_ENV # export all environment variables from the file
-  - source $POSTGRES_ENV
+    - ls -al
+    - source $SERVER_ENV # export all environment variables from the file
+    - source $POSTGRES_ENV
   script:
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
       if [ ! -d /home/ubuntu/applications/carshare/server ];
