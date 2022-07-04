@@ -40,6 +40,7 @@ run_unit_tests:
     - ls -al client/
     - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
+    - echo OCI_NAMESPACE=$OCI_NAMESPACE
   script:
     - npm install
     - npm run test
@@ -63,6 +64,7 @@ run_e2e_tests:
     - ls -al client/
     - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
+    - echo OCI_NAMESPACE=$OCI_NAMESPACE
     - npm install
     - npm run build
   variables:
