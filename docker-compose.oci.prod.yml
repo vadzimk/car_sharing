@@ -1,5 +1,10 @@
 version: "3.5"
 
+networks:
+  common_network:
+    external:
+      name: common_network  # must match the actual name of the network created in the external file
+
 services:
   carshare:
     container_name: carshare
@@ -10,17 +15,47 @@ services:
     ports:
       - 3001:3001
     environment:
-      - AWS_ACCESS_KEY_ID=AKIAVYBDKTU3YMUEP7IE
-      - AWS_SECRET_ACCESS_KEY=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
-      - AWS_REGION=us-west-1
-      - JWT_KEY=sURYPhydRIpTinExPeNeRficTraTErNb
-      - DATABASE_URL_DEV=postgresql://postgres:1@localhost:5432/car_sharing_dev
-      - DATABASE_URL_PRODUCTION=postgresql://postgres:Ns3T6zTtDmI2@postgres:5432/car_sharing_container_production
-      - DATABASE_URL_TEST=postgresql://postgres:dR77dqI1otPk@54.241.254.196:5432/car_sharing_container_test
+      - JWT_KEY=${JWT_KEY}
+      - DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
+      - DATABASE_URL_TEST=${DATABASE_URL_TEST}
+      - OCI_NAMESPACE=${OCI_NAMESPACE}
+      - OCI_BUCKET=${OCI_BUCKET}
+      - OCI_CLI_USER=${OCI_CLI_USER}
+      - OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
+      - OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
+      - OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
+      - OCI_COMPARTMENT=${OCI_COMPARTMENT}
+
+
+  postgres:
+    container_name: postgres
+    image: postgis/postgis
+    restart: always
+    networks:
+      - common-network
+    ports:
+      - 5432:5432
+    volumes:
+      - ./backup:/backup
+      - ./postgres-init-db.sh:/docker-entrypoint-initdb.d/postgres-init-db.sh
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - common-network
+
+
+volumes:
+  postgres_data:
 
 
 
-networks:
-  common_network:
-    external:
-      name: common_network  # must match the actual name of the network created in the external file
