@@ -5,7 +5,7 @@
   "description": "carsharing backend",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --passWithNoTests --verbose --runInBand --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests --verbose --runInBand --detectOpenHandles",
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint ."
