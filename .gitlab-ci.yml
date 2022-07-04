@@ -26,7 +26,7 @@ run_lint:
     policy: pull-push
 
 
-run_unit_tests:
+run_unit_tests_server:
   stage: test
   image: node:16.13.0
   cache:
@@ -44,7 +44,7 @@ run_unit_tests:
     - echo OCI_NAMESPACE=$OCI_NAMESPACE
     - echo DATABASE_URL_TEST=$DATABASE_URL_TEST
   script:
-    - npm run test
+    - cd ./server && npm run test -- --watchAll=false
   artifacts:
     when: always
     reports:
@@ -72,7 +72,7 @@ run_e2e_tests:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
     - npm run start &    # start the server in the background
-    - npm run e2e    # run Cypress tests
+    - cd ./client && npm run cypress:e2e
   artifacts:
     when: always
     paths:
