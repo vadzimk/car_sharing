@@ -41,6 +41,7 @@ run_unit_tests:
     - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
   script:
+    - npm install
     - npm run test
   artifacts:
     when: always
@@ -62,6 +63,7 @@ run_e2e_tests:
     - ls -al client/
     - ls -al server/
     - source $SERVER_ENV # export all environment variables from the file
+    - npm install
     - npm run build
   variables:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
