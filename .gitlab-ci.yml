@@ -50,6 +50,7 @@ install_client_dependencies:
     - cat $OCI_CONFIG > ~/.oci/config
     - cat $CARSHARE_KEY_PUB > ~/.oci/carshare_key.pub.pem
     - ls -al ~/.oci/
+    - cat ~/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
     - source $POSTGRES_ENV
