@@ -15,7 +15,8 @@ install_dependencies:
   stage: install
   image: node:16.13.0
   script:
-    - npm ci --cache .npm --prefer-offline
+    - cd server && npm ci --cache .npm --prefer-offline
+    - cd client && npm ci --cache .npm --prefer-offline
   cache:
     key: DEP-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
     paths:
@@ -27,7 +28,7 @@ install_dependencies:
 #    changes:
 #      - package-lock.json
 
-create_files:
+create_files_from_secrets:
   stage:
     install
   script:
