@@ -11,25 +11,35 @@ stages:
   - build
   - deploy
 
-install_dependencies:
+install_server_dependencies:
   stage: install
   image: node:16.13.0
   script:
-    - ls -al
     - cd server && npm ci --cache .npm --prefer-offline
-    - ls -al
-    - cd client && npm ci --cache .npm --prefer-offline
   cache:
-    key: DEP-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+    key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
     paths:
-      - clent/node_modules
       - server/node_modules
-      - client/.npm/
       - server/.npm/
     policy: push
-#  only:
-#    changes:
-#      - package-lock.json
+  only:
+    changes:
+      - server/package-lock.json
+
+install_client_dependencies:
+  stage: install
+  image: node:16.13.0
+  script:
+    - cd client && npm ci --cache .npm --prefer-offline
+  cache:
+    key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+    paths:
+      - clent/node_modules
+      - client/.npm/
+    policy: push
+  only:
+    changes:
+      - client/package-lock.json
 
 create_files_from_secrets:
   stage:
@@ -51,11 +61,15 @@ create_files_from_secrets:
 
 .use_cache:
   cache:
-    - key: DEP-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+    - key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+      paths:
+        - server/node_modules
+        - server/.npm/
+      policy: pull
+    - key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
       paths:
         - clent/node_modules
-        - server/node_modules
-        - .npm/
+        - client/.npm/
       policy: pull
     - key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
       paths:
