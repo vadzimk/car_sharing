@@ -8,6 +8,8 @@ import common from 'oci-common';
 //   tenancy=OCI_CLI_TENANCY
 //   OCI_COMPARTMENT
 
-const provider = new common.ConfigFileAuthenticationDetailsProvider('~/.oci/config');
+
+// const provider = new common.ConfigFileAuthenticationDetailsProvider('~/.oci/config');
+const provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
 
 export default provider;
