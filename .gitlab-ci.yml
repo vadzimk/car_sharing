@@ -4,19 +4,19 @@ workflow:
       when: never
     - when: always
 
+
 stages:
   - install
   - test
   - build
   - deploy
 
+
 install_server_dependencies:
   stage: install
   image: node:16.13.0
   script:
     - cd server && npm ci --cache .npm --prefer-offline
-    - ls -al
-    - cd .. && ls -al
   cache:
     key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
     paths:
@@ -27,13 +27,12 @@ install_server_dependencies:
     changes:
       - server/package-lock.json
 
+
 install_client_dependencies:
   stage: install
   image: node:16.13.0
   script:
     - cd client && npm ci --cache .npm --prefer-offline
-    - ls -al
-    - cd .. && ls -al
   cache:
     key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
     paths:
@@ -44,22 +43,17 @@ install_client_dependencies:
     changes:
       - client/package-lock.json
 
-export_secrets:
-  stage:
-    install
-  script:
-    - set -o allexport  # export all environment variables from the file
-    - source $SERVER_ENV
-    - source $POSTGRES_ENV
-    - set +o allexport
 
-
-.use_cache:
+.use_cache_and_secrets:
   before_script:
     - mkdir -p ~/.oci
     - cat $OCI_CONFIG > ~/.oci/config
     - cat $CARSHARE_KEY_PUB > ~/.oci/carshare_key.pub.pem
     - ls -al ~/
+    - set -o allexport  # export all environment variables from the file
+    - source $SERVER_ENV
+    - source $POSTGRES_ENV
+    - set +o allexport
   cache:
     - key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
       paths:
@@ -73,18 +67,18 @@ export_secrets:
       policy: pull
 
 
-
 run_lint_server:
   stage: test
   image: node:16.13.0
-  extends: .use_cache
+  extends: .use_cache_and_secrets
   script:
     - cd server && npm run lint
+
 
 run_lint_client:
   stage: test
   image: node:16.13.0
-  extends: .use_cache
+  extends: .use_cache_and_secrets
   script:
     - cd client && npm run lint
 
@@ -92,7 +86,7 @@ run_lint_client:
 run_unit_tests_server:
   stage: test
   image: node:16.13.0
-  extends: .use_cache
+  extends: .use_cache_and_secrets
   script:
     - cd ./server && npm run test -- --watchAll=false
   artifacts:
@@ -104,7 +98,7 @@ run_unit_tests_server:
 run_e2e_tests:
   stage: test
   image: node:16.13.0
-  extends: .use_cache
+  extends: .use_cache_and_secrets
   variables:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
@@ -124,14 +118,14 @@ build_backend_image:
   image: docker
   services:
     - docker:dind
-  extends: .use_cache
-  before_script: # authenticate in gitlab registry from inside the executor
+  extends: .use_cache_and_secrets
+  script: # authenticate in gitlab registry from inside the executor
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - apk add jq
     - export PACKAGE_VERSION=$(cat server/package.json | jq -r .version) # parses json object and returns an attribute
     - export APP_VERSION=$PACKAGE_VERSION.$CI_PIPELINE_IID # append the pipeline build version
     - echo "VERSION=$APP_VERSION" >> build.env # save artifact file
-  script:
+
     - cd server
     - docker build -t $CI_REGISTRY_IMAGE:$APP_VERSION -f oci.prod.Dockerfile .
     - docker push $CI_REGISTRY_IMAGE:$APP_VERSION # must be on the same executor with build
@@ -142,11 +136,10 @@ build_backend_image:
 
 deploy_backend:
   stage: deploy
-  extends: .use_cache
-  before_script:
+  extends: .use_cache_and_secrets
+  script:
     - chmod 400 $WS_KEY
     - ls -al
-  script:
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
       if [ ! -d /home/ubuntu/applications/carshare/server ];
       then mkdir -p /home/ubuntu/applications/carshare/server;
