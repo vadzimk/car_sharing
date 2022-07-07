@@ -50,7 +50,7 @@ install_client_dependencies:
     CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/client/cache/Cypress
   before_script:
     - mkdir -p server/.oci
-    - cat "key_file=$CI_PROJECT_DIR/server/.oci/carshare_key.pem" >> server/.oci/config
+    - echo "key_file=$CI_PROJECT_DIR/server/.oci/carshare_key.pem" >> server/.oci/config
     - cat $OCI_CONFIG > server/.oci/config
     - cat $CARSHARE_KEY_PUB > server/.oci/carshare_key.pub.pem
     - chmod 400 server/.oci/carshare_key.pub.pem
