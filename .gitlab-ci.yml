@@ -51,7 +51,7 @@ create_files_from_secrets:
   script:
     - mkdir -p ~/.oci
     - cat $OCI_CONFIG > ~/.oci/config
-    - cat "$CARSHARE_KEY_PUB" > server/.oci/carshare_key.pub.pem
+    - cat "$CARSHARE_KEY_PUB" > ~/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
     - source $POSTGRES_ENV
