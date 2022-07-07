@@ -73,7 +73,7 @@ run_lint:
 run_unit_tests_server:
   stage: test
   image: node:16.13.0
-  extends: use_cache
+  extends: .use_cache
   before_script:
     - ls -al
     - ls -al client/
@@ -91,7 +91,7 @@ run_unit_tests_server:
 run_e2e_tests:
   stage: test
   image: node:16.13.0
-  extends: use_cache
+  extends: .use_cache
   before_script:
     - ls -al
     - ls -al client/
