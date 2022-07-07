@@ -56,7 +56,7 @@ install_client_dependencies:
     - chmod 400 server/.oci/carshare_key.pub.pem
     - ls -al server/.oci/
     - pwd
-    - cat $CI_PROJECT_DIR
+    - echo $CI_PROJECT_DIR
     - cat server/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
