@@ -37,6 +37,14 @@ install_dependencies:
 run_lint:
   stage: lint
   image: node:16.13.0
+  cache:
+    #    key: $CI_COMMIT_REF_NAME
+    paths:
+      - clent/node_modules
+      - server/node_modules
+      - .npm/
+      - server/.oci
+    policy: pull
   script:
     - ls -al
     - ls -al client/
