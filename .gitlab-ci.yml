@@ -23,9 +23,9 @@ install_dependencies:
       - server/node_modules
       - .npm/
     policy: push
-  only:
-    changes:
-      - package-lock.json
+#  only:
+#    changes:
+#      - package-lock.json
 
 create_files:
   stage:
