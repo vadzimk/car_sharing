@@ -22,9 +22,9 @@ install_server_dependencies:
       - server/node_modules
       - server/.npm/
     policy: push
-  only:
-    changes:
-      - server/package-lock.json
+#  only:
+#    changes:
+#      - server/package-lock.json
 
 install_client_dependencies:
   stage: install
@@ -37,9 +37,9 @@ install_client_dependencies:
       - clent/node_modules
       - client/.npm/
     policy: push
-  only:
-    changes:
-      - client/package-lock.json
+#  only:
+#    changes:
+#      - client/package-lock.json
 
 create_files_from_secrets:
   stage:
