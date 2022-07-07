@@ -24,9 +24,9 @@ install_server_dependencies:
       - server/node_modules
       - server/.npm/
     policy: push
-#  only:
-#    changes:
-#      - server/package-lock.json
+  only:
+    changes:
+      - server/package-lock.json
 
 install_client_dependencies:
   stage: install
@@ -41,16 +41,16 @@ install_client_dependencies:
       - client/node_modules
       - client/.npm/
     policy: push
-#  only:
-#    changes:
-#      - client/package-lock.json
+  only:
+    changes:
+      - client/package-lock.json
 
 create_files_from_secrets:
   stage:
     install
   script:
-    - mkdir -p server/.oci
-    - cat $OCI_CONFIG > server/.oci/config
+    - mkdir -p ~/.oci
+    - cat $OCI_CONFIG > ~/.oci/config
     - cat "$CARSHARE_KEY_PUB" > server/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
@@ -59,7 +59,7 @@ create_files_from_secrets:
   cache:
     key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
     paths:
-      - server/.oci
+      - ~/.oci
     policy: push
 
 
@@ -77,20 +77,23 @@ create_files_from_secrets:
       policy: pull
     - key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
       paths:
-        - server/.oci
+        - ~/.oci
       policy: pull
 
 
-run_lint:
+run_lint_server:
   stage: lint
   image: node:16.13.0
   extends: .use_cache
   script:
-    - ls -al
-    - ls -al client/
-    - ls -al server/
-    - npm run lint
+    - cd server && npm run lint
 
+run_lint_client:
+  stage: lint
+  image: node:16.13.0
+  extends: .use_cache
+  script:
+    - cd client && npm run lint
 
 run_unit_tests_server:
   stage: test
