@@ -45,7 +45,7 @@ create_files:
     policy: push
 
 
-.use_cache
+.use_cache:
   cache:
     - key: DEP-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
       paths:
