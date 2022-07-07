@@ -6,7 +6,6 @@ workflow:
 
 stages:
   - install
-  - lint
   - test
   - build
   - deploy
@@ -84,14 +83,14 @@ create_files_from_secrets:
 
 
 run_lint_server:
-  stage: lint
+  stage: test
   image: node:16.13.0
   extends: .use_cache
   script:
     - cd server && npm run lint
 
 run_lint_client:
-  stage: lint
+  stage: test
   image: node:16.13.0
   extends: .use_cache
   script:
@@ -105,7 +104,8 @@ run_unit_tests_server:
     - ls -al
     - ls -al client/
     - ls -al server/
-    - ls -al ~/
+    - cd ~ && pwd
+    - ls -al
     - echo OCI_NAMESPACE=$OCI_NAMESPACE
     - echo DATABASE_URL_TEST=$DATABASE_URL_TEST
   script:
