@@ -17,6 +17,7 @@ install_dependencies:
   before_script:
     - mkdir -p server/.oci
     - cat $OCI_CONFIG > server/.oci/config
+    - cat "$CARSHARE_KEY_PUB" > server/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
     - source $POSTGRES_ENV
@@ -37,6 +38,9 @@ run_lint:
   stage: lint
   image: node:16.13.0
   script:
+    - ls -al
+    - ls -al client/
+    - ls -al server/
     - npm run lint
 
 
