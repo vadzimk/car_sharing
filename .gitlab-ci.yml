@@ -53,6 +53,8 @@ create_files_from_secrets:
     - cat $OCI_CONFIG > ~/.oci/config
     - cat "$CARSHARE_KEY_PUB" > ~/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
+    - cd ~ && pwd
+    - ls -al
     - source $SERVER_ENV
     - source $POSTGRES_ENV
     - set +o allexport
@@ -103,6 +105,7 @@ run_unit_tests_server:
     - ls -al
     - ls -al client/
     - ls -al server/
+    - ls -al ~/
     - echo OCI_NAMESPACE=$OCI_NAMESPACE
     - echo DATABASE_URL_TEST=$DATABASE_URL_TEST
   script:
