@@ -46,12 +46,12 @@ install_client_dependencies:
 
 .use_cache_and_secrets:
   before_script:
-    - mkdir -p .oci
-    - cat $OCI_CONFIG > .oci/config
-    - cat $CARSHARE_KEY_PUB > .oci/carshare_key.pub.pem
-    - chmod 400 .oci/carshare_key.pub.pem
-    - ls -al .oci/
-    - cat .oci/carshare_key.pub.pem
+    - mkdir -p server/.oci
+    - cat $OCI_CONFIG > server/.oci/config
+    - cat $CARSHARE_KEY_PUB > server/.oci/carshare_key.pub.pem
+    - chmod 400 server/.oci/carshare_key.pub.pem
+    - ls -al server/.oci/
+    - cat server/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
     - source $POSTGRES_ENV
