@@ -42,7 +42,7 @@ create_files:
     key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
     paths:
       - server/.oci
-        policy: push
+    policy: push
 
 
 .use_cache
