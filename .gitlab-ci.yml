@@ -44,27 +44,21 @@ install_client_dependencies:
     changes:
       - client/package-lock.json
 
-create_files_from_secrets:
+export_secrets:
   stage:
     install
   script:
-    - mkdir -p ~/.oci
-    - cat $OCI_CONFIG > ~/.oci/config
-    - cat "$CARSHARE_KEY_PUB" > ~/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
-    - cd ~ && pwd
-    - ls -al
     - source $SERVER_ENV
     - source $POSTGRES_ENV
     - set +o allexport
-  cache:
-    key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
-    paths:
-      - ~/.oci
-    policy: push
 
 
 .use_cache:
+  before_script:
+    - mkdir -p ~/.oci
+    - cat $OCI_CONFIG > ~/.oci/config
+    - cat "$CARSHARE_KEY_PUB" > ~/.oci/carshare_key.pub.pem
   cache:
     - key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
       paths:
@@ -100,14 +94,6 @@ run_unit_tests_server:
   stage: test
   image: node:16.13.0
   extends: .use_cache
-  before_script:
-    - ls -al
-    - ls -al client/
-    - ls -al server/
-    - cd ~ && pwd
-    - ls -al
-    - echo OCI_NAMESPACE=$OCI_NAMESPACE
-    - echo DATABASE_URL_TEST=$DATABASE_URL_TEST
   script:
     - cd ./server && npm run test -- --watchAll=false
   artifacts:
@@ -120,17 +106,10 @@ run_e2e_tests:
   stage: test
   image: node:16.13.0
   extends: .use_cache
-  before_script:
-    - ls -al
-    - ls -al client/
-    - ls -al server/
-    - echo OCI_NAMESPACE=$OCI_NAMESPACE
-    - npm run build
-    - ls -al # TODO check to see where the build is stored
-    - ls -al client/
   variables:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
+    - npm run build
     - npm run start &    # start the server in the background
     - cd ./client && npm run cypress:e2e
   artifacts:
