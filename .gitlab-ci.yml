@@ -5,25 +5,39 @@ workflow:
     - when: always
 
 stages:
+  - install
   - lint
   - test
   - build
   - deploy
 
-run_lint:
-  stage: lint
+install_dependencies:
+  stage: install
   image: node:16.13.0
   before_script:
-    - npm ci --cache .npm --prefer-offline
+    - mkdir -p server/.oci
+    - cat $OCI_CONFIG > server/.oci/config
+    - set -o allexport  # export all environment variables from the file
+    - source $SERVER_ENV
+    - source $POSTGRES_ENV
+    - set +o allexport
   script:
-    - npm run lint
+    - npm ci --cache .npm --prefer-offline
   cache:
     key: $CI_COMMIT_REF_NAME
     paths:
       - clent/node_modules
       - server/node_modules
       - .npm/
+      - server/.oci
     policy: pull-push
+
+
+run_lint:
+  stage: lint
+  image: node:16.13.0
+  script:
+    - npm run lint
 
 
 run_unit_tests_server:
@@ -32,17 +46,15 @@ run_unit_tests_server:
   cache:
     key: $CI_COMMIT_REF_NAME
     paths:
-      - client/node_modules
+      - clent/node_modules
       - server/node_modules
+      - .npm/
+      - server/.oci
     policy: pull
   before_script:
-    - npm install # TODO do i need this?
     - ls -al
     - ls -al client/
     - ls -al server/
-    - set -o allexport  # export all environment variables from the file
-    - source $SERVER_ENV
-    - set +o allexport
     - echo OCI_NAMESPACE=$OCI_NAMESPACE
     - echo DATABASE_URL_TEST=$DATABASE_URL_TEST
   script:
@@ -59,18 +71,15 @@ run_e2e_tests:
   cache:
     key: $CI_COMMIT_REF_NAME
     paths:
-      - client/node_modules
+      - clent/node_modules
       - server/node_modules
-    policy: pull
+      - .npm/
+      - server/.oci
   before_script:
     - ls -al
     - ls -al client/
     - ls -al server/
-    - set -o allexport  # export all environment variables from the file
-    - source $SERVER_ENV
-    - set +o allexport
     - echo OCI_NAMESPACE=$OCI_NAMESPACE
-    - npm install # TODO do i need this?
     - npm run build
     - ls -al # TODO check to see where the build is stored
     - ls -al client/
@@ -112,10 +121,6 @@ deploy_backend:
   before_script:
     - chmod 400 $WS_KEY
     - ls -al
-    - set -o allexport  # export all environment variables from the file
-    - source $SERVER_ENV
-    - source $POSTGRES_ENV
-    - set +o allexport
   script:
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
       if [ ! -d /home/ubuntu/applications/carshare/server ];
@@ -123,6 +128,9 @@ deploy_backend:
       fi;
       if [ ! -d /home/ubuntu/applications/carshare/server/backup ];
       then mkdir -p /home/ubuntu/applications/carshare/server/backup;
+      fi;
+      if [ ! -d /home/ubuntu/applications/carshare/server/.oci ];
+      then mkdir -p /home/ubuntu/applications/carshare/server/.oci;
       fi;
       '
     - scp -o StrictHostKeyChecking=no -i $WS_KEY postgres-init-db.sh server/docker-compose.oci.prod.yml ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server

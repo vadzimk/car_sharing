@@ -7,6 +7,7 @@ import common from 'oci-common';
 //   key_file=OCI_CLI_KEY_FILE
 //   tenancy=OCI_CLI_TENANCY
 //   OCI_COMPARTMENT
+
 const provider = new common.ConfigFileAuthenticationDetailsProvider();
 
 export default provider;
