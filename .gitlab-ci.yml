@@ -31,8 +31,6 @@ install_server_dependencies:
 install_client_dependencies:
   stage: install
   image: node:16.13.0
-  variables:
-    CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/client/cache/Cypress
   script:
     - cd client && npm ci --cache .npm --prefer-offline
   cache:
@@ -42,19 +40,23 @@ install_client_dependencies:
       - client/.npm/
       - client/cache/Cypress
     policy: push
-#  only:
-#    changes:
-#      - client/package-lock.json
+  only:
+    changes:
+      - client/package-lock.json
 
 
 .use_cache_and_secrets:
+  variables:
+    CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/client/cache/Cypress
   before_script:
     - mkdir -p server/.oci
+    - cat "key_file=$CI_PROJECT_DIR/server/.oci/carshare_key.pem" >> server/.oci/config
     - cat $OCI_CONFIG > server/.oci/config
     - cat $CARSHARE_KEY_PUB > server/.oci/carshare_key.pub.pem
     - chmod 400 server/.oci/carshare_key.pub.pem
     - ls -al server/.oci/
     - pwd
+    - cat $CI_PROJECT_DIR
     - cat server/.oci/carshare_key.pub.pem
     - set -o allexport  # export all environment variables from the file
     - source $SERVER_ENV
