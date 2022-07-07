@@ -58,7 +58,8 @@ export_secrets:
   before_script:
     - mkdir -p ~/.oci
     - cat $OCI_CONFIG > ~/.oci/config
-    - cat "$CARSHARE_KEY_PUB" > ~/.oci/carshare_key.pub.pem
+    - cat $CARSHARE_KEY_PUB > ~/.oci/carshare_key.pub.pem
+    - ls -al ~/
   cache:
     - key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
       paths:
@@ -70,10 +71,7 @@ export_secrets:
         - client/node_modules
         - client/.npm/
       policy: pull
-    - key: FI-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for secrets
-      paths:
-        - ~/.oci
-      policy: pull
+
 
 
 run_lint_server:
@@ -89,6 +87,7 @@ run_lint_client:
   extends: .use_cache
   script:
     - cd client && npm run lint
+
 
 run_unit_tests_server:
   stage: test
