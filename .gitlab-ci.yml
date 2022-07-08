@@ -25,9 +25,9 @@ install_server_dependencies:
       - server/node_modules
       - server/.npm/
     policy: push
-#  only: # TODO trigger to produce cache
-#    changes:
-#      - server/package-lock.json
+  only: # TODO trigger to produce cache
+    changes:
+      - server/package-lock.json
 
 
 install_client_dependencies:
@@ -40,7 +40,6 @@ install_client_dependencies:
     paths:
       - client/node_modules
       - client/.npm/
-      - client/cache/Cypress
     policy: push
 #  only: # TODO trigger to produce cache
 #    changes:
@@ -76,7 +75,6 @@ install_client_dependencies:
       paths:
         - client/node_modules
         - client/.npm/
-        - client/cache/Cypress
       policy: pull
     - key: BUILD-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
       paths:
@@ -112,6 +110,9 @@ run_unit_tests_server:
   extends: .use_cache_and_secrets
   script:
     - cd ./server && npm run test -- --watchAll=false
+    - cd $CI_PROJECT_DIR
+    - ls -al
+    - ls -al server/  #TODO see where the artifact is
   artifacts:
     when: always
     reports:
@@ -125,9 +126,9 @@ build_client:
   extends: .use_cache_and_secrets
   script:
     - npm run build
-#  only:  # TODO trigger to produce cache
-#    changes:
-#      - client/*
+  only:  # TODO trigger to produce cache
+    changes:
+      - client/*
 
 
 
@@ -138,13 +139,14 @@ run_e2e_tests:
   variables:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
+    - cd client && npm install && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - cd ./client && npm run cypress:e2e
   artifacts:
     when: always
     paths:
-      - cypress/videos/**/*.mp4
-      - cypress/screenshots/**/*.png
+      - client/cypress/videos/**/*.mp4
+      - client/cypress/screenshots/**/*.png
     expire_in: 1 week
 
 
