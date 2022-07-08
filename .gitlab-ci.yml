@@ -59,7 +59,7 @@ install_client_dependencies:
     - cat $OCI_CONFIG > server/.oci/config
     - echo -e "\nkey_file=$CI_PROJECT_DIR/server/.oci/carshare_key.pem" >> server/.oci/config
     - cat $CARSHARE_KEY > server/.oci/carshare_key.pem
-    - chmod 400 server/.oci/carshare_key.pub.pem
+    - chmod 400 server/.oci/carshare_key.pem
     - pwd
     - echo $CI_PROJECT_DIR
     - ls -al server/.oci/
