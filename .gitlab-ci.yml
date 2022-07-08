@@ -106,6 +106,8 @@ run_lint_client:
 
 run_unit_tests_server:
   stage: unit-test
+  needs:
+    - run_lint_server
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
@@ -117,6 +119,8 @@ run_unit_tests_server:
 
 build_client:
   stage: unit-test
+  needs:
+    - run_lint_client
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
