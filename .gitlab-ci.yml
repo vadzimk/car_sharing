@@ -84,8 +84,8 @@ install_client_dependencies:
 
 run_lint_server:
   stage: lint
-  needs:
-    - install_server_dependencies
+#  needs:
+#    - install_server_dependencies
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
@@ -94,8 +94,8 @@ run_lint_server:
 
 run_lint_client:
   stage: lint
-  needs:
-    - install_client_dependencies
+#  needs:
+#    - install_client_dependencies
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
