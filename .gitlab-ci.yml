@@ -86,12 +86,12 @@ run_lint_server:
   image: node:16.13.0
   before_script:
     - cd server && npm ci --cache .npm --prefer-offline
-    cache:
-      key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
-      paths:
-        - server/node_modules
-        - server/.npm/
-      policy: push
+  cache:
+    key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+    paths:
+      - server/node_modules
+      - server/.npm/
+    policy: push
   script:
     - cd server && npm run lint
 
