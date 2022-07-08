@@ -15,7 +15,7 @@ stages:
 
 
 install_server_dependencies:
-  stage: install
+  stage: lint
   image: node:16.13.0
   script:
     - cd server && npm ci --cache .npm --prefer-offline
@@ -31,7 +31,7 @@ install_server_dependencies:
 
 
 install_client_dependencies:
-  stage: install
+  stage: lint
   image: node:16.13.0
   script:
     - cd client && npm ci --cache .npm --prefer-offline
@@ -86,7 +86,8 @@ install_client_dependencies:
 
 run_lint_server:
   stage: lint
-  resource_group: lint
+  needs:
+    - install_server_dependencies
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
@@ -95,7 +96,8 @@ run_lint_server:
 
 run_lint_client:
   stage: lint
-  resource_group: lint
+  needs:
+    - install_client_dependencies
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
