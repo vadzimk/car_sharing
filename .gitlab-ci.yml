@@ -142,9 +142,16 @@ run_e2e_tests:
 
 build_backend_image:
   stage: build
-  image: docker
+  image: docker:20.10.17
+  variables:
+    # using "docker" as the host is only possible if you alias the service below
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
   services:
-    - docker:dind
+    - name: docker:20.10.17-dind
+      alias: docker
+      command: [ "--tls=false" ]
   extends: .use_cache_and_secrets
   script: # authenticate in gitlab registry from inside the executor
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
