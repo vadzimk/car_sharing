@@ -86,6 +86,7 @@ install_client_dependencies:
 
 run_lint_server:
   stage: lint
+  resource_group: lint
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
@@ -94,6 +95,7 @@ run_lint_server:
 
 run_lint_client:
   stage: lint
+  resource_group: lint
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
