@@ -6,7 +6,6 @@ workflow:
 
 
 stages:
-  - install
   - lint
   - unit-test
   - e2e-test
@@ -14,36 +13,36 @@ stages:
   - deploy
 
 
-install_server_dependencies:
-  stage: lint
-  image: node:16.13.0
-  script:
-    - cd server && npm ci --cache .npm --prefer-offline
-  cache:
-    key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
-    paths:
-      - server/node_modules
-      - server/.npm/
-    policy: push
-  only: # TODO trigger to produce cache
-    changes:
-      - server/package-lock.json
-
-
-install_client_dependencies:
-  stage: lint
-  image: node:16.13.0
-  script:
-    - cd client && npm ci --cache .npm --prefer-offline
-  cache:
-    key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
-    paths:
-      - client/node_modules
-      - client/.npm/
-    policy: push
+#install_server_dependencies:
+#  stage: lint
+#  image: node:16.13.0
+#  script:
+#    - cd server && npm ci --cache .npm --prefer-offline
+#  cache:
+#    key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+#    paths:
+#      - server/node_modules
+#      - server/.npm/
+#    policy: push
 #  only: # TODO trigger to produce cache
 #    changes:
-#      - client/package-lock.json
+#      - server/package-lock.json
+
+
+#install_client_dependencies:
+#  stage: lint
+#  image: node:16.13.0
+#  script:
+#    - cd client && npm ci --cache .npm --prefer-offline
+#  cache:
+#    key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+#    paths:
+#      - client/node_modules
+#      - client/.npm/
+#    policy: push
+##  only: # TODO trigger to produce cache
+##    changes:
+##      - client/package-lock.json
 
 
 .use_cache_and_secrets:
@@ -84,20 +83,29 @@ install_client_dependencies:
 
 run_lint_server:
   stage: lint
-#  needs:
-#    - install_server_dependencies
   image: node:16.13.0
-  extends: .use_cache_and_secrets
+  before_script:
+    - cd server && npm ci --cache .npm --prefer-offline
+    cache:
+      key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+      paths:
+        - server/node_modules
+        - server/.npm/
+      policy: push
   script:
     - cd server && npm run lint
 
 
 run_lint_client:
   stage: lint
-#  needs:
-#    - install_client_dependencies
   image: node:16.13.0
-  extends: .use_cache_and_secrets
+  before_script:
+    - cd client && npm ci --cache .npm --prefer-offline
+  cache:
+    key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+    paths:
+      - client/node_modules
+      - client/.npm/
   script:
     - cd client && npm run lint
 
@@ -109,7 +117,7 @@ run_unit_tests_server:
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
-    - cd ./server && npm run test -- --watchAll=false
+    - cd ./server && npm install && npm run test -- --watchAll=false
     - cd $CI_PROJECT_DIR
     - ls -al
     - ls -al server/  #TODO see where the artifact is
@@ -118,17 +126,18 @@ run_unit_tests_server:
     reports:
       junit: server/junit.xml
 
-build_client:
-  stage: unit-test
-  needs:
-    - run_lint_client
-  image: node:16.13.0
-  extends: .use_cache_and_secrets
-  script:
-    - npm run build
-  only:  # TODO trigger to produce cache
-    changes:
-      - client/*
+
+#build_client:
+#  stage: unit-test
+#  needs:
+#    - run_lint_client
+#  image: node:16.13.0
+#  extends: .use_cache_and_secrets
+#  script:
+#    - npm run build
+#  only:  # TODO trigger to produce cache
+#    changes:
+#      - client/*
 
 
 
@@ -139,7 +148,7 @@ run_e2e_tests:
   variables:
     CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
-    - cd client && npm install && cd $CI_PROJECT_DIR
+    - cd client && npm install && npm run build && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - cd ./client && npm run cypress:e2e
   artifacts:
