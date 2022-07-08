@@ -25,9 +25,9 @@ install_server_dependencies:
       - server/node_modules
       - server/.npm/
     policy: push
-  only:
-    changes:
-      - server/package-lock.json
+#  only: # TODO trigger to produce cache
+#    changes:
+#      - server/package-lock.json
 
 
 install_client_dependencies:
@@ -42,9 +42,9 @@ install_client_dependencies:
       - client/.npm/
       - client/cache/Cypress
     policy: push
-  only:
-    changes:
-      - client/package-lock.json
+#  only: # TODO trigger to produce cache
+#    changes:
+#      - client/package-lock.json
 
 
 .use_cache_and_secrets:
@@ -119,7 +119,7 @@ build_client:
   extends: .use_cache_and_secrets
   script:
     - npm run build
-#  only:
+#  only:  # TODO trigger to produce cache
 #    changes:
 #      - client/*
 
