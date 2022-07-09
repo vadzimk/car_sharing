@@ -12,7 +12,6 @@ stages:
   - build
   - deploy
 
-
 #install_server_dependencies:
 #  stage: lint
 #  image: node:16.13.0
@@ -74,7 +73,7 @@ stages:
       paths:
         - client/node_modules
         - client/.npm/
-        - /root/.cache/Cypress
+        - client/.cache/Cypress
       policy: pull
     - key: BUILD-C-$CI_COMMIT_REF_SLUG
       paths:
@@ -102,6 +101,7 @@ run_lint_client:
   stage: lint
   image: node:16.13.0
   before_script:
+    - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/client/.cache/Cypress
     - cd client && npm ci --cache .npm --prefer-offline
     - cd $CI_PROJECT_DIR
   cache:
@@ -109,7 +109,7 @@ run_lint_client:
     paths:
       - client/node_modules
       - client/.npm/
-      - /root/.cache/Cypress
+      - client/.cache/Cypress
     policy: push
   script:
     - cd client && npm run lint
