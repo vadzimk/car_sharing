@@ -150,9 +150,9 @@ run_e2e_tests:
   stage: e2e-test
   image: node:16.13.0
   extends: .use_cache_and_secrets
-  variables:
-    CYPRESS_baseUrl: http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
   script:
+    - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
+    - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/client/.cache/Cypress
     - cd client && npm install && npm run build && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - cd ./client && npm run cypress:e2e
