@@ -156,7 +156,7 @@ run_e2e_tests:
     - cd client && npm install && npm run build && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - export NODE_ENV=test ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
-    - cd ./client && npm run cypress run --headless --browser firefox
+    - cd ./client && cypress run --headless --browser firefox
   artifacts:
     when: always
     paths:
