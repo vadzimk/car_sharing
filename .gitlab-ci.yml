@@ -244,5 +244,5 @@ deploy_client_build:
       then mkdir -p /home/ubuntu/applications/share/nginx/html/carshare;
       fi;
       sudo rm -fr /home/ubuntu/applications/share/nginx/html/carshare/*;
-    '
+      '
     - scp -o StrictHostKeyChecking=no -i $WS_KEY client/build/*  ubuntu@$WS_HOST:/home/ubuntu/applications/share/nginx/html/carshare/
