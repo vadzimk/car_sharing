@@ -95,6 +95,9 @@ run_lint_server:
     policy: push
   script:
     - cd server && npm run lint
+  only: # TODO trigger to produce cache
+    changes:
+      - server/package-lock.json
 
 
 run_lint_client:
@@ -113,6 +116,9 @@ run_lint_client:
     policy: push
   script:
     - cd client && npm run lint
+  only: # TODO trigger to produce cache
+    changes:
+      - client/package-lock.json
 
 
 run_unit_tests_server:
@@ -125,12 +131,14 @@ run_unit_tests_server:
     - cd ./server && npm install && npm run test:ci
     - cd $CI_PROJECT_DIR
     - ls -al
-    - ls -al server/  #TODO see where the artifact is
+    - ls -al server/
   artifacts:
     when: always
     reports:
       junit: server/junit.xml
-
+  only: # TODO trigger to produce cache
+    changes:
+      - server/package-lock.json
 
 #build_client:
 #  stage: unit-test
@@ -156,7 +164,7 @@ run_e2e_tests:
     - cd client && npm install && npm run build && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - export NODE_ENV=test ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
-    - cd ./client && ./.cache/Cypress/cypress run --headless --browser firefox
+    - cd ./client && $(npm bin)/cypress run --headless --browser firefox
   artifacts:
     when: always
     paths:
