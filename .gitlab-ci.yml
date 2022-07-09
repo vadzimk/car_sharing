@@ -85,7 +85,7 @@ run_lint_server:
   stage: lint
   image: node:16.13.0
   before_script:
-    - cd server && npm ci --cache .npm --prefer-offline
+    - cd server && npm ci
     - cd $CI_PROJECT_DIR
   cache:
     key: DEP-S-$CI_COMMIT_REF_SLUG # separate key for dependencies
@@ -105,7 +105,8 @@ run_lint_client:
   image: node:16.13.0
   before_script:
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/client/.cache/Cypress
-    - cd client && npm ci --cache .npm --prefer-offline
+    - export DEBUG=cypress:cli
+    - cd client && npm ci
     - cd $CI_PROJECT_DIR
   cache:
     key: DEP-C-$CI_COMMIT_REF_SLUG # separate key for dependencies
@@ -128,7 +129,8 @@ run_unit_tests_server:
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
-    - cd ./server && npm install && npm run test:ci
+    - cd ./server && npm ci --cache .npm --cache node_modules --prefer-offline
+    - npm run test:ci
     - cd $CI_PROJECT_DIR
     - ls -al
     - ls -al server/
@@ -161,7 +163,9 @@ run_e2e_tests:
   script:
     - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/client/.cache/Cypress
-    - cd client && npm install && npm run build && cd $CI_PROJECT_DIR
+    - export DEBUG=cypress:cli
+    - cd ./client && npm ci --cache .npm --cache node_modules --cache .cache/Cypress --prefer-offline
+    - npm run build && cd $CI_PROJECT_DIR
     - npm run start &    # start the server in the background
     - export NODE_ENV=test ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
     - cd ./client && $(npm bin)/cypress run --headless --browser firefox
