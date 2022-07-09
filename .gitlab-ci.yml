@@ -65,17 +65,18 @@ stages:
     - ls -al server/
     - ls -al client/
   cache:
-    - key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+    - key: DEP-S-$CI_COMMIT_REF_SLUG # separate key fro dependencies
       paths:
         - server/node_modules
         - server/.npm/
       policy: pull
-    - key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key fro dependencies
+    - key: DEP-C-$CI_COMMIT_REF_SLUG # separate key fro dependencies
       paths:
         - client/node_modules
         - client/.npm/
+        - /root/.cache/Cypress
       policy: pull
-    - key: BUILD-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    - key: BUILD-C-$CI_COMMIT_REF_SLUG
       paths:
         - client/build
       policy: pull-push
@@ -88,7 +89,7 @@ run_lint_server:
     - cd server && npm ci --cache .npm --prefer-offline
     - cd $CI_PROJECT_DIR
   cache:
-    key: DEP-S-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+    key: DEP-S-$CI_COMMIT_REF_SLUG # separate key for dependencies
     paths:
       - server/node_modules
       - server/.npm/
@@ -104,10 +105,11 @@ run_lint_client:
     - cd client && npm ci --cache .npm --prefer-offline
     - cd $CI_PROJECT_DIR
   cache:
-    key: DEP-C-$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR # separate key for dependencies
+    key: DEP-C-$CI_COMMIT_REF_SLUG # separate key for dependencies
     paths:
       - client/node_modules
       - client/.npm/
+      - /root/.cache/Cypress
     policy: push
   script:
     - cd client && npm run lint
@@ -120,7 +122,7 @@ run_unit_tests_server:
   image: node:16.13.0
   extends: .use_cache_and_secrets
   script:
-    - cd ./server && npm install && npm run test -- --watchAll=false
+    - cd ./server && npm install && npm run test:ci
     - cd $CI_PROJECT_DIR
     - ls -al
     - ls -al server/  #TODO see where the artifact is
@@ -181,7 +183,6 @@ build_backend_image:
     - export PACKAGE_VERSION=$(cat server/package.json | jq -r .version) # parses json object and returns an attribute
     - export APP_VERSION=$PACKAGE_VERSION.$CI_PIPELINE_IID # append the pipeline build version
     - echo "VERSION=$APP_VERSION" >> build.env # save artifact file
-
     - cd server
     - docker build -t $CI_REGISTRY_IMAGE:$APP_VERSION -f oci.prod.Dockerfile .
     - docker push $CI_REGISTRY_IMAGE:$APP_VERSION # must be on the same executor with build
@@ -231,3 +232,17 @@ deploy_backend:
       docker-compose -f docker-compose.oci.prod.yml down &&
       docker-compose -f docker-compose.oci.prod.yml up -d
       "
+
+deploy_client_build:
+  stage: deploy
+  extends: .use_cache_and_secrets
+  script:
+    - ls -al
+    - ls -al client/
+    - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
+      if [ ! -d /home/ubuntu/applications/share/nginx/html/carshare ];
+      then mkdir -p /home/ubuntu/applications/share/nginx/html/carshare;
+      fi;
+      sudo rm -fr /home/ubuntu/applications/share/nginx/html/carshare/*;
+    '
+    - scp -o StrictHostKeyChecking=no -i $WS_KEY client/build/*  ubuntu@$WS_HOST:/home/ubuntu/applications/share/nginx/html/carshare/
