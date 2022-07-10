@@ -1,13 +1,16 @@
 # cashare
 
-### CRUD application using 
-- React frontend and Material-ui
+## Overview
+This is a CRUD application using:
+- React frontend and Material-ui ( MUI )
 - Express backend and REST API
 - PostgreSQL database with PostGIS
-- AWS S3 file storage
-- GitHub Actions CI
+- AWS S3 file storage ( _migrated to OCI_ )
 - Jest and Cypress tests
 - Leaflet, Maptiler, OpenStreetMap - geocoding and map APIs
+- GitHub Actions CI ( _migrated to Gitlab CI_ )
+- Docker
+- NGINX reverse-proxy
 
 #### Hosts can
 - list their cars for share
@@ -18,12 +21,6 @@
 - find shared cars in selected location filtered by attributes
 - reserve chosen car and make down payment
 - receive email confirmation of the reservation
-
-### Deployment¡
-- AWS EC2 
-- AWS S3
-- Docker
-- nginx
 
 
 ### Preview 
