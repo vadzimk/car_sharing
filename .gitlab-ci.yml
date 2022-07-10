@@ -210,7 +210,7 @@ build_backend_image:
 
 deploy_backend:
   stage: deploy
-  extends: use_server_secrets
+  extends: .use_server_secrets
   script:
     - chmod 400 $WS_KEY
     - ls -al
