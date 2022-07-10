@@ -68,8 +68,8 @@ install_client_dependencies:
 run_lint_server:
   stage: lint
   image: node:16.13.0
-  needs:
-    - install_server_dependencies
+#  needs:
+#    - install_server_dependencies
   script:
     - cd server
     - ls -al
@@ -85,8 +85,8 @@ run_lint_server:
 run_lint_client:
   stage: lint
   image: node:16.13.0
-  needs:
-    - install_client_dependencies
+#  needs:
+#    - install_client_dependencies
   script:
     - cd client
     - ls -al
@@ -115,8 +115,8 @@ run_lint_client:
 run_unit_tests_server:
   stage: unit-test
   image: node:16.13.0
-  needs:
-    - install_server_dependencies
+#  needs:
+#    - install_server_dependencies
   extends:
     - .use_server_secrets
   script:
