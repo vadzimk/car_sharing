@@ -4,6 +4,8 @@ workflow:
       when: never
     - when: always
 
+variables:
+  DEBUGGING: "true"
 
 stages:
   - install
@@ -26,9 +28,14 @@ instal_cypress_dependencies:
     paths:
       - .cache/Cypress
     policy: push
-  only: # TODO trigger to produce cache
-    changes:
-      - package-lock.json
+  rules: # TODO trigger job to produce cache always when $DEBUGGING == "true"
+    - if: $DEBUGGING == "true"
+      when: always
+    - if: $DEBUGGING == "false"
+      changes:
+        - package-lock.json
+      when: always
+    - when: never
 
 
 install_server_dependencies:
@@ -43,9 +50,14 @@ install_server_dependencies:
       - server/node_modules
       - server/.npm/
     policy: push
-  only: # TODO trigger to produce cache
-    changes:
-      - server/package-lock.json
+  rules: # TODO trigger job to produce cache always when $DEBUGGING == "true"
+    - if: $DEBUGGING == "true"
+      when: always
+    - if: $DEBUGGING == "false"
+      changes:
+        - package-lock.json
+      when: always
+    - when: never
 
 
 install_client_dependencies:
@@ -60,16 +72,22 @@ install_client_dependencies:
       - client/node_modules
       - client/.npm/
     policy: push
-  only: # TODO trigger to produce cache
-    changes:
-      - client/package-lock.json
+  rules: # TODO trigger job to produce cache always when $DEBUGGING == "true"
+    - if: $DEBUGGING == "true"
+      when: always
+    - if: $DEBUGGING == "false"
+      changes:
+        - package-lock.json
+      when: always
+    - when: never
 
 
 run_lint_server:
   stage: lint
   image: node:16.13.0
-#  needs:
-#    - install_server_dependencies
+  needs:
+    - job: install_server_dependencies
+      optional: true
   script:
     - cd server
     - ls -al
@@ -85,8 +103,9 @@ run_lint_server:
 run_lint_client:
   stage: lint
   image: node:16.13.0
-#  needs:
-#    - install_client_dependencies
+  needs:
+    - job: install_client_dependencies
+      optional: true
   script:
     - cd client
     - ls -al
@@ -115,8 +134,9 @@ run_lint_client:
 run_unit_tests_server:
   stage: unit-test
   image: node:16.13.0
-#  needs:
-#    - install_server_dependencies
+  needs:
+    - job: install_server_dependencies
+      optional: true
   extends:
     - .use_server_secrets
   script:
