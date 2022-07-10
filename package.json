@@ -45,7 +45,6 @@
     "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "pg": "^8.7.1",
     "pg-promise": "^10.11.1",
     "cypress-react-router": "^1.0.2"
   }

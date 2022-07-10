@@ -56,25 +56,16 @@
   ],
   "proxy": "http://127.0.0.1:3001",
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
-    "@babel/register": "^7.16.0",
-    "@testing-library/cypress": "^8.0.1",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "bluebird": "^3.7.2",
     "cross-env": "^7.0.3",
     "cypress": "^8.7.0",
-    "cypress-file-upload": "^5.0.8",
-    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
-    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-react": "^7.27.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "pg": "^8.7.1",
-    "pg-promise": "^10.11.1"
+    "eslint-plugin-react-hooks": "^4.3.0"
   }
 }
