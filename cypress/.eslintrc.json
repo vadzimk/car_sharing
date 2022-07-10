@@ -1,0 +1,36 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.spec.js"
+      ],
+      "rules": {
+        "jest/valid-expect": 0
+      }
+    }
+  ],
+  "plugins": [
+    "cypress",
+    "chai-friendly"
+  ],
+  "rules": {
+    "cypress/no-assigning-return-values": "error",
+    "cypress/no-unnecessary-waiting": "error",
+    "cypress/assertion-before-screenshot": "warn",
+    "cypress/no-force": "warn",
+    "cypress/no-async-tests": "error",
+    "cypress/no-pause": "error",
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2
+  },
+  "extends": [
+    "plugin:cypress/recommended",
+    "plugin:chai-friendly/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true,
+    "cypress/globals": true
+  }
+}

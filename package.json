@@ -15,7 +15,9 @@
     "postinstall": "cd ./server && npm install && cd ../client && npm install",
     "prepare": "husky install",
     "e2e": "cd ./client && npm run cypress:open",
-    "test:silent": "cd ./server && npm run test -- --silent && cd ../client && npm run test -- --watchAll=false --silent"
+    "test:silent": "cd ./server && npm run test -- --silent && cd ../client && npm run test -- --watchAll=false --silent",
+    "cypress:open": "cross-env NODE_ENV=test cypress open",
+    "cypress:e2e": "cross-env NODE_ENV=test cypress run --headless"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,27 @@
     "concurrently": "^6.2.0"
   },
   "devDependencies": {
-    "husky": "^7.0.0"
+    "husky": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
+    "@babel/register": "^7.16.0",
+    "@testing-library/cypress": "^8.0.1",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "bluebird": "^3.7.2",
+    "cross-env": "^7.0.3",
+    "cypress": "^8.7.0",
+    "cypress-file-upload": "^5.0.8",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "pg": "^8.7.1",
+    "pg-promise": "^10.11.1",
+    "cypress-react-router": "^1.0.2"
   }
 }
