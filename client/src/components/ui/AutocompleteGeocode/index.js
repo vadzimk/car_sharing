@@ -1,16 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import SearchBox from './SearchBox.js';
 import {area, bboxPolygon} from '@turf/turf';
+import mapService from '../../../services/mapService.js';
 
+const geoCodeFn = mapService.getGeoSearchResults;
+const provider = 'maptiler';
 const AutocompleteGeocode = ({
   place_type,
-  geoCodeFn,
-  provider,
-  inputText='',
-  setInputText,
-  selectedFeature=null,
+  inputText = '',
+  handleInputChange,
+  selectedFeature = null,
   setSelectedFeature,
-  textFieldProps
+  textFieldProps,
 }) => {
   const providerConfig = useMemo(() => {
     const config = {
@@ -31,10 +32,6 @@ const AutocompleteGeocode = ({
   // const [inputText, setInputText] = useState('');
   const [options, setOptions] = useState([]);
   // const [selectedFeature, setSelectedFeature] = useState(null);
-  
-  const handleInputChange = (value) => {
-    setInputText(value);
-  };
   
   console.log('selectedFeature', selectedFeature);
   

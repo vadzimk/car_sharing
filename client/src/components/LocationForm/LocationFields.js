@@ -7,21 +7,32 @@ import {
   clearCityState,
   getCityStateForZip,
 } from '../../reducers/locationReducer.js';
-import AutocompleteGeocode from '../ui/AutocompleteGeocode';
+// import AutocompleteGeocode from '../ui/AutocompleteGeocode';
 
 const LocationFields = (props) => {
+  // const [inputText, setInputText] = useState('');
+  // const [selectedFeature, setSelectedFeature] = useState(null);
+  // const handleInputChange = (value) => {
+  //   setInputText(value);
+  // };
+  
   const {city, state} = useSelector(
     state => state.location.zip_city_state);
   
   const dispatch = useDispatch();
   
   useEffect(() => {
-    if (props.touched.zipcode && !props.errors.zipcode && props.values.zipcode.length===5) {
+    if (props.touched.zipcode && !props.errors.zipcode &&
+      props.values.zipcode.length === 5) {
       dispatch(getCityStateForZip(props.values.zipcode));
     } else {
       dispatch(clearCityState());
     }
-  }, [dispatch, props.touched.zipcode, props.errors.zipcode, props.values.zipcode]);
+  }, [
+    dispatch,
+    props.touched.zipcode,
+    props.errors.zipcode,
+    props.values.zipcode]);
   
   useEffect(() => {
     if (props.touched.zipcode &&
@@ -48,24 +59,41 @@ const LocationFields = (props) => {
           </Typography>
         </GridItem>
         <GridItem>
-          <AutocompleteGeocode
-            textFieldProps={{variant: 'standard',
-              name:'addr_line1',
-              label: 'Street Address',
-              fullWidth: true,
-              size: 'small',
-              required: true
-            }}
-            // variant="standard"
-            // name="addr_line1"
-            // label="Street Address"
-            // fullWidth
-            // size="small"
-            // required
-            // value={props.values.addr_line1}
-            // error={Boolean(props.errors.addr_line1)}
-            // helperText={props.errors.addr_line1}
-            // onChange={props.handleChange}
+          {/*<AutocompleteGeocode*/}
+          {/*  inputText={inputText}*/}
+          {/*  handleInputChange={handleInputChange}*/}
+          {/*  selectedFeature={selectedFeature}*/}
+          {/*  setSelectedFeature={setSelectedFeature}*/}
+          {/*  textFieldProps={{*/}
+          {/*    variant: 'standard',*/}
+          {/*    name: 'addr_line1',*/}
+          {/*    label: 'Street Address',*/}
+          {/*    fullWidth: true,*/}
+          {/*    size: 'small',*/}
+          {/*    required: true,*/}
+          {/*  }}*/}
+          {/*  */}
+          {/*  // variant="standard"*/}
+          {/*  // name="addr_line1"*/}
+          {/*  // label="Street Address"*/}
+          {/*  // fullWidth*/}
+          {/*  // size="small"*/}
+          {/*  // required*/}
+          {/*  // value={props.values.addr_line1}*/}
+          {/*  // error={Boolean(props.errors.addr_line1)}*/}
+          {/*  // helperText={props.errors.addr_line1}*/}
+          {/*  // onChange={props.handleChange}*/}
+          {/*/>*/}
+          <TextField
+            variant="standard"
+            name="addr_line1"
+            label="Street Address"
+            fullWidth
+            size="small"
+            value={props.values.addr_line1}
+            error={Boolean(props.errors.addr_line1)}
+            helperText={props.errors.addr_line1}
+            onChange={props.handleChange}
           />
           <TextField
             variant="standard"

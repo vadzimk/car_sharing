@@ -4,7 +4,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import {GridContainer, GridItem} from '../ui/GridRenamed.js';
 import {DateTimePicker, LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import mapService from '../../services/mapService.js';
 import {useDispatch} from 'react-redux';
 import {getOffers} from '../../reducers/offersReducer.js';
 import AutocompleteGeocode from '../ui/AutocompleteGeocode';
@@ -41,6 +40,10 @@ const SearchForm = ({map}) => {
     }
   }, [map, selectedFeature]);
   
+  const handleInputChange = (value) => {
+    setWhere(value);
+  };
+  
   return (
     <GridContainer
       direction="row"
@@ -51,10 +54,8 @@ const SearchForm = ({map}) => {
         style={{flexGrow: 3, width: '250px'}}
       >
         <AutocompleteGeocode
-          geoCodeFn={mapService.getGeoSearchResults}
-          provider="maptiler"
           inputText={where}
-          setInputText={setWhere}
+          handleInputChange={handleInputChange}
           selectedFeature={selectedFeature}
           setSelectedFeature={setSelectedFeature}
           textFieldProps={{placeholder:'Pick up location'}}

@@ -166,7 +166,7 @@ run_e2e_tests:
     - export DEBUG=cypress:cli
     - cd ./client && npm ci --cache .npm --cache node_modules --cache .cache/Cypress --prefer-offline
     - npm run build && cd $CI_PROJECT_DIR
-    - npm run start &    # start the server in the background
+    - npm run start & wait-on http://localhost:3000   # start the server in the background
     - export NODE_ENV=test ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
     - cd ./client && $(npm bin)/cypress run --headless --browser firefox
   artifacts:
