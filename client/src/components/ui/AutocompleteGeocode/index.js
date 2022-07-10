@@ -27,7 +27,7 @@ const AutocompleteGeocode = ({
       },
     };
     return config[provider];
-  }, [provider]);
+  }, []);
   
   // const [inputText, setInputText] = useState('');
   const [options, setOptions] = useState([]);
@@ -67,8 +67,6 @@ const AutocompleteGeocode = ({
     searchQueryChanged,
     searchQueryIsFeature,
     place_type,
-    geoCodeFn,
-    provider,
     providerConfig]);
   
   // clear options when cleared search box
