@@ -204,7 +204,7 @@ run_e2e_tests:
     - .use_server_secrets
   script:
     - apt-get update
-    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb # https://github.com/cypress-io/cypress-documentation/pull/2939
+    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
     - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
     - export DEBUG=cypress:cli
