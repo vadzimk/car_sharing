@@ -301,8 +301,8 @@ deploy_backend:
       if [ ! -d /home/ubuntu/applications/carshare/server/backup ];
       then mkdir -p /home/ubuntu/applications/carshare/server/backup;
       fi;
-      if [ ! -d /home/ubuntu/applications/carshare/server/.oci ];
-      then mkdir -p /home/ubuntu/applications/carshare/server/.oci;
+      if [ -d /home/ubuntu/applications/carshare/server/.oci ];
+      then sudo rm -fr /home/ubuntu/applications/carshare/server/.oci;
       fi;
       '
     - scp -o StrictHostKeyChecking=no -i $WS_KEY -r postgres-init-db.sh docker-compose.oci.prod.yml ./server/.oci ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
@@ -313,14 +313,14 @@ deploy_backend:
         DC_IMAGE_TAG=$VERSION
         JWT_KEY=${JWT_KEY}
         DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
-        DATABASE_URL_TEST=${DATABASE_URL_TEST}
-        OCI_NAMESPACE=${OCI_NAMESPACE}
-        OCI_BUCKET=${OCI_BUCKET}
-        OCI_CLI_USER=${OCI_CLI_USER}
-        OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
-        OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
-        OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
-        OCI_COMPARTMENT=${OCI_COMPARTMENT} &&
+        DATABASE_URL_TEST=${DATABASE_URL_TEST} &&
+#        OCI_NAMESPACE=${OCI_NAMESPACE}
+#        OCI_BUCKET=${OCI_BUCKET}
+#        OCI_CLI_USER=${OCI_CLI_USER}
+#        OCI_CLI_FINGERPRINT=${OCI_CLI_FINGERPRINT}
+#        OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
+#        OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
+#        OCI_COMPARTMENT=${OCI_COMPARTMENT} &&
       export
         POSTGRES_USER=${POSTGRES_USER}
         POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
