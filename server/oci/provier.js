@@ -14,7 +14,6 @@ import config from '../config.js';
 let provider;
 try { // prevent app from crushing when it can't find config file
   provider = new common.ConfigFileAuthenticationDetailsProvider(config.oci.configurationFilePath);
-  
 } catch (e) {
   console.log('error from ConfigFileAuthenticationDetailsProvider', e);
 }
