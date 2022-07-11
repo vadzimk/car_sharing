@@ -14,7 +14,7 @@ stages:
   - deploy
 
 variables:
-  FLUSHCACHE: "false"
+  FLUSHCACHE: "true"
 
 after_script:
   - cd $CI_PROJECT_DIR
