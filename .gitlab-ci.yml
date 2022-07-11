@@ -144,9 +144,9 @@ run_unit_tests_server:
     when: always
     reports:
       junit: server/junit.xml
-  only:
-    changes:
-      - server/*
+#  only:
+#    changes:
+#      - server/*
 
 
 build_react:
