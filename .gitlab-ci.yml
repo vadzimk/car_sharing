@@ -214,7 +214,7 @@ build_react:
 
 instal_cypress_dependencies:
   stage: e2e-test
-  image: cypress/browsers:node12.14.1-chrome85-ff81
+  image: node:16.13.0
   script:
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
     - export DEBUG=cypress:cli
@@ -243,12 +243,12 @@ run_e2e_tests:
   needs:
     - job: instal_cypress_dependencies
       optional: true
-  image: cypress/browsers:node12.14.1-chrome85-ff81
+  image: cypress/base:16.13.0
   extends:
     - .use_server_secrets
   script:
-#    - apt-get update
-#    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
+    - apt-get update
+    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
     - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
     - export DEBUG=cypress:cli
@@ -257,7 +257,7 @@ run_e2e_tests:
     - npm run start & npx wait-on http://localhost:3001
     - export NODE_ENV=test
     #    - export ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
-    - $(npm bin)/cypress run --headless --browser firefox
+    - $(npm bin)/cypress run --headless
   artifacts:
     when: always
     paths:
