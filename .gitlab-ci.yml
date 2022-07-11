@@ -42,7 +42,7 @@ instal_cypress_dependencies:
       changes:
         - package-lock.json
       when: always
-    - when: never # TODO change to never after debugging
+    - when: always # TODO change to never after debugging
 
 
 install_server_dependencies:
