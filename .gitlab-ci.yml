@@ -34,6 +34,8 @@ instal_cypress_dependencies:
     key: DEP-CY-$CI_COMMIT_REF_SLUG # separate key fro dependencies
     paths:
       - .cache/Cypress
+      - node_modules
+      - .npm/
     policy: push
   rules: # TODO trigger job to produce cache always when $FLUSHCACHE == "true"
     - if: $FLUSHCACHE == "true"
