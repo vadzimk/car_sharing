@@ -28,7 +28,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV ===
   'test') {
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
 }
-if(process.env.GITHUB_ACTIONS){
+
+if(process.env.GITHUB_ACTIONS || process.env.GITLAB_CI){
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
 }
 
