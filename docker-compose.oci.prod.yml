@@ -13,7 +13,7 @@ services:
     networks:
       - common_network
     ports:
-      - 3001:3001
+      - 3002:3001
     environment:
       - JWT_KEY=${JWT_KEY}
       - DATABASE_URL_PRODUCTION=${DATABASE_URL_PRODUCTION}
