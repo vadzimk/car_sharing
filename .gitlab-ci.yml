@@ -206,7 +206,7 @@ run_e2e_tests:
     - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
     - export DEBUG=cypress:cli
-    - cd server && npm run start & npx wait-on http://localhost:3000
+    - cd server && npm run start & npx wait-on http://localhost:3001
     - export NODE_ENV=test ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
     - $(npm bin)/cypress run --headless --browser firefox
   artifacts:
