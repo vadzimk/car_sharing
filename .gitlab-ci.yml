@@ -105,6 +105,9 @@ run_lint_server:
       - server/node_modules
       - server/.npm/
     policy: pull
+  only:
+    changes:
+      - server/*
 
 
 run_lint_client:
@@ -123,6 +126,9 @@ run_lint_client:
       - client/node_modules
       - client/.npm/
     policy: pull
+  only:
+    changes:
+      - client/*
 
 
 .use_server_secrets:
