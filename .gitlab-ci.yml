@@ -235,7 +235,7 @@ instal_cypress_dependencies:
       changes:
         - package-lock.json
       when: always
-    - when: always # TODO change to never after debugging
+    - when: never # TODO change to never after debugging
 
 
 run_e2e_tests:
