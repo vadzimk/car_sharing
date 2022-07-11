@@ -305,7 +305,7 @@ deploy_backend:
       then mkdir -p /home/ubuntu/applications/carshare/server/.oci;
       fi;
       '
-    - scp -o StrictHostKeyChecking=no -i $WS_KEY -r postgres-init-db.sh docker-compose.oci.prod.yml server/.oci ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
+    - scp -o StrictHostKeyChecking=no -i $WS_KEY -r postgres-init-db.sh docker-compose.oci.prod.yml ./server/.oci ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST "
       docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
       export
