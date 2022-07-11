@@ -227,6 +227,10 @@ run_e2e_tests:
         - server/node_modules
         - server/.npm/
       policy: pull
+    - key: BUILD-C-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+      paths:
+        - client/build
+      policy: pull
 
 
 build_backend_image:
