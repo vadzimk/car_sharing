@@ -1,5 +1,5 @@
 import common from 'oci-common';
-
+import config from '../config.js';
 // picks up configuration from environment variables
 // https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/clienvironmentvariables.htm#CLI_Environment_Variables
 //   user=OCI_CLI_USER
@@ -10,9 +10,10 @@ import common from 'oci-common';
 
 // const provider = new common.ConfigFileAuthenticationDetailsProvider('~/.oci/config');
 // const provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
+
 let provider;
-try { // prevent app from crushing
-  provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
+try { // prevent app from crushing when it can't find config file
+  provider = new common.ConfigFileAuthenticationDetailsProvider(config.oci.configurationFilePath);
   
 } catch (e) {
   console.log('error from ConfigFileAuthenticationDetailsProvider', e);

@@ -305,6 +305,8 @@ deploy_backend:
       then sudo rm -fr /home/ubuntu/applications/carshare/server/.oci;
       fi;
       '
+#    use secrets in docker-compose to declare absolute path for oci/config
+    - sed -i'.original' "s|key_file=.*|key_file=/run/secrets/carshare_key.pem|g" /server/.oci/config
     - scp -o StrictHostKeyChecking=no -i $WS_KEY -r postgres-init-db.sh docker-compose.oci.prod.yml server/.oci ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server
 #    - scp -o StrictHostKeyChecking=no -i $WS_KEY -r server/.oci/* ubuntu@$WS_HOST:/home/ubuntu/applications/carshare/server/.oci
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST "

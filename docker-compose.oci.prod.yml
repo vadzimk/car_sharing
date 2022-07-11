@@ -5,6 +5,12 @@ networks:
     external:
       name: common_network  # must match the actual name of the network created in the external file
 
+secrets:
+  oci_private_key:
+    file: ./.oci/carshare_key.pem
+  oci_config:
+    file: ./.oci/config
+
 services:
   carshare:
     container_name: carshare
@@ -27,9 +33,15 @@ services:
 #      - OCI_CLI_KEY_FILE=${OCI_CLI_KEY_FILE}
 #      - OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
 #      - OCI_COMPARTMENT=${OCI_COMPARTMENT}
-    volumes:
-      - ./.oci:/usr/src/app/server/.oci
-
+#    volumes:
+#      - ./.oci:/usr/src/app/server/.oci
+    secrets:
+      - source: oci_private_key
+        target: carshare_key.pem
+        mode: 0400
+      - source: oci_config
+        target: config
+        mode: 0400
 
   postgres:
     container_name: postgres
