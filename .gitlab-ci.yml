@@ -366,6 +366,7 @@ deploy_backend:
         POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         DATABASE_NAME=${DATABASE_NAME} &&
       cd /home/ubuntu/applications/carshare/server &&
+      docker network create common_network || true &&
       docker-compose -f docker-compose.oci.prod.yml down &&
       docker-compose -f docker-compose.oci.prod.yml up -d &&
       cp ~/applications/testdb/backup/dump.tar ~/applications/carshare/server/backup/ &&
@@ -377,6 +378,7 @@ deploy_client_build:
   script:
     - ls -al
     - ls -al client/
+    - chmod 400 $WS_KEY
     - ssh -o StrictHostKeyChecking=no -i $WS_KEY ubuntu@$WS_HOST '
       if [ ! -d /home/ubuntu/applications/share/nginx/html/carshare ];
       then mkdir -p /home/ubuntu/applications/share/nginx/html/carshare;
