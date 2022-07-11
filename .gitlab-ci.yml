@@ -330,7 +330,7 @@ deploy_backend:
       docker-compose -f docker-compose.oci.prod.yml down &&
       docker-compose -f docker-compose.oci.prod.yml up -d &&
       cp ~/applications/testdb/backup/dump.tar ~/applications/carshare/server/backup/ &&
-      docker exec -it carshare bash "pg_restore -U postgres --dbname=$DATABASE_NAME --verbose --no-owner /backup/dump.tar"
+      docker container exec carshare bash -c "pg_restore -U postgres --dbname=$DATABASE_NAME --verbose --no-owner /backup/dump.tar"
       "
 
 deploy_client_build:
