@@ -213,6 +213,19 @@ run_e2e_tests:
       - cypress/videos/**/*.mp4
       - cypress/screenshots/**/*.png
     expire_in: 1 week
+  cache:
+    - key: DEP-CY-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+      paths:
+        - .cache/Cypress
+        - node_modules
+        - .npm/
+      policy: pull
+    - key: DEP-S-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+      paths:
+        - server/node_modules
+        - server/.npm/
+      policy: pull
+
 
 
 build_backend_image:
