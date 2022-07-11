@@ -21,14 +21,14 @@ const config = {
     bucketName: process.env.OCI_BUCKET,
     tenancy: process.env.OCI_CLI_TENANCY,
     compartment: process.env.OCI_COMPARTMENT,
-    configurationFilePath: '/run/secrets/config'
+    configurationFilePath: '/run/secrets/config',
   }
 };
 
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV ===
   'test') {
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
-  config.oci.configurationFilePath = './oci/config'
+  config.oci.configurationFilePath = './oci/config';
 } 
 if(process.env.GITHUB_ACTIONS || process.env.GITLAB_CI){
   config.db = {connectionString: process.env.DATABASE_URL_TEST};
