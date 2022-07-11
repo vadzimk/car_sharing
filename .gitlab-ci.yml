@@ -17,6 +17,7 @@ variables:
   FLUSHCACHE: "false"
 
 after_script:
+  - cd $CI_PROJECT_DIR
   - ls -al
   - ls -al .cache/Cypress/
   - ls -al client/
@@ -158,6 +159,9 @@ run_unit_tests_server:
     when: always
     reports:
       junit: server/junit.xml
+  only:
+    changes:
+      - server/*
 
 
 build_react:
@@ -178,6 +182,9 @@ build_react:
       paths:
         - client/build
       policy: push
+  only:
+    changes:
+      - client/*
 
 
 run_e2e_tests:
