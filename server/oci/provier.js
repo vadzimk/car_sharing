@@ -8,8 +8,14 @@ import common from 'oci-common';
 //   tenancy=OCI_CLI_TENANCY
 //   OCI_COMPARTMENT
 
-
 // const provider = new common.ConfigFileAuthenticationDetailsProvider('~/.oci/config');
-const provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
+// const provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
+let provider;
+try {
+  provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
+  
+} catch (e) {
+  console.log('error from ConfigFileAuthenticationDetailsProvider', e);
+}
 
 export default provider;
