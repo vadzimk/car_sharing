@@ -23,31 +23,6 @@ after_script:
   - ls -al client/
   - ls -al server/
 
-instal_cypress_dependencies:
-  stage: install
-  image: node:16.13.0
-  script:
-    - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
-    - export DEBUG=cypress:cli
-    - npm ci --cache .npm --prefer-offline --ignore-scripts
-    - npx cypress cache path # diagnostic
-    - npx cypress install # because i am ignoring scripts # https://docs.cypress.io/guides/continuous-integration/introduction#Missing-binary
-  cache:
-    key: DEP-CY-$CI_COMMIT_REF_SLUG # separate key fro dependencies
-    paths:
-      - .cache/Cypress
-      - node_modules
-      - .npm/
-    policy: push
-  rules: # TODO trigger job to produce cache always when $FLUSHCACHE == "true"
-    - if: $FLUSHCACHE == "true"
-      when: always
-    - if: $FLUSHCACHE == "false"
-      changes:
-        - package-lock.json
-      when: always
-    - when: never # TODO change to never after debugging
-
 
 install_server_dependencies:
   stage: install
@@ -196,21 +171,90 @@ build_react:
     changes:
       - client/*
 
+# better to use a docker image cypress "cypress/browsers:node12.14.1-chrome85-ff81"
+# https://docs.cypress.io/guides/continuous-integration/gitlab-ci#Parallelization
+#run_e2e_tests:
+#  stage: e2e-test
+#  image: node:16.13.0
+#  extends:
+#    - .use_server_secrets
+#  script:
+#    - apt-get update
+#    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
+#    - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
+#    - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
+#    - export DEBUG=cypress:cli
+#    - cd server && npm run start & npx wait-on http://localhost:3001
+#    - export NODE_ENV=test
+##    - export ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
+#    - $(npm bin)/cypress run --headless --browser firefox
+#  artifacts:
+#    when: always
+#    paths:
+#      - cypress/videos/**/*.mp4
+#      - cypress/screenshots/**/*.png
+#    expire_in: 1 week
+#  cache:
+#    - key: DEP-CY-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+#      paths:
+#        - .cache/Cypress
+#        - node_modules
+#        - .npm/
+#      policy: pull
+#    - key: DEP-S-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+#      paths:
+#        - server/node_modules
+#        - server/.npm/
+#      policy: pull
+#    - key: BUILD-C-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+#      paths:
+#        - client/build
+#      policy: pull
+
+
+instal_cypress_dependencies:
+  stage: e2e-test
+  image: cypress/browsers:node12.14.1-chrome85-ff81
+  script:
+    - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
+    - export DEBUG=cypress:cli
+    - npm ci --cache .npm --prefer-offline --ignore-scripts
+    - npx cypress cache path # diagnostic
+    - npx cypress install # because i am ignoring scripts # https://docs.cypress.io/guides/continuous-integration/introduction#Missing-binary
+  cache:
+    key: DEP-CY-$CI_COMMIT_REF_SLUG # separate key fro dependencies
+    paths:
+      - .cache/Cypress
+      - node_modules
+      - .npm/
+    policy: push
+  rules: # TODO trigger job to produce cache always when $FLUSHCACHE == "true"
+    - if: $FLUSHCACHE == "true"
+      when: always
+    - if: $FLUSHCACHE == "false"
+      changes:
+        - package-lock.json
+      when: always
+    - when: always # TODO change to never after debugging
+
 
 run_e2e_tests:
   stage: e2e-test
-  image: node:16.13.0
+  needs:
+    - job: instal_cypress_dependencies
+      optional: true
+  image: cypress/browsers:node12.14.1-chrome85-ff81
   extends:
     - .use_server_secrets
   script:
-    - apt-get update
-    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
+#    - apt-get update
+#    - apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev # https://github.com/cypress-io/cypress-documentation/pull/2939
     - export CYPRESS_baseUrl=http://localhost:3001  # overrides cypress.json bc frontend is built and running from the server in as in production on port 3001 instead of 3000
     - export CYPRESS_CACHE_FOLDER=$CI_PROJECT_DIR/.cache/Cypress
     - export DEBUG=cypress:cli
     - cd server && npm run start & npx wait-on http://localhost:3001
     - export NODE_ENV=test
-#    - export ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
+    #    - export ELECTRON_RUN_AS_NODE=1  #https://docs.cypress.io/guides/continuous-integration/introduction#Running-headless-tests-without-Xvfb
     - $(npm bin)/cypress run --headless --browser firefox
   artifacts:
     when: always
