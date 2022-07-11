@@ -11,7 +11,7 @@ import common from 'oci-common';
 // const provider = new common.ConfigFileAuthenticationDetailsProvider('~/.oci/config');
 // const provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
 let provider;
-try {
+try { // prevent app from crushing
   provider = new common.ConfigFileAuthenticationDetailsProvider('.oci/config');
   
 } catch (e) {

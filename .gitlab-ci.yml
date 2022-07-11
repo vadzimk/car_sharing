@@ -146,7 +146,7 @@ run_unit_tests_server:
       junit: server/junit.xml
   only:
     changes:
-      - server/*
+      - server
 
 
 build_react:
