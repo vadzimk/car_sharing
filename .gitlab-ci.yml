@@ -86,7 +86,7 @@ run_lint_server:
     policy: pull
   only:
     changes:
-      - server/*
+      - server/**/*
 
 
 run_lint_client:
@@ -107,7 +107,7 @@ run_lint_client:
     policy: pull
   only:
     changes:
-      - client/*
+      - client/**/*
 
 
 .use_server_secrets:
@@ -146,7 +146,7 @@ run_unit_tests_server:
       junit: server/junit.xml
   only:
     changes:
-      - server
+      - server/**/*
 
 
 build_react:
@@ -169,7 +169,7 @@ build_react:
       policy: push
   only:
     changes:
-      - client/*
+      - client/**/*
 
 
 install_cypress_dependencies:
@@ -248,8 +248,8 @@ run_e2e_tests:
     - if: $FLUSHCACHE == "false"
       changes:
         - package-lock.json
-        - client/*
-        - server/*
+        - client/**/*
+        - server/**/*
       when: always
     - when: never # TODO change to never after debugging
 
@@ -320,11 +320,15 @@ deploy_backend:
         POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         DATABASE_NAME=${DATABASE_NAME} &&
       cd /home/ubuntu/applications/carshare/server &&
+      chown -R node:node .oci &&
       docker network create common_network || true &&
       docker-compose -f docker-compose.oci.prod.yml down &&
       docker-compose -f docker-compose.oci.prod.yml up -d &&
       cp ~/applications/testdb/backup/dump.tar ~/applications/carshare/server/backup/ &&
-      docker container exec postgres sh -c 'pg_restore -U postgres --dbname=$DATABASE_NAME --verbose --no-owner /backup/dump.tar'
+      docker container exec postgres sh -c '
+      if [ ! psql -lqt | cut -d \| -f 1 | grep -qw $DATABASE_NAME ];
+      then pg_restore -U postgres --dbname=$DATABASE_NAME --verbose --no-owner /backup/dump.tar;
+      fi;'
       "
 
 deploy_client_build:
