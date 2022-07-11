@@ -41,7 +41,7 @@ install_server_dependencies:
       when: always
     - if: $FLUSHCACHE == "false"
       changes:
-        - package-lock.json
+        - server/package-lock.json
       when: always
     - when: never
 
@@ -63,7 +63,7 @@ install_client_dependencies:
       when: always
     - if: $FLUSHCACHE == "false"
       changes:
-        - package-lock.json
+        - client/package-lock.json
       when: always
     - when: never
 
