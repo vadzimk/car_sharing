@@ -28,7 +28,7 @@ services:
       - OCI_CLI_TENANCY=${OCI_CLI_TENANCY}
       - OCI_COMPARTMENT=${OCI_COMPARTMENT}
     volumes:
-      - ./server/.oci:/usr/src/app/server/.oci
+      - ./.oci:/usr/src/app/server/.oci
 
 
   postgres:
