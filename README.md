@@ -2,7 +2,7 @@
 
 ## Overview
 This is a CRUD application using:
-- React frontend and Material-ui ( MUI )
+- React frontend and Material-UI ( MUI )
 - Express backend and REST API
 - PostgreSQL database with PostGIS
 - AWS S3 file storage ( _migrated to OCI_ )
